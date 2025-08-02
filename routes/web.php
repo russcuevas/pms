@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\host\HostAuthController;
+use App\Http\Controllers\host\HostHomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,4 +20,9 @@ Route::get('/', function () {
 });
 
 // HOST ROUTES
+// HOST AUTH
 Route::get('/host/login', [HostAuthController::class, 'HostLoginPage'])->name('host.login.page');
+
+
+// HOST DASHBOARD
+Route::get('/host/home', [HostHomeController::class, 'HostHomePage'])->name('host.home.page');

@@ -1,0 +1,138 @@
+HOST
+
+hosts
+fullname
+username
+password
+email
+phone_number
+address
+
+properties
+property_name
+property_email
+property_phone_number
+
+units
+property_id foreign to properties table id
+units_name
+status - vacant occupied for repair
+
+
+admins
+username
+password
+email
+phone_number
+address
+
+admin_assigned_units
+unit_id foreign to units table id
+admin_id foreign to admins table id
+status -> accepted decline
+
+tenants
+fullname
+address
+email
+phone_number
+move_in_date
+move_out_date
+unit_id foreign to units table id
+property_id -> foreign to properties table id
+
+tenants_assigned_units
+unit_id foreign to units table id
+property_id foreign to properties table id
+tenant_id foreign to tenants table id
+
+expenses
+property_id foreign to properties table id
+date
+salaries
+labor_for_repair
+materials
+food
+taxes
+miscellaneous
+water_electricity
+remarks
+total
+status approved decline
+
+
+billings
+unit_id -> foreign to units table -> id
+property_id -> foreign to properties table -> id
+tenant_id -> foreign to tenants table -> id
+account_number
+soa_no
+for_the_month_of
+statement_date
+due_date
+rental
+water
+electricity
+parking
+foam
+previous_balance
+total_balance_to_pay
+current_electricity
+previous_electricity
+consumption_electricity
+rate_per_kwh_electricity
+total_electricity
+current_water
+previous_water
+consumption_water
+rate_per_cu_water
+total_water
+status -> unpaid status
+is_approved -> 
+
+copy_billings
+unit_no
+property_name
+tenant_name
+account_number
+soa_no
+for_the_month_of
+statement_date
+due_date
+rental
+water
+electricity
+parking
+foam
+previous_balance
+total_balance_to_pay
+current_electricity
+previous_electricity
+consumption_electricity
+rate_per_kwh_electricity
+total_electricity
+current_water
+previous_water
+consumption_water
+rate_per_cu_water
+total_water
+
+payments
+unit_id -> foreign to units table -> id
+property_id -> foreign to properties table -> id
+billings_id -> foreign to billings table -> id
+tenant_id -> foreign to tenants table -> id
+amount
+month
+reference_number
+mode_of_payment
+type
+is_approved
+
+- TO FOLLOW
+announcements
+requests
+
+
+
+
