@@ -8,5 +8,7 @@
 </head>
 <body>
     JJS 1 Building
+    <a href="{{ route('host.logout.request') }}">Logout</a>
+
 </body>
 </html>

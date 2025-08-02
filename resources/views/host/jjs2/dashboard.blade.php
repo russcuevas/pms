@@ -7,7 +7,7 @@
     <title>Document</title>
 </head>
 <body>
-    Hubert Residence Dashboard
+    JJS 2 Building
     <a href="{{ route('host.logout.request') }}">Logout</a>
 </body>
 </html>

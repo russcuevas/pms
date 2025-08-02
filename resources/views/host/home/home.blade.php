@@ -7,9 +7,10 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Host Home</h1>
-    <a href="">Hubert Residence</a>
-    <a href="">Jjs 1 Bldg</a>
-    <a href="">Jjs 2 Bldg</a>
+    <h1>Welcome AVA Host</h1>
+    <a href="{{ route('host.huberts.dashboard.page') }}">Hubert Residence</a>
+    <a href="{{ route('host.jjs1.dashboard.page') }}">Jjs 1 Bldg</a>
+    <a href="{{ route('host.jjs2.dashboard.page')}}">Jjs 2 Bldg</a>
+    <a href="{{ route('host.logout.request') }}">Logout</a>
 </body>
 </html>
