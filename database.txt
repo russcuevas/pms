@@ -20,16 +20,14 @@ status - vacant occupied for repair
 
 
 admins
+fullname
 username
 password
 email
 phone_number
 address
-
-admin_assigned_units
-unit_id foreign to units table id
-admin_id foreign to admins table id
-status -> accepted decline
+property_id foreign to properties table id
+is_approved -> 
 
 tenants
 fullname
@@ -40,11 +38,6 @@ move_in_date
 move_out_date
 unit_id foreign to units table id
 property_id -> foreign to properties table id
-
-tenants_assigned_units
-unit_id foreign to units table id
-property_id foreign to properties table id
-tenant_id foreign to tenants table id
 
 expenses
 property_id foreign to properties table id
@@ -58,7 +51,7 @@ miscellaneous
 water_electricity
 remarks
 total
-status approved decline
+is_approved
 
 
 billings

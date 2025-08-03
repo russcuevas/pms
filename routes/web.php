@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\host\HostAuthController;
 use App\Http\Controllers\host\HostHomeController;
+use App\Http\Controllers\host\hubert\BillingController;
 use App\Http\Controllers\host\hubert\DashboardController;
 use App\Http\Controllers\host\jjs1\DashboardController as Jjs1DashboardController;
 use App\Http\Controllers\host\jjs2\DashboardController as Jjs2DashboardController;
@@ -25,6 +26,7 @@ Route::get('/host/home', [HostHomeController::class, 'HostHomePage'])->name('hos
 
 // HUBERTS
 Route::get('/host/huberts/dashboard', [DashboardController::class, 'HostHubertDashboardPage'])->name('host.huberts.dashboard.page');
+Route::get('/host/huberts/billing', [BillingController::class, 'HostHubertBillingPage'])->name('host.huberts.billing.page');
 
 // JJS1
 Route::get('/host/jjs1/dashboard', [Jjs1DashboardController::class, 'HostJjs1DashboardPage'])->name('host.jjs1.dashboard.page');
