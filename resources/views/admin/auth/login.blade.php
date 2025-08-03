@@ -17,6 +17,7 @@
         <input type="password" name="password"><br><br>
 
         <input type="submit" value="Login">
+        <br><a href="{{ route('admin.register.page') }}">Click here to register</a>
     </form>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
