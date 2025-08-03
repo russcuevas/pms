@@ -12,7 +12,7 @@ class HostHomeController extends Controller
     {
         // Session
         if (!Auth::guard('hosts')->check()) {
-            return redirect()->route('host.login.page')->withErrors(['login' => 'Please log in.']);
+            return redirect()->route('host.login.page')->with('error', 'Please log in.');
         }
 
         $host = Auth::guard('hosts')->user();

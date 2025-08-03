@@ -22,18 +22,21 @@ class HostAuthController extends Controller
         $credentials = $request->only('username', 'password');
 
         if (Auth::guard('hosts')->attempt($credentials)) {
-            return redirect()->route('host.home.page');
+            return redirect()
+                ->route('host.home.page')
+                ->with('success', 'Welcome Host AVA');
         }
 
         return redirect()
             ->route('host.login.page')
-            ->withErrors(['login' => 'Invalid username or password'])
+            ->with('error', 'Invalid username or password')
             ->withInput();
     }
+
 
     public function HostLogoutRequest()
     {
         Auth::guard('hosts')->logout();
-        return redirect()->route('host.login.page');
+        return redirect()->route('host.login.page')->with('success', 'You have been logged out.');
     }
 }

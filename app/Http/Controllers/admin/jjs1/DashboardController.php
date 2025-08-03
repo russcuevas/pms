@@ -13,7 +13,8 @@ class DashboardController extends Controller
         $admin = Auth::guard('admins')->user();
 
         if (!$admin || $admin->property_id != 2) {
-            return redirect()->route('admin.login.page');
+            return redirect()->route('admin.login.page')
+                ->with('error', 'You must log in first');
         }
 
         return view('admin.jjs1.dashboard');
