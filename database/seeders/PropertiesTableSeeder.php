@@ -15,17 +15,17 @@ class PropertiesTableSeeder extends Seeder
     {
         DB::table('properties')->insert([
             [
-                'property_name' => 'huberts residence',
+                'property_name' => 'Huberts Residence',
                 'property_email' => 'russelhubertsresidence@gmail.com',
                 'property_phone_number' => '09495748302',
             ],
             [
-                'property_name' => 'jjs 1 bldg',
+                'property_name' => 'JJS 1 Bldg',
                 'property_email' => 'russeljjs1@gmail.com',
                 'property_phone_number' => '09495748301',
             ],
             [
-                'property_name' => 'jjs 2 bldg',
+                'property_name' => 'JJS 2 Bldg',
                 'property_email' => 'russeljjs2@gmail.com',
                 'property_phone_number' => '09495748303',
             ],

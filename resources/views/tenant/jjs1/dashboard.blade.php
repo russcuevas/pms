@@ -7,7 +7,7 @@
     <title>Document</title>
 </head>
 <body>
-    Hubert Residence Dashboard
-    @include('host.hubert.left_sidebar')
+    This is jjs1
+    Welcome tenant display here property_id and unit_id
 </body>
 </html>

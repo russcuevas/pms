@@ -1,0 +1,10 @@
+    <a href="{{ route('host.logout.request') }}">Logout</a><br>
+    <a href="{{ route('host.home.page') }}">Home</a><br>
+    <a href="{{ route('host.huberts.dashboard.page') }}">Dashboard</a><br>
+    <a href="{{ route('host.huberts.admin.management.page') }}">Admin Management</a><br>
+    <a href="">Admin Requests</a><br>
+    <a href="{{ route('host.huberts.billing.page') }}">Billing</a><br>
+    <a href="">Payments</a><br>
+    <a href="">Expense Details</a><br>
+    <a href="">Announcements</a><br>
+    <a href="">Requests</a><br>

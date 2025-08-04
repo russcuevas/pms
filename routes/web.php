@@ -6,10 +6,15 @@ use App\Http\Controllers\admin\jjs1\DashboardController as AdminJjs1DashboardCon
 use App\Http\Controllers\admin\jjs2\DashboardController as AdminJjs2DashboardController;
 use App\Http\Controllers\host\HostAuthController;
 use App\Http\Controllers\host\HostHomeController;
+use App\Http\Controllers\host\hubert\AdminController;
 use App\Http\Controllers\host\hubert\BillingController;
 use App\Http\Controllers\host\hubert\DashboardController;
 use App\Http\Controllers\host\jjs1\DashboardController as Jjs1DashboardController;
 use App\Http\Controllers\host\jjs2\DashboardController as Jjs2DashboardController;
+use App\Http\Controllers\tenant\hubert\DashboardController as TenantHubertDashboardController;
+use App\Http\Controllers\tenant\jjs1\DashboardController as TenantJjs1DashboardController;
+use App\Http\Controllers\tenant\jjs2\DashboardController as TenantJjs2DashboardController;
+use App\Http\Controllers\tenant\TenantAuthController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -31,6 +36,11 @@ Route::get('/host/home', [HostHomeController::class, 'HostHomePage'])->name('hos
 // HUBERTS
 Route::get('/host/huberts/dashboard', [DashboardController::class, 'HostHubertDashboardPage'])->name('host.huberts.dashboard.page');
 Route::get('/host/huberts/billing', [BillingController::class, 'HostHubertBillingPage'])->name('host.huberts.billing.page');
+
+// ADMIN MANAGEMENT
+Route::get('/host/huberts/admin-management', [AdminController::class, 'HostHubertAdminPage'])->name('host.huberts.admin.management.page');
+Route::patch('/host/hubert/admin-management/update-approval/{id}', [AdminController::class, 'HostHubertUpdateApproval'])->name('host.hubert.update.admin.approval');
+
 
 // JJS1
 Route::get('/host/jjs1/dashboard', [Jjs1DashboardController::class, 'HostJjs1DashboardPage'])->name('host.jjs1.dashboard.page');
@@ -59,3 +69,22 @@ Route::get('/admin/jjs1/dashboard', [AdminJjs1DashboardController::class, 'Admin
 
 // JJS2
 Route::get('/admin/jjs2/dashboard', [AdminJjs2DashboardController::class, 'AdminJjs2DashboardPage'])->name('admin.jjs2.dashboard.page');
+
+
+
+
+
+
+// TENANTS ROUTES
+// TENANT AUTH
+Route::get('/tenants/login', [TenantAuthController::class, 'TenantsLoginPage'])->name('tenants.login.page');
+Route::post('/tenants/login/request', [TenantAuthController::class, 'TenantsLoginRequest'])->name('tenants.login.request');
+Route::get('/tenants/logout/request', [TenantAuthController::class, 'TenantsLogoutRequest'])->name('tenants.logout.request');
+
+
+// HUBERTS
+Route::get('/tenants/huberts/dashboard', [TenantHubertDashboardController::class, 'TenantsHubertDashboardPage'])->name('tenants.huberts.dashboard.page');
+// JJS1
+Route::get('/tenants/jjs1/dashboard', [TenantJjs1DashboardController::class, 'TenantsJjs1DashboardPage'])->name('tenants.jjs1.dashboard.page');
+// JJS2
+Route::get('/tenants/jjs2/dashboard', [TenantJjs2DashboardController::class, 'TenantsJjs2DashboardPage'])->name('tenants.jjs2.dashboard.page');
