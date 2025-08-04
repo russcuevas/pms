@@ -5,10 +5,13 @@ namespace App\Http\Controllers\tenant;
 use App\Http\Controllers\Controller;
 use App\Models\Properties;
 use App\Models\Tenants;
+use App\Models\Units;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Mail;
+
 
 class TenantAuthController extends Controller
 {
@@ -62,11 +65,16 @@ class TenantAuthController extends Controller
             // Route based on property
             switch ($tenant->property_id) {
                 case 1:
-                    return redirect()->route('tenants.huberts.dashboard.page');
+                    return redirect()->route('tenants.huberts.dashboard.page')
+                        ->with('success', 'Welcome Tenants Huberts Residence');
                 case 2:
-                    return redirect()->route('tenants.jjs1.dashboard.page');
+                    return redirect()->route('tenants.jjs1.dashboard.page')
+                        ->with('success', 'Welcome Tenants JJS 1 Building');
+
                 case 3:
-                    return redirect()->route('tenants.jjs2.dashboard.page');
+                    return redirect()->route('tenants.jjs2.dashboard.page')
+                        ->with('success', 'Welcome Tenants JJS 2 Building');
+
                 default:
                     Auth::guard('tenants')->logout();
                     return redirect()->route('tenants.login.page')
@@ -93,8 +101,10 @@ class TenantAuthController extends Controller
     public function TenantsRegisterPage()
     {
         $properties = Properties::all();
-        return view('tenants.auth.register', compact('properties'));
+        $units = Units::where('status', 'vacant')->get();
+        return view('tenant.auth.register', compact('properties', 'units'));
     }
+
 
     public function TenantsRegisterRequest(Request $request)
     {
@@ -106,6 +116,9 @@ class TenantAuthController extends Controller
             'phone_number' => 'nullable|string|max:255',
             'address' => 'nullable|string|max:255',
             'property_id' => 'required|exists:properties,id',
+            'unit_name' => 'required|string',
+            'move_in_date' => 'required|date',
+            'move_out_date' => 'nullable|date|after_or_equal:move_in_date',
         ]);
 
         if ($validator->fails()) {
@@ -115,7 +128,20 @@ class TenantAuthController extends Controller
                 ->with('error', $validator->errors()->first());
         }
 
-        Tenants::create([
+        $unit = Units::where('units_name', $request->unit_name)
+            ->where('property_id', $request->property_id)
+            ->where('status', 'vacant')
+            ->first();
+
+        if (!$unit) {
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'The unit name you entered does not exist or is not vacant for the selected property.');
+        }
+
+        $otp_code = mt_rand(1000, 9999);
+
+        $tenant = Tenants::create([
             'fullname' => $request->fullname,
             'username' => $request->username,
             'password' => Hash::make($request->password),
@@ -123,11 +149,54 @@ class TenantAuthController extends Controller
             'phone_number' => $request->phone_number,
             'address' => $request->address,
             'property_id' => $request->property_id,
+            'unit_id' => $unit->id,
+            'move_in_date' => $request->move_in_date,
+            'move_out_date' => $request->move_out_date,
+            'otp_code' => $otp_code,
             'is_approved' => false,
         ]);
 
+        Mail::raw("This is the OTP for your AVA account registration: {$otp_code}\n\nClick here to verify:\nhttp://127.0.0.1:8000/tenants/verify-otp", function ($message) use ($tenant) {
+            $message->to($tenant->email)
+                ->subject('Your AVA Registration OTP Code');
+        });
+
         return redirect()
             ->route('tenants.register.page')
-            ->with('success', 'Registration successful please check your email account for verification ');
+            ->with('success', 'Registration successful! Please check your email for the OTP verification code.');
+    }
+
+
+    public function TenantsOtpPage()
+    {
+        return view('tenant.auth.otp_verification');
+    }
+
+    public function TenantsVerifyOtp(Request $request)
+    {
+        $tenant = Tenants::where('otp_code', $request->otp_code)->first();
+
+        if (!$tenant) {
+            return redirect()
+                ->route('tenants.otp.page')
+                ->with('error', 'Invalid OTP')
+                ->withInput();
+        }
+
+        $tenant->is_approved = true;
+        $tenant->otp_code = null;
+        $tenant->save();
+
+        $unit = Units::where('id', $tenant->unit_id)
+            ->where('property_id', $tenant->property_id)
+            ->first();
+
+        if ($unit) {
+            $unit->status = 'occupied';
+            $unit->save();
+        }
+
+        return redirect()->route('tenants.login.page')
+            ->with('success', 'OTP verified. You can now log in.');
     }
 }

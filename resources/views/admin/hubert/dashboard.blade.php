@@ -10,7 +10,7 @@
 </head>
 <body>
     Hubert Dashboard
-    <a href="{{ route('admin.logout.request') }}">Logout</a>
+    @include('admin.hubert.left_sidebar')
 
     <!-- ✅ jQuery (Required) -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

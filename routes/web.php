@@ -81,6 +81,12 @@ Route::get('/tenants/login', [TenantAuthController::class, 'TenantsLoginPage'])-
 Route::post('/tenants/login/request', [TenantAuthController::class, 'TenantsLoginRequest'])->name('tenants.login.request');
 Route::get('/tenants/logout/request', [TenantAuthController::class, 'TenantsLogoutRequest'])->name('tenants.logout.request');
 
+Route::get('/tenants/register', [TenantAuthController::class, 'TenantsRegisterPage'])->name('tenants.register.page');
+Route::post('/tenants/register/request', [TenantAuthController::class, 'TenantsRegisterRequest'])->name('tenants.register.request');
+
+Route::get('/tenants/verify-otp', [TenantAuthController::class, 'TenantsOtpPage'])->name('tenants.otp.page');
+Route::post('/tenants/verify-otp/request', [TenantAuthController::class, 'TenantsVerifyOtp'])->name('tenants.verify.otp');
+
 
 // HUBERTS
 Route::get('/tenants/huberts/dashboard', [TenantHubertDashboardController::class, 'TenantsHubertDashboardPage'])->name('tenants.huberts.dashboard.page');
