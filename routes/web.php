@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\admin\AdminAuthController;
+use App\Http\Controllers\admin\hubert\BillingController as HubertBillingController;
 use App\Http\Controllers\admin\hubert\DashboardController as HubertDashboardController;
+use App\Http\Controllers\admin\hubert\UnitsController;
 use App\Http\Controllers\admin\jjs1\DashboardController as AdminJjs1DashboardController;
 use App\Http\Controllers\admin\jjs2\DashboardController as AdminJjs2DashboardController;
 use App\Http\Controllers\host\HostAuthController;
@@ -63,6 +65,14 @@ Route::post('/admin/register/request', [AdminAuthController::class, 'AdminRegist
 
 // HUBERTS
 Route::get('/admin/huberts/dashboard', [HubertDashboardController::class, 'AdminHubertDashboardPage'])->name('admin.huberts.dashboard.page');
+
+// HUBERTS UNIT MANAGEMENT PAGE
+Route::get('admin/huberts/unit_management', [UnitsController::class, 'AdminUnitsManagementPage'])->name('admin.huberts.units.management.page');
+Route::get('/admin/hubert/billing', [HubertBillingController::class, 'AdminHubertBillingPage'])->name('admin.hubert.billing.page');
+Route::post('/admin/hubert/billing/create', [HubertBillingController::class, 'AdminHubertBillingCreate'])->name('admin.hubert.billing.create');
+
+
+
 
 // JJS1
 Route::get('/admin/jjs1/dashboard', [AdminJjs1DashboardController::class, 'AdminJjs1DashboardPage'])->name('admin.jjs1.dashboard.page');

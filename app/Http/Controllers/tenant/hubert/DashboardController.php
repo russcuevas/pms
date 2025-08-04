@@ -36,10 +36,17 @@ class DashboardController extends Controller
             return redirect()->route('tenants.login.page')->with('error', 'Unauthorized access.');
         }
 
+        // Get latest billing
+        $billing = DB::table('billings')
+            ->where('tenant_id', $tenant->id)
+            ->orderByDesc('statement_date')
+            ->first();
+
         return view('tenant.hubert.dashboard', [
             'tenant' => $tenant,
             'unit' => $unit,
             'property' => $property,
+            'billing' => $billing, // pass billing to the view
         ]);
     }
 }

@@ -29,7 +29,7 @@ address
 property_id foreign to properties table id
 is_approved -> 
 
-tenants
+tenants - DONE
 fullname
 address
 email
