@@ -3,6 +3,7 @@
 use App\Http\Controllers\admin\AdminAuthController;
 use App\Http\Controllers\admin\hubert\BillingController as HubertBillingController;
 use App\Http\Controllers\admin\hubert\DashboardController as HubertDashboardController;
+use App\Http\Controllers\admin\hubert\PaymentsController;
 use App\Http\Controllers\admin\hubert\UnitsController;
 use App\Http\Controllers\admin\jjs1\DashboardController as AdminJjs1DashboardController;
 use App\Http\Controllers\admin\jjs2\DashboardController as AdminJjs2DashboardController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\host\HostHomeController;
 use App\Http\Controllers\host\hubert\AdminController;
 use App\Http\Controllers\host\hubert\BillingController;
 use App\Http\Controllers\host\hubert\DashboardController;
+use App\Http\Controllers\host\hubert\PaymentsController as HubertPaymentsController;
 use App\Http\Controllers\host\jjs1\DashboardController as Jjs1DashboardController;
 use App\Http\Controllers\host\jjs2\DashboardController as Jjs2DashboardController;
 use App\Http\Controllers\tenant\hubert\DashboardController as TenantHubertDashboardController;
@@ -37,11 +39,17 @@ Route::get('/host/home', [HostHomeController::class, 'HostHomePage'])->name('hos
 
 // HUBERTS
 Route::get('/host/huberts/dashboard', [DashboardController::class, 'HostHubertDashboardPage'])->name('host.huberts.dashboard.page');
+// BILLING MANAGEMENT
+Route::get('/host/huberts/previous-billings/{tenantId}', [BillingController::class, 'HostHubertViewPreviousBillings'])->name('host.huberts.previous.billings');
 Route::get('/host/huberts/billing', [BillingController::class, 'HostHubertBillingPage'])->name('host.huberts.billing.page');
-
 // ADMIN MANAGEMENT
 Route::get('/host/huberts/admin-management', [AdminController::class, 'HostHubertAdminPage'])->name('host.huberts.admin.management.page');
 Route::patch('/host/hubert/admin-management/update-approval/{id}', [AdminController::class, 'HostHubertUpdateApproval'])->name('host.hubert.update.admin.approval');
+// PAYMENTS MANAGEMENT
+Route::get('/host/hubert/payments', [HubertPaymentsController::class, 'HostHubertPaymentsPage'])->name('host.huberts.payments.page');
+Route::post('/host/hubert/payments/approve/{paymentId}', [HubertPaymentsController::class, 'HostHubertApprovePayment'])->name('host.huberts.payments.approve');
+Route::post('/host/hubert/payments/decline/{paymentId}', [HubertPaymentsController::class, 'HostHubertDeclinePayment'])->name('host.huberts.payments.decline');
+// END HUBERTS
 
 
 // JJS1
@@ -70,6 +78,8 @@ Route::get('/admin/huberts/dashboard', [HubertDashboardController::class, 'Admin
 Route::get('admin/huberts/unit_management', [UnitsController::class, 'AdminUnitsManagementPage'])->name('admin.huberts.units.management.page');
 Route::get('/admin/hubert/billing', [HubertBillingController::class, 'AdminHubertBillingPage'])->name('admin.hubert.billing.page');
 Route::post('/admin/hubert/billing/create', [HubertBillingController::class, 'AdminHubertBillingCreate'])->name('admin.hubert.billing.create');
+Route::get('/admin/hubert/payments/create', [PaymentsController::class, 'AdminHubertPaymentPage'])->name('admin.hubert.payments.page');
+Route::post('/admin/hubert/payments/store', [PaymentsController::class, 'AdminHubertPaymentRequest'])->name('admin.hubert.payments.request');
 
 
 

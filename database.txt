@@ -54,7 +54,7 @@ total
 is_approved
 
 
-billings
+billings - DONE
 unit_id -> foreign to units table -> id
 property_id -> foreign to properties table -> id
 tenant_id -> foreign to tenants table -> id
@@ -82,6 +82,11 @@ rate_per_cu_water
 total_water
 status -> unpaid status
 is_approved -> 
+
+billings_display
+billings_id -> foreign to billings table -> id
+account_number
+total_balance_to_pay
 
 copy_billings
 unit_no
@@ -116,7 +121,7 @@ property_id -> foreign to properties table -> id
 billings_id -> foreign to billings table -> id
 tenant_id -> foreign to tenants table -> id
 amount
-month
+for_the_month_of
 reference_number
 mode_of_payment
 type

@@ -39,7 +39,7 @@ class DashboardController extends Controller
         // Get latest billing
         $billing = DB::table('billings')
             ->where('tenant_id', $tenant->id)
-            ->orderByDesc('statement_date')
+            ->orderByDesc('created_at')
             ->first();
 
         return view('tenant.hubert.dashboard', [

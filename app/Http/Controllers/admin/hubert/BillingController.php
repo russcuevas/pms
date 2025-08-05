@@ -44,7 +44,6 @@ class BillingController extends Controller
             'statement_date' => 'required|date',
             'due_date' => 'required|date',
             'rental' => 'required|numeric',
-            // Optional fields can be nullable + numeric
             'water' => 'nullable|numeric',
             'electricity' => 'nullable|numeric',
             'parking' => 'nullable|numeric',
@@ -62,7 +61,16 @@ class BillingController extends Controller
             'total_water' => 'nullable|numeric',
         ]);
 
-        DB::table('billings')->insert([
+        $totalBalance =
+            ($request->rental ?? 0) +
+            ($request->water ?? 0) +
+            ($request->electricity ?? 0) +
+            ($request->parking ?? 0) +
+            ($request->foam ?? 0) +
+            ($request->previous_balance ?? 0);
+
+        // Insert into billings and get ID
+        $billingId = DB::table('billings')->insertGetId([
             'unit_id' => $request->unit_id,
             'property_id' => $request->property_id,
             'tenant_id' => $request->tenant_id,
@@ -77,10 +85,8 @@ class BillingController extends Controller
             'parking' => $request->parking,
             'foam' => $request->foam,
             'previous_balance' => $request->previous_balance,
-            'total_balance_to_pay' => (
-                ($request->rental ?? 0) + ($request->water ?? 0) + ($request->electricity ?? 0) +
-                ($request->parking ?? 0) + ($request->foam ?? 0) + ($request->previous_balance ?? 0)
-            ),
+            'total_balance_to_pay' => $totalBalance,
+            'total_payment' => $totalBalance,
             'current_electricity' => $request->current_electricity,
             'previous_electricity' => $request->previous_electricity,
             'consumption_electricity' => $request->consumption_electricity,
@@ -91,13 +97,11 @@ class BillingController extends Controller
             'consumption_water' => $request->consumption_water,
             'rate_per_cu_water' => $request->rate_per_cu_water,
             'total_water' => $request->total_water,
-            'status' => 'unpaid',
-            'is_approved' => false,
+            'status' => 'delinquent',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
-
         return redirect()->route('admin.huberts.units.management.page')
-            ->with('success', 'Billing created successfully.');
+            ->with('success', 'Billing created and display record saved successfully.');
     }
 }

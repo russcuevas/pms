@@ -23,6 +23,17 @@ class UnitsController extends Controller
                 $join->on('units.id', '=', 'tenants.unit_id')
                     ->where('tenants.is_approved', true);
             })
+            ->leftJoin(DB::raw('
+            (
+                SELECT tenant_id, total_balance_to_pay
+                FROM billings
+                WHERE id IN (
+                    SELECT MAX(id)
+                    FROM billings
+                    GROUP BY tenant_id
+                )
+            ) as latest_balances
+        '), 'tenants.id', '=', 'latest_balances.tenant_id')
             ->where('units.property_id', 1)
             ->select(
                 'units.id as unit_id',
@@ -36,10 +47,10 @@ class UnitsController extends Controller
                 'tenants.address',
                 'tenants.move_in_date',
                 'tenants.move_out_date',
-                'tenants.created_at'
+                'tenants.created_at',
+                'latest_balances.total_balance_to_pay as current_balance'
             )
             ->get();
-
 
         return view('admin.hubert.units_management', compact('units'));
     }

@@ -30,7 +30,9 @@ return new class extends Migration
             $table->decimal('parking', 10, 2)->nullable();
             $table->decimal('foam', 10, 2)->nullable();
             $table->decimal('previous_balance', 10, 2)->nullable();
+            $table->decimal('amount', 10, 2)->nullable();
             $table->decimal('total_balance_to_pay', 10, 2)->nullable();
+            $table->decimal('total_payment', 10, 2)->nullable();
 
             $table->decimal('current_electricity', 10, 2)->nullable();
             $table->decimal('previous_electricity', 10, 2)->nullable();
@@ -45,8 +47,6 @@ return new class extends Migration
             $table->decimal('total_water', 10, 2)->nullable();
 
             $table->string('status')->default('unpaid');
-            $table->boolean('is_approved')->default(false);
-
             $table->timestamps();
 
             $table->foreign('unit_id')->references('id')->on('units')->onDelete('set null');

@@ -24,7 +24,9 @@ class Billings extends Model
         'parking',
         'foam',
         'previous_balance',
+        'amount',
         'total_balance_to_pay',
+        'total_payment',
         'current_electricity',
         'previous_electricity',
         'consumption_electricity',
@@ -36,6 +38,5 @@ class Billings extends Model
         'rate_per_cu_water',
         'total_water',
         'status',
-        'is_approved',
     ];
 }

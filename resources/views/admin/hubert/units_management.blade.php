@@ -59,6 +59,15 @@
                                 </div>
                                 <div class="modal-body">
                                     <dl class="row">
+                                        <dt class="col-sm-4">Balance:</dt>
+                                        <dd class="col-sm-8">
+                                            @if (!is_null($unit->current_balance))
+                                                ₱{{ number_format($unit->current_balance, 2) }}
+                                            @else
+                                                <span class="text-muted">No billing yet</span>
+                                            @endif
+                                        </dd>
+
                                         <dt class="col-sm-4">Full Name:</dt>
                                         <dd class="col-sm-8">{{ $unit->fullname ?? 'N/A' }}</dd>
 
@@ -89,7 +98,9 @@
                                     <a href="{{ route('admin.hubert.billing.page', ['unit_id' => $unit->unit_id, 'tenant_id' => $unit->tenant_id]) }}" class="btn btn-info">
                                         Create Billing
                                     </a>
-                                    <a href="" class="btn btn-info">Payments</a>
+                                    <a href="{{ route('admin.hubert.payments.page', ['unit_id' => $unit->unit_id, 'tenant_id' => $unit->tenant_id]) }}" class="btn btn-info">
+                                        Create Payment
+                                    </a>
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                 </div>
                             </div>
