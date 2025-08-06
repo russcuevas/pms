@@ -76,8 +76,16 @@ Route::get('/admin/huberts/dashboard', [HubertDashboardController::class, 'Admin
 
 // HUBERTS UNIT MANAGEMENT PAGE
 Route::get('admin/huberts/unit_management', [UnitsController::class, 'AdminUnitsManagementPage'])->name('admin.huberts.units.management.page');
+Route::post('/admin/huberts/units/transfer-and-repair', [UnitsController::class, 'AdminHubertTransferAndRepair'])->name('admin.units.transfer-and-repair');
+Route::post('/admin/huberts/units/mark-for-repair', [UnitsController::class, 'AdminHubertMarkForRepair'])->name('admin.units.mark-for-repair');
+Route::post('/admin/huberts/units/mark-as-repaired', [UnitsController::class, 'AdminHubertMarkAsRepaired'])->name('admin.units.mark-as-repaired');
+Route::post('/admin/huberts/unit/{unit}/moveout/{tenant}', [UnitsController::class, 'AdminHubertMoveOutTenant'])->name('admin.units.moveout');
+
+
 Route::get('/admin/hubert/billing', [HubertBillingController::class, 'AdminHubertBillingPage'])->name('admin.hubert.billing.page');
 Route::post('/admin/hubert/billing/create', [HubertBillingController::class, 'AdminHubertBillingCreate'])->name('admin.hubert.billing.create');
+
+
 Route::get('/admin/hubert/payments/create', [PaymentsController::class, 'AdminHubertPaymentPage'])->name('admin.hubert.payments.page');
 Route::post('/admin/hubert/payments/store', [PaymentsController::class, 'AdminHubertPaymentRequest'])->name('admin.hubert.payments.request');
 

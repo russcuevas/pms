@@ -18,8 +18,7 @@
                 <th>Tenant</th>
                 <th>Unit</th>
                 <th>Paid Amount</th>
-                <th>Previous Balance</th>
-                <th>Total Balance</th>
+                <th>Balance</th>
                 <th>Billing</th>
                 <th>For the Month Of</th>
                 <th>Status</th>
@@ -32,7 +31,6 @@
                     <td>{{ $billing->tenant_name }}</td>
                     <td>{{ $billing->unit_name }}</td>
                     <td>{{ number_format($billing->amount, 2) }}</td>
-                    <td>{{ number_format($billing->previous_balance, 2) }}</td>
                     <td>{{ number_format($billing->total_balance_to_pay, 2) }}</td>
                     <td>{{ number_format($billing->total_payment, 2) }}</td>
                     <td>{{ $billing->for_the_month_of }}</td>

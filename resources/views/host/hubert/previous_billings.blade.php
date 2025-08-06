@@ -13,7 +13,7 @@
 </head>
 <body class="p-4">
     <div class="container">
-<div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
         <h3 class="mb-1">Previous Billing Records</h3>
         @php
@@ -76,6 +76,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <h5>Unit: {{ $billing->units_name }}</h5>
                     <table class="table table-bordered">
                         <tbody>
                             <tr><th>Acct No</th><td>{{ $billing->account_number }}</td></tr>

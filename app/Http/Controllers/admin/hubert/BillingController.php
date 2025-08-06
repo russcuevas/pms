@@ -25,8 +25,18 @@ class BillingController extends Controller
         $tenant = DB::table('tenants')->where('id', $tenant_id)->first();
         $unit = DB::table('units')->where('id', $unit_id)->first();
 
-        return view('admin.hubert.billing', compact('tenant', 'unit', 'property_id'));
+        $lastBilling = DB::table('billings')
+            ->where('tenant_id', $tenant_id)
+            ->orderByDesc('created_at')
+            ->first();
+
+        // If $lastBilling exists, get total_balance_to_pay, else 0
+        $lastTotalBalance = $lastBilling ? $lastBilling->total_balance_to_pay : 0;
+
+        return view('admin.hubert.billing', compact('tenant', 'unit', 'property_id', 'lastTotalBalance'));
     }
+
+
 
     public function AdminHubertBillingCreate(Request $request)
     {

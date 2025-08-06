@@ -20,7 +20,6 @@
             <tr>
                 <th>Tenant</th>
                 <th>Unit</th>
-                <th>SOA No.</th>
                 <th>Amount</th>
                 <th>For the Month Of</th>
                 <th>Reference #</th>
@@ -35,7 +34,6 @@
                 <tr id="payment-row-{{ $payment->id }}">
                     <td>{{ $payment->tenant_name }}</td>
                     <td>{{ $payment->unit_name }}</td>
-                    <td>{{ $payment->soa_no }}</td>
                     <td>{{ number_format($payment->amount, 2) }}</td>
                     <td>{{ $payment->for_the_month_of }}</td>
                     <td>{{ $payment->reference_number }}</td>
@@ -43,15 +41,12 @@
                     <td>{{ ucfirst($payment->type) }}</td>
                     <td>
                         @if ($payment->is_approved == 1)
-                            <!-- If the payment is approved, show "Approved" paragraph -->
                             <p class="text-success">Approved</p>
                         @else
-                            <!-- Approve Form -->
                             <form action="{{ route('host.huberts.payments.approve', $payment->id) }}" method="POST" style="display:inline;">
                                 @csrf
                                 <button type="submit" class="btn btn-sm btn-success">Approve</button>
                             </form>
-                            <!-- Decline Form -->
                             <form action="{{ route('host.huberts.payments.decline', $payment->id) }}" method="POST" style="display:inline;">
                                 @csrf
                                 <button type="submit" class="btn btn-sm btn-danger">Decline</button>

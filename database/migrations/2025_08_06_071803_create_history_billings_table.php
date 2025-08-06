@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('billings', function (Blueprint $table) {
+        Schema::create('history_billings', function (Blueprint $table) {
             $table->id();
-
             $table->unsignedBigInteger('unit_id')->nullable();
             $table->unsignedBigInteger('property_id')->nullable();
-            $table->unsignedBigInteger('tenant_id')->nullable();
+            $table->string('tenant_name');
+            $table->string('tenant_phone_number');
+            $table->string('tenant_email');
 
             $table->string('account_number');
             $table->string('soa_no');
@@ -51,7 +52,6 @@ return new class extends Migration
 
             $table->foreign('unit_id')->references('id')->on('units')->onDelete('set null');
             $table->foreign('property_id')->references('id')->on('properties')->onDelete('set null');
-            $table->foreign('tenant_id')->references('id')->on('tenants')->onDelete('set null');
         });
     }
 
@@ -60,6 +60,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('billings');
+        Schema::dropIfExists('history_billings');
     }
 };
