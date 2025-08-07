@@ -39,7 +39,7 @@ move_out_date
 unit_id foreign to units table id
 property_id -> foreign to properties table id
 
-expenses
+expenses - DONE
 property_id foreign to properties table id
 date
 salaries

@@ -3,6 +3,7 @@
 use App\Http\Controllers\admin\AdminAuthController;
 use App\Http\Controllers\admin\hubert\BillingController as HubertBillingController;
 use App\Http\Controllers\admin\hubert\DashboardController as HubertDashboardController;
+use App\Http\Controllers\admin\hubert\ExpensesController;
 use App\Http\Controllers\admin\hubert\PaymentsController;
 use App\Http\Controllers\admin\hubert\UnitsController;
 use App\Http\Controllers\admin\jjs1\DashboardController as AdminJjs1DashboardController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\host\HostHomeController;
 use App\Http\Controllers\host\hubert\AdminController;
 use App\Http\Controllers\host\hubert\BillingController;
 use App\Http\Controllers\host\hubert\DashboardController;
+use App\Http\Controllers\host\hubert\ExpensesController as HubertExpensesController;
 use App\Http\Controllers\host\hubert\PaymentsController as HubertPaymentsController;
 use App\Http\Controllers\host\jjs1\DashboardController as Jjs1DashboardController;
 use App\Http\Controllers\host\jjs2\DashboardController as Jjs2DashboardController;
@@ -39,6 +41,12 @@ Route::get('/host/home', [HostHomeController::class, 'HostHomePage'])->name('hos
 
 // HUBERTS
 Route::get('/host/huberts/dashboard', [DashboardController::class, 'HostHubertDashboardPage'])->name('host.huberts.dashboard.page');
+
+// EXPENSES
+Route::get('/host/huberts/expenses', [HubertExpensesController::class, 'HostHubertExpensesPage'])->name('host.huberts.expenses.page');
+Route::post('/host/hubert/expenses/{id}/approve', [HubertExpensesController::class, 'HostHubertApprovedRequest'])->name('host.hubert.expenses.approve');
+Route::delete('/host/hubert/expenses/{id}/decline', [HubertExpensesController::class, 'HostHubertDeclineRequest'])->name('host.hubert.expenses.decline');
+
 // BILLING MANAGEMENT
 Route::get('/host/huberts/previous-billings/{tenantId}', [BillingController::class, 'HostHubertViewPreviousBillings'])->name('host.huberts.previous.billings');
 Route::get('/host/huberts/billing', [BillingController::class, 'HostHubertBillingPage'])->name('host.huberts.billing.page');
@@ -73,6 +81,13 @@ Route::post('/admin/register/request', [AdminAuthController::class, 'AdminRegist
 
 // HUBERTS
 Route::get('/admin/huberts/dashboard', [HubertDashboardController::class, 'AdminHubertDashboardPage'])->name('admin.huberts.dashboard.page');
+Route::post('/admin/huberts/turn-over', [HubertDashboardController::class, 'AdminHubertTurnOverMoney'])->name('admin.huberts.turnover.request');
+
+
+// HUBERTS EXPENSES
+Route::get('/admin/huberts/expenses', [ExpensesController::class, 'AdminHubertExpensesPage'])->name('admin.huberts.expenses.page');
+Route::post('/admin/huberts/expenses/create', [ExpensesController::class, 'AdminHubertExpensesRequest'])->name('admin.huberts.expenses.request');
+
 
 // HUBERTS UNIT MANAGEMENT PAGE
 Route::get('admin/huberts/unit_management', [UnitsController::class, 'AdminUnitsManagementPage'])->name('admin.huberts.units.management.page');
@@ -81,11 +96,11 @@ Route::post('/admin/huberts/units/mark-for-repair', [UnitsController::class, 'Ad
 Route::post('/admin/huberts/units/mark-as-repaired', [UnitsController::class, 'AdminHubertMarkAsRepaired'])->name('admin.units.mark-as-repaired');
 Route::post('/admin/huberts/unit/{unit}/moveout/{tenant}', [UnitsController::class, 'AdminHubertMoveOutTenant'])->name('admin.units.moveout');
 
-
+// HUBERTS BILLING PAGE
 Route::get('/admin/hubert/billing', [HubertBillingController::class, 'AdminHubertBillingPage'])->name('admin.hubert.billing.page');
 Route::post('/admin/hubert/billing/create', [HubertBillingController::class, 'AdminHubertBillingCreate'])->name('admin.hubert.billing.create');
 
-
+// HUBERTS PAYMENT PAGE
 Route::get('/admin/hubert/payments/create', [PaymentsController::class, 'AdminHubertPaymentPage'])->name('admin.hubert.payments.page');
 Route::post('/admin/hubert/payments/store', [PaymentsController::class, 'AdminHubertPaymentRequest'])->name('admin.hubert.payments.request');
 

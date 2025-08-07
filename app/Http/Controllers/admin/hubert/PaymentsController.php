@@ -44,22 +44,18 @@ class PaymentsController extends Controller
             'for_the_month_of' => 'required|string',
             'reference_number' => 'required|string|max:255',
             'mode_of_payment' => 'required|string|max:255',
-            'type' => 'required|string|in:advance,deposit',
+            'type' => 'required|string',
         ]);
 
-        // Get billing record
         $billing = DB::table('billings')->where('id', $request->billings_id)->first();
-
         if (!$billing) {
             return back()->withErrors(['amount' => 'Billing record not found.'])->withInput();
         }
 
-        // ✅ Check if amount exceeds total_balance_to_pay
         if ($request->amount > $billing->total_balance_to_pay) {
             return back()->withErrors(['amount' => 'The amount cannot be more than the total balance to pay (₱' . number_format($billing->total_balance_to_pay, 2) . ').'])->withInput();
         }
 
-        // Insert payment
         DB::table('payments')->insert([
             'unit_id' => $request->unit_id,
             'tenant_id' => $request->tenant_id,
@@ -75,19 +71,36 @@ class PaymentsController extends Controller
             'updated_at' => now(),
         ]);
 
-        // Update billing if payment is in cash
         if ($request->mode_of_payment == 'cash') {
             $newAmount = $billing->amount + $request->amount;
             $newBalance = max(0, $billing->total_balance_to_pay - $request->amount);
             $status = $newBalance == 0 ? 'paid' : 'delinquent';
 
+            // Update the billing record
             DB::table('billings')->where('id', $billing->id)->update([
                 'amount' => $newAmount,
                 'total_balance_to_pay' => $newBalance,
                 'status' => $status,
                 'updated_at' => now(),
             ]);
+
+            $cashOnHand = DB::table('cash_on_hands')->where('property_id', $billing->property_id)->first();
+
+            if ($cashOnHand) {
+                DB::table('cash_on_hands')->where('id', $cashOnHand->id)->update([
+                    'total_cash_amount' => $cashOnHand->total_cash_amount + $request->amount,
+                    'updated_at' => now(),
+                ]);
+            } else {
+                DB::table('cash_on_hands')->insert([
+                    'property_id' => $billing->property_id,
+                    'total_cash_amount' => $request->amount,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
         }
+
 
         $message = $request->mode_of_payment === 'cash'
             ? 'Payment recorded successfully.'

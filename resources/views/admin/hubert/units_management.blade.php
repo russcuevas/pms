@@ -152,14 +152,12 @@
                                     </dl>
                                 </div>
                                 <div class="modal-footer">
-@if ($unit->billing_status === 'paid')
-    <form method="POST" action="{{ route('admin.units.moveout', [$unit->unit_id, $unit->tenant_id]) }}" class="moveout-form" data-unit-id="{{ $unit->unit_id }}" data-tenant-id="{{ $unit->tenant_id }}">
-        @csrf
-        <button type="submit" class="btn btn-danger">Move out</button>
-    </form>
-@endif
-
-
+                                    @if ($unit->billing_status === 'paid')
+                                        <form method="POST" action="{{ route('admin.units.moveout', [$unit->unit_id, $unit->tenant_id]) }}" class="moveout-form" data-unit-id="{{ $unit->unit_id }}" data-tenant-id="{{ $unit->tenant_id }}">
+                                            @csrf
+                                            <button type="submit" class="btn btn-danger">Move out</button>
+                                        </form>
+                                    @endif
                                     <a href="{{ route('admin.hubert.billing.page', ['unit_id' => $unit->unit_id, 'tenant_id' => $unit->tenant_id]) }}" class="btn btn-info">
                                         Create Billing
                                     </a>
@@ -190,27 +188,27 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-<script>
-    @if (session('success'))
-        toastr.options = {
-            "closeButton": true,
-            "progressBar": true,
-            "timeOut": "3000",
-            "positionClass": "toast-top-right"
-        };
-        toastr.success("{{ session('success') }}");
-    @endif
+    <script>
+        @if (session('success'))
+            toastr.options = {
+                "closeButton": true,
+                "progressBar": true,
+                "timeOut": "3000",
+                "positionClass": "toast-top-right"
+            };
+            toastr.success("{{ session('success') }}");
+        @endif
 
-    @if (session('error'))
-        toastr.options = {
-            "closeButton": true,
-            "progressBar": true,
-            "timeOut": "3000",
-            "positionClass": "toast-top-right"
-        };
-        toastr.error("{{ session('error') }}");
-    @endif
-</script>
+        @if (session('error'))
+            toastr.options = {
+                "closeButton": true,
+                "progressBar": true,
+                "timeOut": "3000",
+                "positionClass": "toast-top-right"
+            };
+            toastr.error("{{ session('error') }}");
+        @endif
+    </script>
 
     <script>
     document.querySelectorAll('.btn-for-repair').forEach(button => {

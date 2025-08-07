@@ -65,8 +65,11 @@
             <label>Payment Type:</label>
             <select name="type" class="form-control" required>
                 <option value="">-- Select --</option>
-                <option value="advance">Advance</option>
-                <option value="deposit">Deposit</option>
+                <option value="advance payment">Advance Payment</option>
+                <option value="deposit payment">Deposit Payment</option>
+                <option value="ontime payment">Ontime Payment</option>
+                <option value="late payment">Late Payment</option>
+
             </select>
             <div class="invalid-feedback">Please select a payment type.</div>
         </div>
@@ -77,7 +80,6 @@
 </div>
 
 <script>
-// Bootstrap form validation
 (() => {
     'use strict';
     const forms = document.querySelectorAll('.needs-validation');

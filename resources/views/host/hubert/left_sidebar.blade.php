@@ -5,6 +5,6 @@
     <a href="">Admin Requests</a><br>
     <a href="{{ route('host.huberts.billing.page') }}">Billing</a><br>
     <a href="{{ route('host.huberts.payments.page') }}">Payments</a><br>
-    <a href="">Expense Details</a><br>
+    <a href="{{ route('host.huberts.expenses.page') }}">Expense Details</a><br>
     <a href="">Announcements</a><br>
     <a href="">Requests</a><br>
