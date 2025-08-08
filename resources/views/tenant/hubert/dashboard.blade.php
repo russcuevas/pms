@@ -2,29 +2,242 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Huberts Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="{{ asset('assets/css/bootstrap.min.css')}}" rel="stylesheet">
+    {{-- CUSTOM CSS --}}
+    <link rel="stylesheet" href="{{ asset('assets/css/tenants/dashboard.css') }}">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Toastr CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    {{-- SWEETALERT CSS --}}
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
 </head>
-<body>
-    <h1>Huberts Residence</h1>
-    <p>Welcome, {{ $tenant->fullname }}</p>
-    <p>Your Property: {{ $property->property_name }} (ID: {{ $tenant->property_id }})</p>
-    <p>Your Unit: {{ $unit->units_name }} (Unit ID: {{ $tenant->unit_id }})</p>
-    <a href="{{ route('tenants.logout.request') }}">Logout</a>
+<body class="bg-light">
+    <!-- Header -->
+    <div class="bg-success text-white py-3">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-6">
+                    <div class="d-flex align-items-center">
+                        <div>
+                            <small class="text-uppercase" style="color: white !important">MY UNIT: {{ $unit->units_name }}</small>
+                            <div class="fw-bold">{{ $tenant->fullname ?? 'Tenant Name' }}</div>
+                        </div>
+                    </div>
+                </div>
+                    <div class="col-6 text-end position-relative">
+                        <span class="position-relative me-3" id="notif-toggle" style="cursor: pointer;">
+                            <i class="fas fa-bell fs-5"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">3</span>
+                        </span>
+                        <a href="{{ route('tenants.logout.request') }}" class="text-white text-decoration-none">
+                            <i class="fas fa-sign-out-alt fs-5"></i>
+                        </a>
 
-    <h1>My Outstanding Balance</h1><br>
+                        <!-- Notification Dropdown -->
+                        <div id="notif-dropdown" class="notif-dropdown shadow hidden">
+                            <div class="notif-header">
+                                <span>Notifications</span>
+                            </div>
 
-    @if (!$billing)
-        <p class="text-muted">No billing record available yet.</p>
-    @else
-        <p><strong>Account No:</strong> {{ $billing->account_number }}</p>
-        <p><strong>Balance:</strong> ₱{{ number_format($billing->total_balance_to_pay, 2) }}</p>
-    @endif
+                            <div class="notif-content">
+                                <div class="notif-item new">
+                                    <div class="notif-text">
+                                        <p><b>Paymaya</b> payment confirmed.</p>
+                                    </div>
+                                    <i class="fas fa-trash notif-delete" onclick="deleteNotif(this)"></i>
+                                </div>
+
+                                <div class="notif-item">
+                                    <div class="notif-text">
+                                        <p><b>Paymaya</b> payment confirmed.</p>
+                                    </div>
+                                    <i class="fas fa-trash notif-delete" onclick="deleteNotif(this)"></i>
+                                </div>
+
+                                <div class="notif-item">
+                                    <div class="notif-text">
+                                        <p><b>Paymaya</b> payment confirmed.</p>
+                                    </div>
+                                    <i class="fas fa-trash notif-delete" onclick="deleteNotif(this)"></i>
+                                </div>                                
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container my-4 pb-5">
+        <!-- Outstanding Balance Card -->
+        <div class="card border-0 bg-success text-white mb-4">
+            <div class="card-body p-4">
+                <h5 class="card-title mb-3">My Outstanding Balance</h5>
+                <div class="display-4 fw-bold mb-3">
+                    @if (!$billing)
+                        PHP 0.00
+                    @else
+                        PHP {{ number_format($billing->total_balance_to_pay, 2) }}
+                    @endif
+                </div>
+                <div class="mb-3">
+                    <small class="opacity-75">Account Number</small>
+                    <div class="fw-bold">
+                        @if ($billing)
+                            {{ $billing->account_number }}
+                        @else
+                            Not Available
+                        @endif
+                    </div>
+                </div>
+                <div class="row align-items-end">
+                    <div class="col-12 col-md-12 text-end mt-3 mt-md-0">
+                        <button id="payNowBtn" class="btn btn-warning btn-sm px-3 fw-bold me-2">PAY NOW</button>
+                        <button class="btn btn-warning btn-sm px-3 fw-bold me-2">SEND PROOF OF PAYMENT</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
+        <!-- Quick Actions -->
+        <h5 class="mb-3 text-dark">My Quick Actions</h5>
+        <div class="row g-3 mb-5">
+            <div class="col-6 col-md-3" style="cursor: pointer" onclick="window.location.href=('')">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="bg-success text-white rounded p-3 mb-3 d-inline-block">
+                            <i class="fas fa-user fs-4"></i>
+                        </div>
+                        <div class="fw-bold small">My<br>Profile</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="bg-success text-white rounded p-3 mb-3 d-inline-block">
+                            <i class="fas fa-search fs-4"></i>
+                        </div>
+                        <div class="fw-bold small">View<br>Billing</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="bg-success text-white rounded p-3 mb-3 d-inline-block">
+                            <i class="fas fa-chart-bar fs-4"></i>
+                        </div>
+                        <div class="fw-bold small">Account<br>History</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="bg-success text-white rounded p-3 mb-3 d-inline-block">
+                            <i class="fas fa-folder fs-4"></i>
+                        </div>
+                        <div class="fw-bold small">Help &<br>Support</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="navbar fixed-bottom navbar-light bg-white border-top">
+        <div class="container-fluid">
+            <div class="d-flex w-100 justify-content-around">
+                <a class="navbar-brand text-success text-center flex-fill border-end" href="#">
+                    <div><i class="fas fa-home"></i></div>
+                    <small>Home</small>
+                </a>
+                <a class="navbar-brand text-muted text-center flex-fill border-end" href="#">
+                    <div><i class="fas fa-file-alt"></i></div>
+                    <small>Requests</small>
+                </a>
+                <a class="navbar-brand text-muted text-center flex-fill" href="#">
+                    <div><i class="fas fa-bullhorn"></i></div>
+                    <small>Announcement</small>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Toastr JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+    document.getElementById('payNowBtn').addEventListener('click', function () {
+        showPaymentOptions();
+    });
+
+    function showPaymentOptions() {
+        Swal.fire({
+            title: 'Choose Payment Method',
+            icon: 'question',
+            showCancelButton: true,
+            showConfirmButton: false,
+            cancelButtonText: 'Cancel',
+            html: `
+                <div class="d-grid gap-2">
+                    <button class="btn btn-primary" onclick="selectPayment('Gcash')">Gcash</button>
+                    <button class="btn btn-info text-white" onclick="selectPayment('Paymaya')">Paymaya</button>
+                    <button class="btn btn-success" onclick="selectPayment('BDO')">BDO</button>
+                </div>
+            `
+        });
+    }
+
+    function selectPayment(method) {
+        let qrImage = '';
+
+        if (method === 'Gcash') {
+            qrImage = "{{ asset('assets/huberts/gcash.jpg') }}";
+        } else if (method === 'Paymaya') {
+            qrImage = "{{ asset('assets/huberts/paymaya.png') }}";
+        } else if (method === 'BDO') {
+            qrImage = "{{ asset('assets/huberts/bdo.jpg') }}";
+        }
+
+        Swal.fire({
+            title: method + ' - Scan to Pay',
+            html: `
+                <p><strong>📌 Please scan the QR code to make your payment.</strong></p>
+                <img src="${qrImage}" alt="${method} QR Code" style="width:300px; height:370px; margin-bottom: 15px;">
+                <p style="margin-top:10px; font-size:14px; color: red;">
+                    Make sure to take a screenshot of your proof of payment and send it to send payment proof after the transaction.
+                </p>
+            `,
+            showCancelButton: true,
+            confirmButtonText: 'OK',
+            cancelButtonText: 'Back',
+        }).then((result) => {
+            if (result.dismiss === Swal.DismissReason.cancel) {
+                showPaymentOptions();
+            }
+        });
+    }
+    </script>
+
+
+    <script>
+        toastr.options = {
+            "closeButton": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "timeOut": "3000"
+        };
+
         @if (session('error'))
             toastr.error("{{ session('error') }}");
         @endif
@@ -32,13 +245,18 @@
         @if (session('success'))
             toastr.success("{{ session('success') }}");
         @endif
+    </script>
 
-        toastr.options = {
-            "closeButton": true,
-            "progressBar": true,
-            "positionClass": "toast-top-right",
-            "timeOut": "3000"
-        };
+    <script>
+        document.getElementById('notif-toggle').addEventListener('click', function () {
+        document.getElementById('notif-dropdown').classList.toggle('hidden');
+        });
+
+        window.addEventListener('click', function (e) {
+            if (!e.target.closest('#notif-toggle') && !e.target.closest('#notif-dropdown')) {
+                document.getElementById('notif-dropdown').classList.add('hidden');
+            }
+        });
     </script>
 </body>
 </html>
