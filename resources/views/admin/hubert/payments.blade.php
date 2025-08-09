@@ -30,7 +30,7 @@
 
         <div class="mb-3">
             <label>For the Month Of:</label>
-            <input type="month" name="for_the_month_of" class="form-control" value="{{ $billing->for_the_month_of ?? '' }}" required>
+            <input style="background-color: gray; color: white;" type="month" name="for_the_month_of" class="form-control" value="{{ $billing->for_the_month_of ?? '' }}" required readonly>
             <div class="invalid-feedback">Please select a month.</div>
         </div>
 

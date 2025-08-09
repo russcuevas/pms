@@ -17,7 +17,7 @@
 </head>
 <body class="bg-light">
     <!-- Header -->
-    <div class="bg-success text-white py-3">
+    <div class="bg-success text-white py-3" style="background-color: black !important">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-6">
@@ -73,8 +73,10 @@
 
     <div class="container my-4 pb-5">
         <!-- Outstanding Balance Card -->
-        <div class="card border-0 bg-success text-white mb-4">
-            <div class="card-body p-4">
+        <div class="card border-0 text-white mb-4" 
+            style="background-image: url('{{ asset('assets/huberts/hubert.jpg') }}'); background-repeat: no-repeat; background-position: center;">
+
+            <div class="card-body p-4" style="color: black !important">
                 <h5 class="card-title mb-3">My Outstanding Balance</h5>
                 <div class="display-4 fw-bold mb-3">
                     @if (!$billing)
@@ -109,7 +111,7 @@
             <div class="col-6 col-md-3" style="cursor: pointer" onclick="window.location.href=('')">
                 <div class="card border-0 shadow-sm h-100">
                     <div class="card-body text-center p-4">
-                        <div class="bg-success text-white rounded p-3 mb-3 d-inline-block">
+                        <div class="bg-success text-white rounded p-3 mb-3 d-inline-block" style="background-color: black !important">
                             <i class="fas fa-user fs-4"></i>
                         </div>
                         <div class="fw-bold small">My<br>Profile</div>
@@ -119,7 +121,7 @@
             <div class="col-6 col-md-3">
                 <div class="card border-0 shadow-sm h-100">
                     <div class="card-body text-center p-4">
-                        <div class="bg-success text-white rounded p-3 mb-3 d-inline-block">
+                        <div class="bg-success text-white rounded p-3 mb-3 d-inline-block" style="background-color: black !important">
                             <i class="fas fa-search fs-4"></i>
                         </div>
                         <div class="fw-bold small">View<br>Billing</div>
@@ -129,7 +131,7 @@
             <div class="col-6 col-md-3">
                 <div class="card border-0 shadow-sm h-100">
                     <div class="card-body text-center p-4">
-                        <div class="bg-success text-white rounded p-3 mb-3 d-inline-block">
+                        <div class="bg-success text-white rounded p-3 mb-3 d-inline-block" style="background-color: black !important">
                             <i class="fas fa-chart-bar fs-4"></i>
                         </div>
                         <div class="fw-bold small">Account<br>History</div>
@@ -139,7 +141,7 @@
             <div class="col-6 col-md-3">
                 <div class="card border-0 shadow-sm h-100">
                     <div class="card-body text-center p-4">
-                        <div class="bg-success text-white rounded p-3 mb-3 d-inline-block">
+                        <div class="bg-success text-white rounded p-3 mb-3 d-inline-block" style="background-color: black !important">
                             <i class="fas fa-folder fs-4"></i>
                         </div>
                         <div class="fw-bold small">Help &<br>Support</div>
@@ -150,18 +152,18 @@
     </div>
 
     <!-- Bottom Navigation -->
-    <nav class="navbar fixed-bottom navbar-light bg-white border-top">
+    <nav class="navbar fixed-bottom navbar-light bg-white border-top" style="background-color: black !important">
         <div class="container-fluid">
             <div class="d-flex w-100 justify-content-around">
                 <a class="navbar-brand text-success text-center flex-fill border-end" href="#">
                     <div><i class="fas fa-home"></i></div>
                     <small>Home</small>
                 </a>
-                <a class="navbar-brand text-muted text-center flex-fill border-end" href="#">
+                <a class="navbar-brand text-white text-center flex-fill border-end" href="#">
                     <div><i class="fas fa-file-alt"></i></div>
                     <small>Requests</small>
                 </a>
-                <a class="navbar-brand text-muted text-center flex-fill" href="#">
+                <a class="navbar-brand text-white text-center flex-fill" href="#">
                     <div><i class="fas fa-bullhorn"></i></div>
                     <small>Announcement</small>
                 </a>
