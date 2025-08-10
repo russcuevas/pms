@@ -36,6 +36,9 @@
                     <td>{{ $expense->taxes }}</td>
                     <td>{{ $expense->miscellaneous }}</td>
                     <td>{{ $expense->water_electricity }}</td>
+                    <td>{{ $expense->refund }}</td>
+                    <td>{{ $expense->office_supplies }}</td>
+
                     <td>₱{{ number_format($expense->total, 2) }}</td>
                     <td>{{ $expense->remarks }}</td>
                     <td>

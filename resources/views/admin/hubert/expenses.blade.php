@@ -38,6 +38,8 @@
                         <th>Taxes</th>
                         <th>Miscellaneous</th>
                         <th>Utilities</th>
+                        <th>Refund</th>
+                        <th>Office Supplies</th>
                         <th>Total</th>
                         <th>Remarks</th>
                         <th>Status</th>
@@ -54,6 +56,8 @@
                         <td>₱{{ number_format($expense->taxes, 2) }}</td>
                         <td>₱{{ number_format($expense->miscellaneous, 2) }}</td>
                         <td>₱{{ number_format($expense->water_electricity, 2) }}</td>
+                        <td>₱{{ number_format($expense->refund, 2) }}</td>
+                        <td>₱{{ number_format($expense->office_supplies, 2) }}</td>
                         <td>₱{{ number_format($expense->total, 2) }}</td>
                         <td>{{ $expense->remarks }}</td>
                         <td><span class="badge bg-success">Approved</span></td>
@@ -119,9 +123,19 @@
                                 <input type="text" name="water_electricity" id="water_electricity" class="form-control" value="0" required>
                             </div>
 
+                            <div class="col-md-6">
+                                <label>Refund</label>
+                                <input type="text" name="refund" id="refund" class="form-control" value="0" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label>Office Supplies</label>
+                                <input type="text" name="office_supplies" id="office_supplies" class="form-control" value="0" required>
+                            </div>
+
                             <div class="col-md-12">
                                 <label>Remarks</label>
-                                <textarea name="remarks" class="form-control" rows="2"></textarea>
+                                <textarea name="remarks" class="form-control" rows="2" required></textarea>
                             </div>
 
                             <div class="col-md-12">
@@ -214,7 +228,9 @@
                 getVal('food') +
                 getVal('taxes') +
                 getVal('miscellaneous') +
-                getVal('water_electricity');
+                getVal('water_electricity') +
+                getVal('refund') +
+                getVal('office_supplies');
 
             document.getElementById('total').value = total.toFixed(2);
         }
@@ -226,7 +242,9 @@
             'food',
             'taxes',
             'miscellaneous',
-            'water_electricity'
+            'water_electricity',
+            'refund',
+            'office_supplies'
         ];
 
         fields.forEach(id => {

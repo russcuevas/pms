@@ -11,11 +11,11 @@ class PaymentsController extends Controller
     // Display all payments
     public function HostHubertPaymentsPage()
     {
-        // Fetch all payments with related tenant and unit info
         $payments = DB::table('payments')
             ->join('tenants', 'payments.tenant_id', '=', 'tenants.id')
             ->join('units', 'payments.unit_id', '=', 'units.id')
             ->join('billings', 'payments.billings_id', '=', 'billings.id')
+            ->where('tenants.property_id', 1)
             ->select(
                 'payments.*',
                 'tenants.fullname as tenant_name',
@@ -27,6 +27,7 @@ class PaymentsController extends Controller
 
         return view('host.hubert.payments', compact('payments'));
     }
+
 
     public function HostHubertApprovePayment($paymentId)
     {

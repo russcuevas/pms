@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string('taxes');
             $table->string('miscellaneous');
             $table->string('water_electricity');
+            $table->string('refund');
+            $table->string('office_supplies');
             $table->string('remarks');
             $table->boolean('is_approved')->default(false);
             $table->decimal('total', 10, 2)->nullable();

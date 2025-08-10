@@ -22,6 +22,9 @@ return new class extends Migration
             $table->date('move_in_date')->nullable();
             $table->date('move_out_date')->nullable();
             $table->unsignedBigInteger('unit_id')->nullable();
+            $table->decimal('advance_deposit', 10, 2)->nullable();
+            $table->string('contact_fullname', 255)->nullable();
+            $table->string('contact_phone_number', 255)->nullable();
             $table->unsignedBigInteger('property_id')->nullable();
             $table->string('otp_code', 255)->nullable();
             $table->boolean('is_approved')->default(false);

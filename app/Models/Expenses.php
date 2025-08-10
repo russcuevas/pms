@@ -19,6 +19,8 @@ class Expenses extends Model
         'taxes',
         'miscellaneous',
         'water_electricity',
+        'refund',
+        'office_supplies',
         'remarks',
         'total',
         'is_approved'

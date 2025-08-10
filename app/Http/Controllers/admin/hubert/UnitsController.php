@@ -54,6 +54,9 @@ class UnitsController extends Controller
                 'tenants.move_in_date',
                 'tenants.move_out_date',
                 'tenants.created_at',
+                'tenants.advance_deposit',
+                'tenants.contact_fullname',
+                'tenants.contact_phone_number',
                 'latest_billings.total_balance_to_pay as current_balance',
                 'latest_billings.status as billing_status'
             )

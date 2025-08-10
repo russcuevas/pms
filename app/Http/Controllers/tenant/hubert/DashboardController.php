@@ -42,11 +42,14 @@ class DashboardController extends Controller
             ->orderByDesc('created_at')
             ->first();
 
+        $property = DB::table('properties')->where('id', 1)->first();
+
+
         return view('tenant.hubert.dashboard', [
             'tenant' => $tenant,
             'unit' => $unit,
             'property' => $property,
-            'billing' => $billing, // pass billing to the view
+            'billing' => $billing,
         ]);
     }
 }

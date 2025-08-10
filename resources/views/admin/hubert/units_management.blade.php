@@ -128,6 +128,9 @@
                                             @endif
                                         </dd>
 
+                                        <dt class="col-sm-4">ADV & DEP:</dt>
+                                        <dd class="col-sm-8">₱{{ number_format($unit->advance_deposit, 2) ?? 'N/A' }}</dd>
+
                                         <dt class="col-sm-4">Full Name:</dt>
                                         <dd class="col-sm-8">{{ $unit->fullname ?? 'N/A' }}</dd>
 
@@ -148,8 +151,18 @@
 
                                         <dt class="col-sm-4">Move-out Date:</dt>
                                         <dd class="col-sm-8">{{ $unit->move_out_date ?? 'N/A' }}</dd>
-
                                     </dl>
+
+                                    <dl class="row">
+                                        <h5>PERSON TO CONTACT</h5>
+
+                                        <dt class="col-sm-4">Fullname:</dt>
+                                        <dd class="col-sm-8">{{ $unit->contact_fullname }}</dd>
+
+                                        <dt class="col-sm-4">Phone number:</dt>
+                                        <dd class="col-sm-8">{{ $unit->contact_phone_number }}</dd>
+                                    </dl>
+
                                 </div>
                                 <div class="modal-footer">
                                     @if ($unit->billing_status === 'paid')

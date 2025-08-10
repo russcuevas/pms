@@ -51,6 +51,15 @@
         <input type="text" name="unit_name" id="unit_name" disabled placeholder="Select property first" value="{{ old('unit_name') }}">
         <br><br>
 
+        <label>Advance and Deposit Payment:</label><br>
+        <input type="text" name="advance_deposit" value="{{ old('advance_deposit') }}"><br><br>
+
+        <label>Contact Person Fullname:</label><br>
+        <input type="text" name="contact_fullname" value="{{ old('contact_fullname') }}"><br><br>
+
+        <label>Contact Person Phone Number:</label><br>
+        <input type="text" name="contact_phone_number" value="{{ old('contact_phone_number') }}"><br><br>
+
         <input type="submit" value="Done">
         <br><a href="{{ route('tenants.login.page') }}">Login here</a>
     </form>

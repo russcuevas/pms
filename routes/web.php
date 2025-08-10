@@ -15,6 +15,7 @@ use App\Http\Controllers\host\hubert\BillingController;
 use App\Http\Controllers\host\hubert\DashboardController;
 use App\Http\Controllers\host\hubert\ExpensesController as HubertExpensesController;
 use App\Http\Controllers\host\hubert\PaymentsController as HubertPaymentsController;
+use App\Http\Controllers\host\hubert\TurnOverController;
 use App\Http\Controllers\host\jjs1\DashboardController as Jjs1DashboardController;
 use App\Http\Controllers\host\jjs2\DashboardController as Jjs2DashboardController;
 use App\Http\Controllers\tenant\hubert\DashboardController as TenantHubertDashboardController;
@@ -41,6 +42,11 @@ Route::get('/host/home', [HostHomeController::class, 'HostHomePage'])->name('hos
 
 // HUBERTS
 Route::get('/host/huberts/dashboard', [DashboardController::class, 'HostHubertDashboardPage'])->name('host.huberts.dashboard.page');
+
+// TURNOVERS
+Route::get('/host/huberts/turnovers', [TurnOverController::class, 'TurnOverPage'])->name('host.huberts.turnover.page');
+Route::post('/turnovers/{id}/approve', [TurnOverController::class, 'TurnOverApproveRequest'])->name('host.huberts.turnovers.approve');
+Route::delete('/turnovers/{id}/decline', [TurnOverController::class, 'TurnOverDeclineRequest'])->name('host.huberts.turnovers.decline');
 
 // EXPENSES
 Route::get('/host/huberts/expenses', [HubertExpensesController::class, 'HostHubertExpensesPage'])->name('host.huberts.expenses.page');

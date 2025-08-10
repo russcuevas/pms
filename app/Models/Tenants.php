@@ -19,6 +19,9 @@ class Tenants extends Authenticatable
         'move_in_date',
         'move_out_date',
         'unit_id',
+        'advance_deposit',
+        'contact_fullname',
+        'contact_phone_number',
         'property_id',
         'otp_code',
         'is_approved'

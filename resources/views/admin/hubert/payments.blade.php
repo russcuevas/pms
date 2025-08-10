@@ -65,8 +65,7 @@
             <label>Payment Type:</label>
             <select name="type" class="form-control" required>
                 <option value="">-- Select --</option>
-                <option value="advance payment">Advance Payment</option>
-                <option value="deposit payment">Deposit Payment</option>
+                <option value="advance & deposit payment">Advance & Deposit Payment</option>
                 <option value="ontime payment">Ontime Payment</option>
                 <option value="late payment">Late Payment</option>
 

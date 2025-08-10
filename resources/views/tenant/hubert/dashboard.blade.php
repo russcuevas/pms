@@ -95,6 +95,12 @@
                         @endif
                     </div>
                 </div>
+                <div class="mb-3">
+                    <small class="opacity-75">Advance & Deposit Payment</small>
+                    <div class="fw-bold">
+                        PHP {{ number_format($tenant->advance_deposit ?? 0, 2) }}
+                    </div>
+                </div>
                 <div class="row align-items-end">
                     <div class="col-12 col-md-12 text-end mt-3 mt-md-0">
                         <button id="payNowBtn" class="btn btn-warning btn-sm px-3 fw-bold me-2">PAY NOW</button>
@@ -118,7 +124,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-6 col-md-3">
+            <div class="col-6 col-md-3" style="cursor: pointer" onclick="window.location.href=('')">
                 <div class="card border-0 shadow-sm h-100">
                     <div class="card-body text-center p-4">
                         <div class="bg-success text-white rounded p-3 mb-3 d-inline-block" style="background-color: black !important">
@@ -128,7 +134,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-6 col-md-3">
+            <div class="col-6 col-md-3" style="cursor: pointer" onclick="window.location.href=('')">
                 <div class="card border-0 shadow-sm h-100">
                     <div class="card-body text-center p-4">
                         <div class="bg-success text-white rounded p-3 mb-3 d-inline-block" style="background-color: black !important">
@@ -138,13 +144,33 @@
                     </div>
                 </div>
             </div>
-            <div class="col-6 col-md-3">
+            <div class="col-6 col-md-3" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#helpSupportModal">
                 <div class="card border-0 shadow-sm h-100">
                     <div class="card-body text-center p-4">
                         <div class="bg-success text-white rounded p-3 mb-3 d-inline-block" style="background-color: black !important">
                             <i class="fas fa-folder fs-4"></i>
                         </div>
                         <div class="fw-bold small">Help &<br>Support</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Help & Support Modal -->
+            <div class="modal fade" id="helpSupportModal" tabindex="-1" aria-labelledby="helpSupportLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                    <div class="modal-header bg-success text-white" style="background-color: black !important">
+                        <h5 class="modal-title" id="helpSupportLabel">Help & Support</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p><strong>Property Name:</strong> {{ $property->property_name ?? 'Not Available' }}</p>
+                        <p><strong>Email:</strong> <a style="text-decoration: none" href="mailto:{{ $property->property_email }}">{{ $property->property_email ?? 'Not Available' }}</a></p>
+                        <p><strong>Phone:</strong> <a style="text-decoration: none" href="tel:{{ $property->property_phone_number }}">{{ $property->property_phone_number ?? 'Not Available' }}</a></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
                     </div>
                 </div>
             </div>
