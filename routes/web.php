@@ -19,6 +19,7 @@ use App\Http\Controllers\host\hubert\TurnOverController;
 use App\Http\Controllers\host\jjs1\DashboardController as Jjs1DashboardController;
 use App\Http\Controllers\host\jjs2\DashboardController as Jjs2DashboardController;
 use App\Http\Controllers\tenant\hubert\DashboardController as TenantHubertDashboardController;
+use App\Http\Controllers\tenant\hubert\ViewBillingController;
 use App\Http\Controllers\tenant\jjs1\DashboardController as TenantJjs1DashboardController;
 use App\Http\Controllers\tenant\jjs2\DashboardController as TenantJjs2DashboardController;
 use App\Http\Controllers\tenant\TenantAuthController;
@@ -139,6 +140,8 @@ Route::post('/tenants/verify-otp/request', [TenantAuthController::class, 'Tenant
 
 // HUBERTS
 Route::get('/tenants/huberts/dashboard', [TenantHubertDashboardController::class, 'TenantsHubertDashboardPage'])->name('tenants.huberts.dashboard.page');
+Route::get('/tenants/huberts/my-billing', [ViewBillingController::class, 'TenantsHubertMyBillingPage'])->name('tenants.huberts.my-billing.page');
+
 // JJS1
 Route::get('/tenants/jjs1/dashboard', [TenantJjs1DashboardController::class, 'TenantsJjs1DashboardPage'])->name('tenants.jjs1.dashboard.page');
 // JJS2

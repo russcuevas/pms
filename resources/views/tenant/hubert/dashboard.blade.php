@@ -124,7 +124,9 @@
                     </div>
                 </div>
             </div>
-            <div class="col-6 col-md-3" style="cursor: pointer" onclick="window.location.href=('')">
+            <div class="col-6 col-md-3" 
+                style="cursor: pointer" 
+                onclick="window.location.href='{{ route('tenants.huberts.my-billing.page') }}'">
                 <div class="card border-0 shadow-sm h-100">
                     <div class="card-body text-center p-4">
                         <div class="bg-success text-white rounded p-3 mb-3 d-inline-block" style="background-color: black !important">
@@ -155,7 +157,6 @@
                 </div>
             </div>
 
-            <!-- Help & Support Modal -->
             <div class="modal fade" id="helpSupportModal" tabindex="-1" aria-labelledby="helpSupportLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -181,7 +182,7 @@
     <nav class="navbar fixed-bottom navbar-light bg-white border-top" style="background-color: black !important">
         <div class="container-fluid">
             <div class="d-flex w-100 justify-content-around">
-                <a class="navbar-brand text-success text-center flex-fill border-end" href="#">
+                <a class="navbar-brand text-success text-center flex-fill border-end" href="{{ route('tenants.huberts.dashboard.page') }}">
                     <div><i class="fas fa-home"></i></div>
                     <small>Home</small>
                 </a>
