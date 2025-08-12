@@ -5,6 +5,7 @@ use App\Http\Controllers\admin\hubert\BillingController as HubertBillingControll
 use App\Http\Controllers\admin\hubert\DashboardController as HubertDashboardController;
 use App\Http\Controllers\admin\hubert\ExpensesController;
 use App\Http\Controllers\admin\hubert\PaymentsController;
+use App\Http\Controllers\admin\hubert\RequestController as HubertRequestController;
 use App\Http\Controllers\admin\hubert\UnitsController;
 use App\Http\Controllers\admin\jjs1\DashboardController as AdminJjs1DashboardController;
 use App\Http\Controllers\admin\jjs2\DashboardController as AdminJjs2DashboardController;
@@ -15,6 +16,7 @@ use App\Http\Controllers\host\hubert\BillingController;
 use App\Http\Controllers\host\hubert\DashboardController;
 use App\Http\Controllers\host\hubert\ExpensesController as HubertExpensesController;
 use App\Http\Controllers\host\hubert\PaymentsController as HubertPaymentsController;
+use App\Http\Controllers\host\hubert\RequestController as HostHubertRequestController;
 use App\Http\Controllers\host\hubert\TurnOverController;
 use App\Http\Controllers\host\jjs1\DashboardController as Jjs1DashboardController;
 use App\Http\Controllers\host\jjs2\DashboardController as Jjs2DashboardController;
@@ -66,6 +68,14 @@ Route::patch('/host/hubert/admin-management/update-approval/{id}', [AdminControl
 Route::get('/host/hubert/payments', [HubertPaymentsController::class, 'HostHubertPaymentsPage'])->name('host.huberts.payments.page');
 Route::post('/host/hubert/payments/approve/{paymentId}', [HubertPaymentsController::class, 'HostHubertApprovePayment'])->name('host.huberts.payments.approve');
 Route::post('/host/hubert/payments/decline/{paymentId}', [HubertPaymentsController::class, 'HostHubertDeclinePayment'])->name('host.huberts.payments.decline');
+// REQUEST MANAGENENT
+Route::get('/host/hubert/request-management', [HostHubertRequestController::class, 'HostHubertRequestPage'])->name('host.huberts.request.page');
+Route::patch('/host/hubert/request/{id}/address', [HostHubertRequestController::class, 'HostHubertRequestAddressRequest'])
+    ->name('host.hubert.request.address');
+
+Route::delete('/host/hubert/request/{id}/delete', [HostHubertRequestController::class, 'HostHubertRequestAddressRequest'])
+    ->name('host.hubert.request.delete');
+
 // END HUBERTS
 
 
@@ -112,6 +122,12 @@ Route::post('/admin/hubert/billing/create', [HubertBillingController::class, 'Ad
 // HUBERTS PAYMENT PAGE
 Route::get('/admin/hubert/payments/create', [PaymentsController::class, 'AdminHubertPaymentPage'])->name('admin.hubert.payments.page');
 Route::post('/admin/hubert/payments/store', [PaymentsController::class, 'AdminHubertPaymentRequest'])->name('admin.hubert.payments.request');
+
+// HUBERTS REQUEST PAGE
+Route::get('/admin/hubert/request_management', [HubertRequestController::class, 'AdminHubertRequestPage'])->name('admin.hubert.request.page');
+// Approval and Decline
+Route::put('/admin/hubert/request/{id}/approve', [HubertRequestController::class, 'AdminHubertRequestApprove'])->name('admin.hubert.request.approve');
+Route::delete('/admin/hubert/request/{id}/decline', [HubertRequestController::class, 'AdminHubertRequestDecline'])->name('admin.hubert.request.decline');
 
 
 

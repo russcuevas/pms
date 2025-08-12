@@ -109,13 +109,17 @@
                         <span class="badge bg-warning text-dark">{{ $request->status }}</span>
                     @elseif($request->status === 'Already addressed')
                         <span class="badge bg-success">{{ $request->status }}</span>
+                    @elseif($request->status === 'Waiting to address by the host')
+                        <span class="badge bg-warning">{{ $request->status }}</span>
                     @else
-                        <span class="badge bg-secondary">{{ $request->status }}</span>
+                        <span class="badge bg-warning">{{ $request->status }}</span>
                     @endif
                 </td>
                 <td>
-                    @if($request->is_approved === 0)
+                    @if ($request->is_approved == 0)
                         <span class="badge bg-warning text-dark">Wait for the approval of the admin</span>
+                    @elseif ($request->is_approved == 1 && $request->status === 'Already addressed')
+                        <span class="badge bg-success text-dark">Already Addressed</span>
                     @else
                         <span class="badge bg-success text-dark">Approved by the admin</span>
                     @endif
