@@ -5,22 +5,24 @@ namespace App\Http\Controllers\tenant\hubert;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use App\Models\Billings;
 
-class ViewBillingController extends Controller
+class PaymentController extends Controller
 {
-    public function TenantsHubertMyBillingPage()
+    public function TenantsHubertMyPaymentPage()
     {
+        // Get currently logged-in tenant
         $tenant = Auth::guard('tenants')->user();
 
         if (!$tenant) {
             return redirect()->route('tenants.login.page')->with('error', 'Please log in.');
         }
 
+        // Validate tenant belongs to Hubert's property (ID = 1)
         if ($tenant->property_id != 1) {
             return redirect()->route('tenants.login.page')->with('error', 'Unauthorized property access.');
         }
 
+        // Get unit
         $unit = DB::table('units')
             ->where('id', $tenant->unit_id)
             ->where('property_id', $tenant->property_id)
@@ -35,20 +37,24 @@ class ViewBillingController extends Controller
             return redirect()->route('tenants.login.page')->with('error', 'Unauthorized access.');
         }
 
-        // Get billings
-        $billings = DB::table('billings')
-            ->join('units', 'billings.unit_id', '=', 'units.id')
-            ->where('billings.tenant_id', $tenant->id)
-            ->orderByDesc('billings.statement_date')
-            ->select('billings.*', 'units.units_name')
+        // Retrieve payments made by this tenant
+        $payments = DB::table('payments')
+            ->join('units', 'payments.unit_id', '=', 'units.id')
+            ->join('billings', 'payments.billings_id', '=', 'billings.id')
+            ->where('payments.tenant_id', $tenant->id)
+            ->select(
+                'payments.*',
+                'units.units_name as unit_name',
+                'billings.soa_no'
+            )
+            ->orderByDesc('payments.created_at')
             ->get();
 
-
-        return view('tenant.hubert.view_billing', compact(
+        return view('tenant.hubert.view_payment', compact(
             'tenant',
             'unit',
             'property',
-            'billings'
+            'payments'
         ));
     }
 }

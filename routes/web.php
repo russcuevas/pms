@@ -19,6 +19,8 @@ use App\Http\Controllers\host\hubert\TurnOverController;
 use App\Http\Controllers\host\jjs1\DashboardController as Jjs1DashboardController;
 use App\Http\Controllers\host\jjs2\DashboardController as Jjs2DashboardController;
 use App\Http\Controllers\tenant\hubert\DashboardController as TenantHubertDashboardController;
+use App\Http\Controllers\tenant\hubert\PaymentController;
+use App\Http\Controllers\tenant\hubert\RequestController;
 use App\Http\Controllers\tenant\hubert\ViewBillingController;
 use App\Http\Controllers\tenant\jjs1\DashboardController as TenantJjs1DashboardController;
 use App\Http\Controllers\tenant\jjs2\DashboardController as TenantJjs2DashboardController;
@@ -138,9 +140,19 @@ Route::get('/tenants/verify-otp', [TenantAuthController::class, 'TenantsOtpPage'
 Route::post('/tenants/verify-otp/request', [TenantAuthController::class, 'TenantsVerifyOtp'])->name('tenants.verify.otp');
 
 
-// HUBERTS
+// TENANTS HUBERTS
 Route::get('/tenants/huberts/dashboard', [TenantHubertDashboardController::class, 'TenantsHubertDashboardPage'])->name('tenants.huberts.dashboard.page');
+
+// TENANTS HUBERTS BILLING PAGE
 Route::get('/tenants/huberts/my-billing', [ViewBillingController::class, 'TenantsHubertMyBillingPage'])->name('tenants.huberts.my-billing.page');
+
+// TENANTS HUBERTS PAYMENT PAGE
+Route::get('/tenants/huberts/my-payment', [PaymentController::class, 'TenantsHubertMyPaymentPage'])->name('tenants.huberts.my-payment.page');
+
+// TENANTS HUBERTS REQUEST PAGE
+Route::get('/tenants/huberts/my-request', [RequestController::class, 'TenantsHubertMyRequestPage'])->name('tenants.huberts.my-request.page');
+Route::post('/tenants/huberts/my-request/post', [RequestController::class, 'TenantsHubertRequestPost'])->name('tenants.huberts.my-request.post');
+
 
 // JJS1
 Route::get('/tenants/jjs1/dashboard', [TenantJjs1DashboardController::class, 'TenantsJjs1DashboardPage'])->name('tenants.jjs1.dashboard.page');

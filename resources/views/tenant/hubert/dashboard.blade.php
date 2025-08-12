@@ -72,10 +72,14 @@
     </div>
 
     <div class="container my-4 pb-5">
-        <!-- Outstanding Balance Card -->
         <div class="card border-0 text-white mb-4" 
-            style="background-image: url('{{ asset('assets/huberts/hubert.jpg') }}'); background-repeat: no-repeat; background-position: center;">
-
+        style="background-image: url('{{ asset('assets/huberts/hubert-banner.png') }}'); 
+            background-repeat: no-repeat; 
+            background-position: center; 
+            background-size: cover; 
+            width: 100%; 
+            height: auto; 
+            min-height: 300px;">
             <div class="card-body p-4" style="color: black !important">
                 <h5 class="card-title mb-3">My Outstanding Balance</h5>
                 <div class="display-4 fw-bold mb-3">
@@ -86,7 +90,7 @@
                     @endif
                 </div>
                 <div class="mb-3">
-                    <small class="opacity-75">Account Number</small>
+                    <small class="opacity-75" style="font-weight: 700">Account Number</small>
                     <div class="fw-bold">
                         @if ($billing)
                             {{ $billing->account_number }}
@@ -96,7 +100,7 @@
                     </div>
                 </div>
                 <div class="mb-3">
-                    <small class="opacity-75">Advance & Deposit Payment</small>
+                    <small class="opacity-75" style="font-weight: 700">Advance & Deposit Payment</small>
                     <div class="fw-bold">
                         PHP {{ number_format($tenant->advance_deposit ?? 0, 2) }}
                     </div>
@@ -136,7 +140,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-6 col-md-3" style="cursor: pointer" onclick="window.location.href=('')">
+            <div class="col-6 col-md-3" style="cursor: pointer" onclick="window.location.href='{{ route('tenants.huberts.my-payment.page') }}'">
                 <div class="card border-0 shadow-sm h-100">
                     <div class="card-body text-center p-4">
                         <div class="bg-success text-white rounded p-3 mb-3 d-inline-block" style="background-color: black !important">
@@ -186,7 +190,7 @@
                     <div><i class="fas fa-home"></i></div>
                     <small>Home</small>
                 </a>
-                <a class="navbar-brand text-white text-center flex-fill border-end" href="#">
+                <a class="navbar-brand text-white text-center flex-fill border-end" href="{{ route('tenants.huberts.my-request.page') }}">
                     <div><i class="fas fa-file-alt"></i></div>
                     <small>Requests</small>
                 </a>
