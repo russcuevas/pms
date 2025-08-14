@@ -3,7 +3,7 @@
     <a href="{{ route('host.huberts.dashboard.page') }}">Dashboard</a><br>
     <a href="{{ route('host.huberts.admin.management.page') }}">Admin Management</a><br>
     <a href="{{ route('host.huberts.turnover.page')}}">Turnovers</a><br>
-    <a href="">Admin Requests</a><br>
+    <a href="{{ route('host.huberts.request_to_manager.page') }}">Admin Requests</a><br>
     <a href="{{ route('host.huberts.billing.page') }}">Billing</a><br>
     <a href="{{ route('host.huberts.payments.page') }}">Payments</a><br>
     <a href="{{ route('host.huberts.expenses.page') }}">Expense Details</a><br>

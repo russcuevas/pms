@@ -21,10 +21,12 @@ use App\Http\Controllers\admin\hubert\DashboardController as HubertDashboardCont
 use App\Http\Controllers\admin\hubert\ExpensesController;
 use App\Http\Controllers\admin\hubert\PaymentsController;
 use App\Http\Controllers\admin\hubert\RequestController as HubertRequestController;
+use App\Http\Controllers\admin\hubert\RequestToManagerController;
 use App\Http\Controllers\admin\hubert\UnitsController;
 use App\Http\Controllers\admin\jjs1\DashboardController as AdminJjs1DashboardController;
 use App\Http\Controllers\admin\jjs2\DashboardController as AdminJjs2DashboardController;
 use App\Http\Controllers\host\hubert\AnnouncementController as HubertAnnouncementController;
+use App\Http\Controllers\host\hubert\RequestToManagerController as HubertRequestToManagerController;
 use App\Http\Controllers\tenant\hubert\AnnouncementController as TenantHubertAnnouncementController;
 // TENANTS
 use App\Http\Controllers\tenant\hubert\DashboardController as TenantHubertDashboardController;
@@ -52,40 +54,56 @@ Route::get('/host/home', [HostHomeController::class, 'HostHomePage'])->name('hos
 
 // HOST DIFFERENT PROPERTIES
 
+// HUBERTS LEFT SIDEBAR
 // HUBERTS
 Route::get('/host/huberts/dashboard', [DashboardController::class, 'HostHubertDashboardPage'])->name('host.huberts.dashboard.page');
+
+// ADMIN MANAGEMENT
+Route::get('/host/huberts/admin-management', [AdminController::class, 'HostHubertAdminPage'])->name('host.huberts.admin.management.page');
+Route::patch('/host/hubert/admin-management/update-approval/{id}', [AdminController::class, 'HostHubertUpdateApproval'])->name('host.hubert.update.admin.approval');
 
 // TURNOVERS
 Route::get('/host/huberts/turnovers', [TurnOverController::class, 'TurnOverPage'])->name('host.huberts.turnover.page');
 Route::post('/turnovers/{id}/approve', [TurnOverController::class, 'TurnOverApproveRequest'])->name('host.huberts.turnovers.approve');
 Route::delete('/turnovers/{id}/decline', [TurnOverController::class, 'TurnOverDeclineRequest'])->name('host.huberts.turnovers.decline');
 
+// ADMIN REQUEST
+Route::get('/host/hubert/admin-request', [HubertRequestToManagerController::class, 'HostHubertRequestToManagerPage'])->name('host.huberts.request_to_manager.page');
+Route::patch('/host/hubert/request-to-manager/{id}/approve', [HubertRequestToManagerController::class, 'HostHubertRequestToManagerApprove'])
+    ->name('host.hubert.request_to_manager.approve');
+Route::delete('/host/hubert/request-to-manager/{id}/decline', [HubertRequestToManagerController::class, 'HostHubertRequestToManagerDecline'])
+    ->name('host.hubert.request_to_manager.decline');
+Route::delete('/host/hubert/request-to-manager/{id}/delete', [HubertRequestToManagerController::class, 'HostHubertRequestToManagerDelete'])
+    ->name('host.hubert.request_to_manager.delete');
+
+
+// BILLING MANAGEMENT
+Route::get('/host/huberts/previous-billings/{tenantId}', [BillingController::class, 'HostHubertViewPreviousBillings'])->name('host.huberts.previous.billings');
+Route::get('/host/huberts/billing', [BillingController::class, 'HostHubertBillingPage'])->name('host.huberts.billing.page');
+
+// PAYMENTS MANAGEMENT
+Route::get('/host/hubert/payments', [HubertPaymentsController::class, 'HostHubertPaymentsPage'])->name('host.huberts.payments.page');
+Route::post('/host/hubert/payments/approve/{paymentId}', [HubertPaymentsController::class, 'HostHubertApprovePayment'])->name('host.huberts.payments.approve');
+Route::post('/host/hubert/payments/decline/{paymentId}', [HubertPaymentsController::class, 'HostHubertDeclinePayment'])->name('host.huberts.payments.decline');
+
 // EXPENSES
 Route::get('/host/huberts/expenses', [HubertExpensesController::class, 'HostHubertExpensesPage'])->name('host.huberts.expenses.page');
 Route::post('/host/hubert/expenses/{id}/approve', [HubertExpensesController::class, 'HostHubertApprovedRequest'])->name('host.hubert.expenses.approve');
 Route::delete('/host/hubert/expenses/{id}/decline', [HubertExpensesController::class, 'HostHubertDeclineRequest'])->name('host.hubert.expenses.decline');
 
-// BILLING MANAGEMENT
-Route::get('/host/huberts/previous-billings/{tenantId}', [BillingController::class, 'HostHubertViewPreviousBillings'])->name('host.huberts.previous.billings');
-Route::get('/host/huberts/billing', [BillingController::class, 'HostHubertBillingPage'])->name('host.huberts.billing.page');
-// ADMIN MANAGEMENT
-Route::get('/host/huberts/admin-management', [AdminController::class, 'HostHubertAdminPage'])->name('host.huberts.admin.management.page');
-Route::patch('/host/hubert/admin-management/update-approval/{id}', [AdminController::class, 'HostHubertUpdateApproval'])->name('host.hubert.update.admin.approval');
-// PAYMENTS MANAGEMENT
-Route::get('/host/hubert/payments', [HubertPaymentsController::class, 'HostHubertPaymentsPage'])->name('host.huberts.payments.page');
-Route::post('/host/hubert/payments/approve/{paymentId}', [HubertPaymentsController::class, 'HostHubertApprovePayment'])->name('host.huberts.payments.approve');
-Route::post('/host/hubert/payments/decline/{paymentId}', [HubertPaymentsController::class, 'HostHubertDeclinePayment'])->name('host.huberts.payments.decline');
+// ANNOUNCEMENT MANAGEMENT
+Route::get('/host/hubert/announcement-management', [HubertAnnouncementController::class, 'HostHubertAnnouncementPage'])->name('host.huberts.announcement.page');
+Route::post('/host/hubert/announcements/{id}/approve', [HubertAnnouncementController::class, 'HostHubertAnnouncementApprove'])->name('host.hubert.announcements.approve');
+Route::post('/host/hubert/announcements/{id}/decline', [HubertAnnouncementController::class, 'HostHubertAnnouncementDecline'])->name('host.hubert.announcements.decline');
+Route::post('/host/hubert/announcements/{id}/delete', [HubertAnnouncementController::class, 'HostHubertAnnouncementDelete'])->name('host.hubert.announcements.delete');
+
 // REQUEST MANAGENENT
 Route::get('/host/hubert/request-management', [HostHubertRequestController::class, 'HostHubertRequestPage'])->name('host.huberts.request.page');
 Route::patch('/host/hubert/request/{id}/address', [HostHubertRequestController::class, 'HostHubertRequestAddressRequest'])
     ->name('host.hubert.request.address');
 Route::delete('/host/hubert/request/{id}/delete', [HostHubertRequestController::class, 'HostHubertRequestAddressRequest'])
     ->name('host.hubert.request.delete');
-// ANNOUNCEMENT MANAGEMENT
-Route::get('/host/hubert/announcement-management', [HubertAnnouncementController::class, 'HostHubertAnnouncementPage'])->name('host.huberts.announcement.page');
-Route::post('/host/hubert/announcements/{id}/approve', [HubertAnnouncementController::class, 'HostHubertAnnouncementApprove'])->name('host.hubert.announcements.approve');
-Route::post('/host/hubert/announcements/{id}/decline', [HubertAnnouncementController::class, 'HostHubertAnnouncementDecline'])->name('host.hubert.announcements.decline');
-Route::post('/host/hubert/announcements/{id}/delete', [HubertAnnouncementController::class, 'HostHubertAnnouncementDelete'])->name('host.hubert.announcements.delete');
+
 // END HUBERTS
 
 
@@ -143,6 +161,10 @@ Route::delete('/admin/hubert/request/{id}/decline', [HubertRequestController::cl
 // HUBERTS ANNOUNCEMENT PAGE
 Route::get('/admin/hubert/announcement_management', [AnnouncementController::class, 'AdminHubertAnnouncementPage'])->name('admin.hubert.announcement.page');
 Route::post('/admin/hubert/announcement/request', [AnnouncementController::class, 'AdminHubertAnnouncementRequest'])->name('admin.hubert.announcement.request');
+
+// HUBERTS REQUEST TO MANAGER PAGE
+Route::get('/admin/hubert/request_to_manager', [RequestToManagerController::class, 'AdminHubertRequestToManagerPage'])->name('admin.hubert.request_to_manager.page');
+Route::post('/admin/hubert/request_to_manager/request', [RequestToManagerController::class, 'AdminHubertRequestToManagerRequest'])->name('admin.hubert.request_to_manager.request');
 
 
 // JJS1
