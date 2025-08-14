@@ -25,6 +25,7 @@ use App\Http\Controllers\admin\hubert\UnitsController;
 use App\Http\Controllers\admin\jjs1\DashboardController as AdminJjs1DashboardController;
 use App\Http\Controllers\admin\jjs2\DashboardController as AdminJjs2DashboardController;
 use App\Http\Controllers\host\hubert\AnnouncementController as HubertAnnouncementController;
+use App\Http\Controllers\tenant\hubert\AnnouncementController as TenantHubertAnnouncementController;
 // TENANTS
 use App\Http\Controllers\tenant\hubert\DashboardController as TenantHubertDashboardController;
 use App\Http\Controllers\tenant\hubert\PaymentController;
@@ -180,6 +181,9 @@ Route::get('/tenants/huberts/my-payment', [PaymentController::class, 'TenantsHub
 // TENANTS HUBERTS REQUEST PAGE
 Route::get('/tenants/huberts/my-request', [RequestController::class, 'TenantsHubertMyRequestPage'])->name('tenants.huberts.my-request.page');
 Route::post('/tenants/huberts/my-request/post', [RequestController::class, 'TenantsHubertRequestPost'])->name('tenants.huberts.my-request.post');
+
+// TENANTS HUBERTS ANNOUNCEMENT PAGE
+Route::get('/tenants/huberts/announcements', [TenantHubertAnnouncementController::class, 'TenantsHubertAnnouncementPage'])->name('tenants.huberts.announcement.page');
 
 
 // JJS1

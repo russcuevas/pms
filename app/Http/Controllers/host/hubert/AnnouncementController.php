@@ -35,7 +35,10 @@ class AnnouncementController extends Controller
     {
         DB::table('announcements')
             ->where('id', $id)
-            ->update(['is_approved' => 1]);
+            ->update([
+                'is_approved' => 1,
+                'updated_at' => now()
+            ]);
 
         return redirect()->back()->with('success', 'Announcement approved successfully.');
     }

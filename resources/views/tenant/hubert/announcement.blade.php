@@ -74,91 +74,41 @@
         </div>
     </div>
 
-    <div class="container py-4">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="mb-0">My Request</h2>
-            <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#requestModal">
-                <i class="fas fa-plus me-1"></i> MAKE A REQUEST
-            </button>
-        </div>
-
-        <div class="table-responsive">
-
-<table id="requestTable" class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th>Subject</th>
-            <th>Message</th>
-            <th>Status</th>
-            <th>Approval</th>
-        </tr>
-        <tr>
-            <th><input type="text" placeholder="Search Subject" class="form-control form-control-sm" /></th>
-            <th><input type="text" placeholder="Search Message" class="form-control form-control-sm" /></th>
-            <th><input type="text" placeholder="Search Status" class="form-control form-control-sm" /></th>
-            <th><input type="text" placeholder="Search Approval" class="form-control form-control-sm" /></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach ($requests as $request)
-            <tr>
-                <td>{{ $request->subject_request }}</td>
-                <td>{{ $request->subject_message }}</td>
-                <td>
-                    @if($request->status === 'Pending')
-                        <span class="badge bg-warning text-dark">{{ $request->status }}</span>
-                    @elseif($request->status === 'Already addressed')
-                        <span class="badge bg-success">{{ $request->status }}</span>
-                    @elseif($request->status === 'Waiting to address by the host')
-                        <span class="badge bg-warning">{{ $request->status }}</span>
-                    @else
-                        <span class="badge bg-warning">{{ $request->status }}</span>
-                    @endif
-                </td>
-                <td>
-                    @if ($request->is_approved == 0)
-                        <span class="badge bg-warning text-dark">Wait for the approval of the admin</span>
-                    @elseif ($request->is_approved == 1 && $request->status === 'Already addressed')
-                        <span class="badge bg-success text-dark">Already Addressed</span>
-                    @else
-                        <span class="badge bg-success text-dark">Approved by the admin</span>
-                    @endif
-                </td>
-            </tr>
-        @endforeach
-    </tbody>
-</table>
-
-        </div>
-    </div>
-
-    {{-- REQUEST MODAL --}}
-    <div class="modal fade" id="requestModal" tabindex="-1" aria-labelledby="requestModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <form class="needs-validation" novalidate action="{{ route('tenants.huberts.my-request.post') }}" method="POST">
-                @csrf
-                <div class="modal-content">
-                    <div class="modal-header text-white" style="background-color: black;">
-                        <h5 class="modal-title" id="requestModalLabel">Send a Request</h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="subject" class="form-label">Subject</label>
-                            <input type="text" class="form-control" id="subject" name="subject" required>
+<div class="container py-4">
+    <div class="row g-4">
+        @if($announcements->isEmpty())
+            <div class="col-12">
+                <div class="alert alert-info text-center mb-0">
+                    <h1>No announcement posted</h1>
+                </div>
+            </div>
+        @else
+            @foreach($announcements as $announcement)
+                <div class="col-md-4">
+                    <div class="card shadow-sm h-100">
+                        <img src="https://t3.ftcdn.net/jpg/03/30/15/02/360_F_330150256_7hOerJ1QMSsh8vglCQJ7ZWwlhVPPh4Je.jpg" 
+                            class="card-img-top" 
+                            alt="Announcement Image">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ $announcement->announcement_subject }}</h5>
+                            <p class="card-text">{{ $announcement->announcement_message }}</p>
                         </div>
-                        <div class="mb-3">
-                            <label for="message" class="form-label">Message</label>
-                            <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
+                        <div class="card-footer text-muted">
+                            <small>
+                                Posted by {{ $announcement->admin_name }}<br>
+                                Posted At: {{ \Carbon\Carbon::parse($announcement->updated_at)->format('M d, Y h:i A') }}
+                            </small>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-secondary">Submit Request</button>
                     </div>
                 </div>
-            </form>
-        </div>
+            @endforeach
+        @endif
     </div>
+</div>
+
+
+
+
 
     <!-- Bottom Navigation -->
     <nav class="navbar fixed-bottom navbar-light bg-white border-top" style="background-color: black !important">
@@ -168,11 +118,11 @@
                     <div><i class="fas fa-home"></i></div>
                     <small>Home</small>
                 </a>
-                <a class="navbar-brand text-success text-center flex-fill border-end" href="{{ route('tenants.huberts.my-request.page') }}">
+                <a class="navbar-brand text-white text-center flex-fill border-end" href="{{ route('tenants.huberts.my-request.page') }}">
                     <div><i class="fas fa-file-alt"></i></div>
                     <small>Requests</small>
                 </a>
-                <a class="navbar-brand text-white text-center flex-fill" href="{{ route('tenants.huberts.announcement.page') }}">
+                <a class="navbar-brand text-success text-center flex-fill" href="{{ route('tenants.huberts.announcement.page') }}">
                     <div><i class="fas fa-bullhorn"></i></div>
                     <small>Announcement</small>
                 </a>
@@ -191,51 +141,6 @@
     {{-- DATA TABLE --}}
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
-
-    <script>
-        (function () {
-            'use strict'
-
-            const forms = document.querySelectorAll('.needs-validation')
-
-            Array.from(forms).forEach(function (form) {
-                form.addEventListener('submit', function (event) {
-                    if (!form.checkValidity()) {
-                        event.preventDefault()
-                        event.stopPropagation()
-                    }
-
-                    form.classList.add('was-validated')
-                }, false)
-            })
-        })()
-    </script>
-
-<script>
-    $(document).ready(function () {
-        var table = $('#requestTable').DataTable({
-            orderCellsTop: true,
-            fixedHeader: true,
-            dom: 'lrtip'  // 🔍 Removes global search but keeps rest (length, info, pagination)
-        });
-
-        // Setup column search inputs
-        $('#requestTable thead tr:eq(1) th').each(function (i) {
-            var input = $('input', this);
-            input.on('keyup change', function () {
-                if (table.column(i).search() !== this.value) {
-                    table
-                        .column(i)
-                        .search(this.value)
-                        .draw();
-                }
-            });
-        });
-    });
-</script>
-
-
-
 
     <script>
         toastr.options = {

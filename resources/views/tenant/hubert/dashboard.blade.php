@@ -194,7 +194,7 @@
                     <div><i class="fas fa-file-alt"></i></div>
                     <small>Requests</small>
                 </a>
-                <a class="navbar-brand text-white text-center flex-fill" href="#">
+                <a class="navbar-brand text-white text-center flex-fill" href="{{ route('tenants.huberts.announcement.page') }}">
                     <div><i class="fas fa-bullhorn"></i></div>
                     <small>Announcement</small>
                 </a>
