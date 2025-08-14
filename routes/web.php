@@ -1,14 +1,6 @@
 <?php
 
-use App\Http\Controllers\admin\AdminAuthController;
-use App\Http\Controllers\admin\hubert\BillingController as HubertBillingController;
-use App\Http\Controllers\admin\hubert\DashboardController as HubertDashboardController;
-use App\Http\Controllers\admin\hubert\ExpensesController;
-use App\Http\Controllers\admin\hubert\PaymentsController;
-use App\Http\Controllers\admin\hubert\RequestController as HubertRequestController;
-use App\Http\Controllers\admin\hubert\UnitsController;
-use App\Http\Controllers\admin\jjs1\DashboardController as AdminJjs1DashboardController;
-use App\Http\Controllers\admin\jjs2\DashboardController as AdminJjs2DashboardController;
+// HOST
 use App\Http\Controllers\host\HostAuthController;
 use App\Http\Controllers\host\HostHomeController;
 use App\Http\Controllers\host\hubert\AdminController;
@@ -20,6 +12,20 @@ use App\Http\Controllers\host\hubert\RequestController as HostHubertRequestContr
 use App\Http\Controllers\host\hubert\TurnOverController;
 use App\Http\Controllers\host\jjs1\DashboardController as Jjs1DashboardController;
 use App\Http\Controllers\host\jjs2\DashboardController as Jjs2DashboardController;
+
+// ADMIN
+use App\Http\Controllers\admin\AdminAuthController;
+use App\Http\Controllers\admin\hubert\AnnouncementController;
+use App\Http\Controllers\admin\hubert\BillingController as HubertBillingController;
+use App\Http\Controllers\admin\hubert\DashboardController as HubertDashboardController;
+use App\Http\Controllers\admin\hubert\ExpensesController;
+use App\Http\Controllers\admin\hubert\PaymentsController;
+use App\Http\Controllers\admin\hubert\RequestController as HubertRequestController;
+use App\Http\Controllers\admin\hubert\UnitsController;
+use App\Http\Controllers\admin\jjs1\DashboardController as AdminJjs1DashboardController;
+use App\Http\Controllers\admin\jjs2\DashboardController as AdminJjs2DashboardController;
+use App\Http\Controllers\host\hubert\AnnouncementController as HubertAnnouncementController;
+// TENANTS
 use App\Http\Controllers\tenant\hubert\DashboardController as TenantHubertDashboardController;
 use App\Http\Controllers\tenant\hubert\PaymentController;
 use App\Http\Controllers\tenant\hubert\RequestController;
@@ -72,10 +78,13 @@ Route::post('/host/hubert/payments/decline/{paymentId}', [HubertPaymentsControll
 Route::get('/host/hubert/request-management', [HostHubertRequestController::class, 'HostHubertRequestPage'])->name('host.huberts.request.page');
 Route::patch('/host/hubert/request/{id}/address', [HostHubertRequestController::class, 'HostHubertRequestAddressRequest'])
     ->name('host.hubert.request.address');
-
 Route::delete('/host/hubert/request/{id}/delete', [HostHubertRequestController::class, 'HostHubertRequestAddressRequest'])
     ->name('host.hubert.request.delete');
-
+// ANNOUNCEMENT MANAGEMENT
+Route::get('/host/hubert/announcement-management', [HubertAnnouncementController::class, 'HostHubertAnnouncementPage'])->name('host.huberts.announcement.page');
+Route::post('/host/hubert/announcements/{id}/approve', [HubertAnnouncementController::class, 'HostHubertAnnouncementApprove'])->name('host.hubert.announcements.approve');
+Route::post('/host/hubert/announcements/{id}/decline', [HubertAnnouncementController::class, 'HostHubertAnnouncementDecline'])->name('host.hubert.announcements.decline');
+Route::post('/host/hubert/announcements/{id}/delete', [HubertAnnouncementController::class, 'HostHubertAnnouncementDelete'])->name('host.hubert.announcements.delete');
 // END HUBERTS
 
 
@@ -92,16 +101,17 @@ Route::get('/host/jjs2/dashboard', [Jjs2DashboardController::class, 'HostJjs2Das
 Route::get('/admin/login', [AdminAuthController::class, 'AdminLoginPage'])->name('admin.login.page');
 Route::post('/admin/login/request', [AdminAuthController::class, 'AdminLoginRequest'])->name('admin.login.request');
 Route::get('/admin/logout/request', [AdminAuthController::class, 'AdminLogoutRequest'])->name('admin.logout.request');
-
 Route::get('/admin/register', [AdminAuthController::class, 'AdminRegisterPage'])->name('admin.register.page');
 Route::post('/admin/register/request', [AdminAuthController::class, 'AdminRegisterRequest'])->name('admin.register.request');
-
+// END ADMIN AUTH
 
 
 // HUBERTS
+
+// HUBERTS DASHBOARD
 Route::get('/admin/huberts/dashboard', [HubertDashboardController::class, 'AdminHubertDashboardPage'])->name('admin.huberts.dashboard.page');
 Route::post('/admin/huberts/turn-over', [HubertDashboardController::class, 'AdminHubertTurnOverMoney'])->name('admin.huberts.turnover.request');
-
+// END HUBERTS DASHBOARD
 
 // HUBERTS EXPENSES
 Route::get('/admin/huberts/expenses', [ExpensesController::class, 'AdminHubertExpensesPage'])->name('admin.huberts.expenses.page');
@@ -125,11 +135,13 @@ Route::post('/admin/hubert/payments/store', [PaymentsController::class, 'AdminHu
 
 // HUBERTS REQUEST PAGE
 Route::get('/admin/hubert/request_management', [HubertRequestController::class, 'AdminHubertRequestPage'])->name('admin.hubert.request.page');
-// Approval and Decline
 Route::put('/admin/hubert/request/{id}/approve', [HubertRequestController::class, 'AdminHubertRequestApprove'])->name('admin.hubert.request.approve');
 Route::delete('/admin/hubert/request/{id}/decline', [HubertRequestController::class, 'AdminHubertRequestDecline'])->name('admin.hubert.request.decline');
 
 
+// HUBERTS ANNOUNCEMENT PAGE
+Route::get('/admin/hubert/announcement_management', [AnnouncementController::class, 'AdminHubertAnnouncementPage'])->name('admin.hubert.announcement.page');
+Route::post('/admin/hubert/announcement/request', [AnnouncementController::class, 'AdminHubertAnnouncementRequest'])->name('admin.hubert.announcement.request');
 
 
 // JJS1

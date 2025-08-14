@@ -7,5 +7,5 @@
     <a href="{{ route('host.huberts.billing.page') }}">Billing</a><br>
     <a href="{{ route('host.huberts.payments.page') }}">Payments</a><br>
     <a href="{{ route('host.huberts.expenses.page') }}">Expense Details</a><br>
-    <a href="">Announcements</a><br>
+    <a href="{{ route('host.huberts.announcement.page') }}">Announcements</a><br>
     <a href="{{ route('host.huberts.request.page') }}">Requests</a><br>
