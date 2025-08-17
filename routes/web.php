@@ -31,6 +31,7 @@ use App\Http\Controllers\tenant\hubert\AnnouncementController as TenantHubertAnn
 // TENANTS
 use App\Http\Controllers\tenant\hubert\DashboardController as TenantHubertDashboardController;
 use App\Http\Controllers\tenant\hubert\PaymentController;
+use App\Http\Controllers\tenant\hubert\PaymentProofController;
 use App\Http\Controllers\tenant\hubert\RequestController;
 use App\Http\Controllers\tenant\hubert\ViewBillingController;
 use App\Http\Controllers\tenant\jjs1\DashboardController as TenantJjs1DashboardController;
@@ -206,6 +207,10 @@ Route::post('/tenants/huberts/my-request/post', [RequestController::class, 'Tena
 
 // TENANTS HUBERTS ANNOUNCEMENT PAGE
 Route::get('/tenants/huberts/announcements', [TenantHubertAnnouncementController::class, 'TenantsHubertAnnouncementPage'])->name('tenants.huberts.announcement.page');
+
+// TENANTS HUBERTS PAYMENTS PROOF
+Route::post('/tenant/huberts/payment-proof', [PaymentProofController::class, 'TenantsHubertMyPaymentRequest'])->name('tenant.huberts.payment.proof.request');
+
 
 
 // JJS1

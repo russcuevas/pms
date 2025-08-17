@@ -108,7 +108,54 @@
                 <div class="row align-items-end">
                     <div class="col-12 col-md-12 text-end mt-3 mt-md-0">
                         <button id="payNowBtn" class="btn btn-warning btn-sm px-3 fw-bold me-2">PAY NOW</button>
-                        <button class="btn btn-warning btn-sm px-3 fw-bold me-2">SEND PROOF OF PAYMENT</button>
+                        <button class="btn btn-warning btn-sm px-3 fw-bold me-2" data-bs-toggle="modal" data-bs-target="#proofOfPaymentModal">
+                            SEND PROOF OF PAYMENT
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- SEND PROOF MODAL --}}
+        <div class="modal fade" id="proofOfPaymentModal" tabindex="-1" aria-labelledby="proofOfPaymentLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header bg-success text-white" style="background-color: black !important">
+                        <h5 class="modal-title" id="proofOfPaymentLabel">Send Proof of Payment</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{ route('tenant.huberts.payment.proof.request') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+
+                            <input type="hidden" name="fullname" value="{{ $tenant->fullname }}">
+                            <input type="hidden" name="unit" value="{{ $unit->units_name }}">
+                            <input type="hidden" name="email" value="{{ $tenant->email }}">
+                            <input type="hidden" name="phone_number" value="{{ $tenant->phone_number }}">
+
+                            <div class="mb-4 p-3 border rounded bg-light">
+                                <h6 class="mb-3 fw-bold text-dark">Details:</h6>
+                                <p class="mb-1"><strong>Full Name:</strong> {{ $tenant->fullname }}</p>
+                                <p class="mb-1"><strong>Unit:</strong> {{ $unit->units_name }}</p>
+                                <p class="mb-1"><strong>Email:</strong> {{ $tenant->email }}</p>
+                                <p class="mb-0"><strong>Phone Number:</strong> {{ $tenant->phone_number }}</p>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Upload Proof (Screenshot or Receipt)</label>
+                                <input type="file" name="payment_proof" id="paymentProofInput" class="form-control" accept="image/*,.pdf" required>
+                            </div>
+
+                            <div class="mt-3" id="imagePreviewContainer" style="display: none;">
+                                <img id="imagePreview" src="" alt="Preview" class="img-fluid border rounded" style="max-height: 300px;">
+                            </div>
+
+
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-success">Submit</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -118,7 +165,7 @@
         <!-- Quick Actions -->
         <h5 class="mb-3 text-dark">My Quick Actions</h5>
         <div class="row g-3 mb-5">
-            <div class="col-6 col-md-3" style="cursor: pointer" onclick="window.location.href=('')">
+            <div class="col-6 col-md-3" style="cursor: pointer" data-bs-toggle="modal" data-bs-target="#myProfileModal">
                 <div class="card border-0 shadow-sm h-100">
                     <div class="card-body text-center p-4">
                         <div class="bg-success text-white rounded p-3 mb-3 d-inline-block" style="background-color: black !important">
@@ -128,6 +175,63 @@
                     </div>
                 </div>
             </div>
+
+            <!-- My Profile Modal -->
+            <div class="modal fade" id="myProfileModal" tabindex="-1" aria-labelledby="myProfileModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title" id="myProfileModalLabel">My Profile</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body p-4">
+                    
+                    <!-- Top Section -->
+                    <div class="mb-4">
+                    <h3 class="fw-bold">{{ $property->property_name ?? 'Property' }}</h3>
+                    <p class="mb-1"><strong>Unit:</strong> {{ $unit->units_name ?? 'N/A' }}</p>
+                    <p class="mb-0">
+                        <strong>Move In:</strong> {{ $tenant->move_in_date }} | 
+                        <strong>Move Out:</strong> {{ $tenant->move_out_date ?? 'N/A' }}
+                    </p>
+                    </div>
+
+
+                    <!-- Details & Emergency Contact -->
+            <!-- Details & Emergency Contact -->
+                    <div class="row"> 
+                    <!-- Details -->
+                    <div class="col-md-6">
+                        <h5 class="fw-bold mb-3">My Details</h5>
+                        <p><strong>Full Name:</strong> {{ $tenant->fullname }}</p>
+                        <p><strong>Username:</strong> {{ $tenant->username }}</p>
+                        <p><strong>Email:</strong> {{ $tenant->email }}</p>
+                        <p><strong>Phone:</strong> {{ $tenant->phone_number }}</p>
+                        <p><strong>Address:</strong> {{ $tenant->address }}</p>
+                    </div>
+
+                    <!-- Emergency Contact -->
+                    <div class="col-md-6">
+                        <h5 class="fw-bold mb-3">My Emergency Contact</h5>
+                        <p><strong>Full Name:</strong> {{ $tenant->contact_fullname }}</p>
+                        <p><strong>Phone Number:</strong> {{ $tenant->contact_phone_number }}</p>
+                    </div>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+
+                </div>
+            </div>
+            </div>
+
+
+
             <div class="col-6 col-md-3" 
                 style="cursor: pointer" 
                 onclick="window.location.href='{{ route('tenants.huberts.my-billing.page') }}'">
@@ -291,5 +395,34 @@
             }
         });
     </script>
+
+    <script>
+    document.getElementById('paymentProofInput').addEventListener('change', function (e) {
+        const file = e.target.files[0];
+        const preview = document.getElementById('imagePreview');
+        const container = document.getElementById('imagePreviewContainer');
+
+        if (file) {
+            const fileType = file.type;
+
+            // Show image preview only for image files
+            if (fileType.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                    container.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                preview.src = '';
+                container.style.display = 'none';
+            }
+        } else {
+            preview.src = '';
+            container.style.display = 'none';
+        }
+    });
+</script>
+
 </body>
 </html>
