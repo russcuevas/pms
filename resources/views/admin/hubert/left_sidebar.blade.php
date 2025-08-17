@@ -4,3 +4,4 @@
 <a href="{{ route('admin.hubert.announcement.page') }}">Announcements</a><br>
 <a href="{{ route('admin.hubert.request.page')}}">Requests</a><br>
 <a href="{{ route('admin.hubert.request_to_manager.page') }}">Request To Manager</a><br>
+<a href="{{ route('admin.hubert.paymemt.proof.page') }}">Payment Proof</a><br>

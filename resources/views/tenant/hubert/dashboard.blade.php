@@ -187,20 +187,18 @@
                 </div>
 
                 <div class="modal-body p-4">
-                    
                     <!-- Top Section -->
                     <div class="mb-4">
-                    <h3 class="fw-bold">{{ $property->property_name ?? 'Property' }}</h3>
-                    <p class="mb-1"><strong>Unit:</strong> {{ $unit->units_name ?? 'N/A' }}</p>
-                    <p class="mb-0">
-                        <strong>Move In:</strong> {{ $tenant->move_in_date }} | 
-                        <strong>Move Out:</strong> {{ $tenant->move_out_date ?? 'N/A' }}
-                    </p>
+                        <h3 class="fw-bold">{{ $property->property_name ?? 'Property' }}</h3>
+                        <p class="mb-1"><strong>Unit:</strong> {{ $unit->units_name ?? 'N/A' }}</p>
+                        <p class="mb-0">
+                            <strong>Move In:</strong> {{ $tenant->move_in_date }} | 
+                            <strong>Move Out:</strong> {{ $tenant->move_out_date ?? 'N/A' }}
+                        </p>
                     </div>
 
 
                     <!-- Details & Emergency Contact -->
-            <!-- Details & Emergency Contact -->
                     <div class="row"> 
                     <!-- Details -->
                     <div class="col-md-6">

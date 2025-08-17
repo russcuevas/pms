@@ -19,6 +19,7 @@ use App\Http\Controllers\admin\hubert\AnnouncementController;
 use App\Http\Controllers\admin\hubert\BillingController as HubertBillingController;
 use App\Http\Controllers\admin\hubert\DashboardController as HubertDashboardController;
 use App\Http\Controllers\admin\hubert\ExpensesController;
+use App\Http\Controllers\admin\hubert\PaymentProofController as HubertPaymentProofController;
 use App\Http\Controllers\admin\hubert\PaymentsController;
 use App\Http\Controllers\admin\hubert\RequestController as HubertRequestController;
 use App\Http\Controllers\admin\hubert\RequestToManagerController;
@@ -26,6 +27,7 @@ use App\Http\Controllers\admin\hubert\UnitsController;
 use App\Http\Controllers\admin\jjs1\DashboardController as AdminJjs1DashboardController;
 use App\Http\Controllers\admin\jjs2\DashboardController as AdminJjs2DashboardController;
 use App\Http\Controllers\host\hubert\AnnouncementController as HubertAnnouncementController;
+use App\Http\Controllers\host\hubert\PaymentProofController as HostHubertPaymentProofController;
 use App\Http\Controllers\host\hubert\RequestToManagerController as HubertRequestToManagerController;
 use App\Http\Controllers\tenant\hubert\AnnouncementController as TenantHubertAnnouncementController;
 // TENANTS
@@ -105,6 +107,8 @@ Route::patch('/host/hubert/request/{id}/address', [HostHubertRequestController::
 Route::delete('/host/hubert/request/{id}/delete', [HostHubertRequestController::class, 'HostHubertRequestAddressRequest'])
     ->name('host.hubert.request.delete');
 
+Route::get('/host/hubert/payment_proof', [HostHubertPaymentProofController::class, 'HostHubertPaymentProofPage'])->name('host.hubert.paymemt.proof.page');
+
 // END HUBERTS
 
 
@@ -167,6 +171,9 @@ Route::post('/admin/hubert/announcement/request', [AnnouncementController::class
 Route::get('/admin/hubert/request_to_manager', [RequestToManagerController::class, 'AdminHubertRequestToManagerPage'])->name('admin.hubert.request_to_manager.page');
 Route::post('/admin/hubert/request_to_manager/request', [RequestToManagerController::class, 'AdminHubertRequestToManagerRequest'])->name('admin.hubert.request_to_manager.request');
 
+// HUBERTS PROOF OF PAYMENT PAGE
+Route::get('/admin/hubert/payment_proof', [HubertPaymentProofController::class, 'AdminHubertPaymentProofPage'])->name('admin.hubert.paymemt.proof.page');
+
 
 // JJS1
 Route::get('/admin/jjs1/dashboard', [AdminJjs1DashboardController::class, 'AdminJjs1DashboardPage'])->name('admin.jjs1.dashboard.page');
@@ -194,20 +201,15 @@ Route::post('/tenants/verify-otp/request', [TenantAuthController::class, 'Tenant
 
 // TENANTS HUBERTS
 Route::get('/tenants/huberts/dashboard', [TenantHubertDashboardController::class, 'TenantsHubertDashboardPage'])->name('tenants.huberts.dashboard.page');
-
 // TENANTS HUBERTS BILLING PAGE
 Route::get('/tenants/huberts/my-billing', [ViewBillingController::class, 'TenantsHubertMyBillingPage'])->name('tenants.huberts.my-billing.page');
-
 // TENANTS HUBERTS PAYMENT PAGE
 Route::get('/tenants/huberts/my-payment', [PaymentController::class, 'TenantsHubertMyPaymentPage'])->name('tenants.huberts.my-payment.page');
-
 // TENANTS HUBERTS REQUEST PAGE
 Route::get('/tenants/huberts/my-request', [RequestController::class, 'TenantsHubertMyRequestPage'])->name('tenants.huberts.my-request.page');
 Route::post('/tenants/huberts/my-request/post', [RequestController::class, 'TenantsHubertRequestPost'])->name('tenants.huberts.my-request.post');
-
 // TENANTS HUBERTS ANNOUNCEMENT PAGE
 Route::get('/tenants/huberts/announcements', [TenantHubertAnnouncementController::class, 'TenantsHubertAnnouncementPage'])->name('tenants.huberts.announcement.page');
-
 // TENANTS HUBERTS PAYMENTS PROOF
 Route::post('/tenant/huberts/payment-proof', [PaymentProofController::class, 'TenantsHubertMyPaymentRequest'])->name('tenant.huberts.payment.proof.request');
 
