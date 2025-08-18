@@ -212,6 +212,15 @@
                                 </div>
                             </a>
                         </div>
+                        <!-- Balance -->
+                        <div class="col-6 col-md-3" >
+                            <a href="{{ route('admin.hubert.balance.page') }}" style="text-decoration: none !important">
+                                <div class="card text-center p-4">
+                                    <i class="fas fa-money-bill fa-2x mb-2"></i>
+                                    <div>Balance</div>
+                                </div>
+                            </a>
+                        </div>
         </div>
     </div>
 

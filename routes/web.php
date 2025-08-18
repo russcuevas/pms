@@ -16,6 +16,7 @@ use App\Http\Controllers\host\jjs2\DashboardController as Jjs2DashboardControlle
 // ADMIN
 use App\Http\Controllers\admin\AdminAuthController;
 use App\Http\Controllers\admin\hubert\AnnouncementController;
+use App\Http\Controllers\admin\hubert\BalanceController as HubertBalanceController;
 use App\Http\Controllers\admin\hubert\BillingController as HubertBillingController;
 use App\Http\Controllers\admin\hubert\DashboardController as HubertDashboardController;
 use App\Http\Controllers\admin\hubert\ExpensesController;
@@ -181,6 +182,11 @@ Route::post('/admin/hubert/request_to_manager/request', [RequestToManagerControl
 
 // HUBERTS PROOF OF PAYMENT PAGE
 Route::get('/admin/hubert/payment_proof', [HubertPaymentProofController::class, 'AdminHubertPaymentProofPage'])->name('admin.hubert.paymemt.proof.page');
+
+// HUBERTS BALANCE
+Route::get('/admin/hubert/balance', [HubertBalanceController::class, 'AdminHubertBalancePage'])->name('admin.hubert.balance.page');
+Route::get('/admin/hubert/balance/paid', [HubertBalanceController::class, 'AdminHubertBalancePaidPage'])->name('admin.hubert.balance.paid.page');
+Route::get('/admin/hubert/balance/delinquent', [HubertBalanceController::class, 'AdminHubertBalanceDelinquentPage'])->name('admin.hubert.balance.delinquent.page');
 
 
 // JJS1
