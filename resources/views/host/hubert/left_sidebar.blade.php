@@ -9,4 +9,5 @@
     <a href="{{ route('host.huberts.expenses.page') }}">Expense Details</a><br>
     <a href="{{ route('host.huberts.announcement.page') }}">Announcements</a><br>
     <a href="{{ route('host.huberts.request.page') }}">Requests</a><br>
-    <a href="{{ route('host.hubert.paymemt.proof.page') }}">Payment Proof</a>
+    <a href="{{ route('host.hubert.paymemt.proof.page') }}">Payment Proof</a><br>
+    <a href="{{ route('host.hubert.balance.page') }}">Balance</a>

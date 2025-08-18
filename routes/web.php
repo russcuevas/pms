@@ -27,6 +27,7 @@ use App\Http\Controllers\admin\hubert\UnitsController;
 use App\Http\Controllers\admin\jjs1\DashboardController as AdminJjs1DashboardController;
 use App\Http\Controllers\admin\jjs2\DashboardController as AdminJjs2DashboardController;
 use App\Http\Controllers\host\hubert\AnnouncementController as HubertAnnouncementController;
+use App\Http\Controllers\host\hubert\BalanceController;
 use App\Http\Controllers\host\hubert\PaymentProofController as HostHubertPaymentProofController;
 use App\Http\Controllers\host\hubert\RequestToManagerController as HubertRequestToManagerController;
 use App\Http\Controllers\tenant\hubert\AnnouncementController as TenantHubertAnnouncementController;
@@ -107,7 +108,14 @@ Route::patch('/host/hubert/request/{id}/address', [HostHubertRequestController::
 Route::delete('/host/hubert/request/{id}/delete', [HostHubertRequestController::class, 'HostHubertRequestAddressRequest'])
     ->name('host.hubert.request.delete');
 
+// PAYMENT PROOF
 Route::get('/host/hubert/payment_proof', [HostHubertPaymentProofController::class, 'HostHubertPaymentProofPage'])->name('host.hubert.paymemt.proof.page');
+
+// BALANCES PAID DELIQUENT
+Route::get('/host/hubert/balance', [BalanceController::class, 'HostHubertBalancePage'])->name('host.hubert.balance.page');
+Route::get('/host/hubert/balance/paid', [BalanceController::class, 'HostHubertBalancePaidPage'])->name('host.hubert.balance.paid.page');
+Route::get('/host/hubert/balance/delinquent', [BalanceController::class, 'HostHubertBalanceDelinquentPage'])->name('host.hubert.balance.delinquent.page');
+
 
 // END HUBERTS
 
