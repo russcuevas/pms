@@ -74,7 +74,7 @@
                 </tr>
             </thead>
             <tbody>
-                @forelse ($requests as $request)
+                @foreach ($requests as $request)
                     <tr>
                         <td>{{ $request->tenant_name }}</td>
                         <td>{{ $request->unit_name }}</td>
@@ -106,11 +106,7 @@
                         </td>
                         {{-- <td>{{ \Carbon\Carbon::parse($request->created_at)->format('Y-m-d H:i') }}</td> --}}
                     </tr>
-                @empty
-                    <tr>
-                        <td colspan="7" class="text-center">No requests found.</td>
-                    </tr>
-                @endforelse
+                @endforeach
             </tbody>
 
         </table>

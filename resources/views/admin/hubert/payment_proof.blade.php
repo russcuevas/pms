@@ -61,10 +61,6 @@
     </div>
     <div class="container mt-4">
         <h1 class="mb-3">Payment Proofs</h1>
-
-        @if($paymentProofs->isEmpty())
-            <div class="alert alert-info">No payment proofs found.</div>
-        @else
         <div class="table-responsive">
 
         <table id="paymentProofsTable" class="table table-bordered table-striped">
@@ -126,7 +122,6 @@
                 </tbody>
             </table>
         </div>
-        @endif
     </div>
         <!-- Bottom Navigation -->
         <div class="bottom-nav">
