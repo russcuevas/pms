@@ -12,6 +12,7 @@ use App\Models\Units;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class UnitsController extends Controller
 {
@@ -219,5 +220,46 @@ class UnitsController extends Controller
         });
 
         return back()->with('success', 'Tenant moved out successfully check the history to print the summary');
+    }
+
+    public function AdminHubertFollowUpBillings()
+    {
+        $latestBillings = DB::table('billings as b1')
+            ->join(DB::raw('
+                (
+                    SELECT MAX(id) as latest_id
+                    FROM billings
+                    GROUP BY tenant_id
+                ) as latest
+            '), 'b1.id', '=', 'latest.latest_id')
+            ->join('tenants', 'b1.tenant_id', '=', 'tenants.id')
+            ->where('b1.property_id', 1)
+            ->where('b1.total_balance_to_pay', '>', 0)
+            ->select('tenants.fullname', 'tenants.email', 'b1.total_balance_to_pay', 'b1.for_the_month_of')
+            ->get();
+
+        $sentCount = 0;
+
+        foreach ($latestBillings as $billing) {
+            if (filter_var($billing->email, FILTER_VALIDATE_EMAIL)) {
+                Mail::raw("Dear {$billing->fullname},
+
+    This is a friendly reminder from Admin Huberts Residence that you have an outstanding balance of ₱" . number_format($billing->total_balance_to_pay, 2) . " for the billing month of {$billing->for_the_month_of}.
+
+    Please make your payment as soon as possible.
+
+    If you’ve already settled this amount, kindly ignore this message.
+
+    Thank you,
+    Admin Huberts Residence", function ($message) use ($billing) {
+                    $message->to($billing->email)
+                            ->subject('Follow Up: Outstanding Billing Notice');
+                });
+
+                $sentCount++;
+            }
+        }
+
+        return back()->with('success', "Follow up billing email sent to tenants with unpaid balances.");
     }
 }

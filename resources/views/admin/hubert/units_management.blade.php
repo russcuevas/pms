@@ -58,6 +58,26 @@
     </style>
 </head>
 <body>
+    <div id="loading-overlay" style="
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+    text-align: center;
+">
+    <div>
+        <div class="spinner-border text-light mb-3" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div><br>
+        Please wait processing your request...
+    </div>
+</div>
     <div class="bg-dark text-white py-3">
         <div class="container">
             <div class="row align-items-center">
@@ -79,7 +99,14 @@
     </div>
     
     <div class="container my-4">
-        <h1 class="mb-4">UNITS MANAGEMENT</h1>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="mb-0">UNITS MANAGEMENT</h1>
+            <form id="follow-up-form" action="{{ route('admin.units.follow.up.billings') }}" method="POST">
+                @csrf
+                <button type="submit" class="btn btn-secondary">FOLLOW UP BILLINGS</button>
+            </form>
+
+        </div>
 
         <table id="unitsTable" class="table table-bordered table-striped align-middle">
         <thead class="table-secondary">
@@ -463,6 +490,20 @@
             });
         });
     </script>
+
+    {{-- FOLLOW UP FORM --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('follow-up-form');
+            const overlay = document.getElementById('loading-overlay');
+
+            form.addEventListener('submit', function () {
+                overlay.style.display = 'flex';
+                form.querySelector('button[type="submit"]').disabled = true;
+            });
+        });
+    </script>
+
 
 
 </body>

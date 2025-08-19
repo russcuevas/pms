@@ -157,7 +157,7 @@ Route::post('/admin/huberts/units/transfer-and-repair', [UnitsController::class,
 Route::post('/admin/huberts/units/mark-for-repair', [UnitsController::class, 'AdminHubertMarkForRepair'])->name('admin.units.mark-for-repair');
 Route::post('/admin/huberts/units/mark-as-repaired', [UnitsController::class, 'AdminHubertMarkAsRepaired'])->name('admin.units.mark-as-repaired');
 Route::post('/admin/huberts/unit/{unit}/moveout/{tenant}', [UnitsController::class, 'AdminHubertMoveOutTenant'])->name('admin.units.moveout');
-
+Route::post('/admin/huberts/unit/follou-up-billings', [UnitsController::class, 'AdminHubertFollowUpBillings'])->name('admin.units.follow.up.billings');
 // HUBERTS BILLING PAGE
 Route::get('/admin/hubert/billing', [HubertBillingController::class, 'AdminHubertBillingPage'])->name('admin.hubert.billing.page');
 Route::post('/admin/hubert/billing/create', [HubertBillingController::class, 'AdminHubertBillingCreate'])->name('admin.hubert.billing.create');

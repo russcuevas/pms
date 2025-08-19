@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class BillingController extends Controller
 {
@@ -111,6 +112,39 @@ class BillingController extends Controller
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+
+        $billing = DB::table('billings')
+            ->join('tenants', 'billings.tenant_id', '=', 'tenants.id')
+            ->join('units', 'billings.unit_id', '=', 'units.id')
+            ->select('billings.*', 'tenants.email', 'tenants.fullname', 'units.units_name')
+            ->where('billings.id', $billingId)
+            ->first();
+
+        if ($billing && $billing->email) {
+            $html = view('admin.hubert.emails.billing_invoice', ['billing' => $billing])->render();
+
+            Mail::send([], [], function ($message) use ($billing, $html) {
+                $message->to($billing->email)
+                    ->subject('Your Billing Statement - ' . date('F Y', strtotime($billing->for_the_month_of)))
+                    ->from('gmanagementtt111@gmail.com', 'AVA Properties')
+                    ->html($html);
+            });
+        }
+
+        DB::table('tenant_notifications')->insert([
+            'tenant_id' => $request->tenant_id,
+            'property_id' => $request->property_id,
+            'type' => 'billing',
+            'title' => 'Billing',
+            'message' => 'Your new billing for ' . $request->for_the_month_of . ' has been added.',
+            'url' => '/tenants/huberts/my-billing',
+            'extra' => json_encode([
+                'amount' => $totalBalance,
+            ]),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
         return redirect()->route('admin.huberts.units.management.page')
             ->with('success', 'Billing created and display record saved successfully.');
     }

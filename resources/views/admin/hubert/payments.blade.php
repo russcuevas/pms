@@ -6,6 +6,28 @@
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
 </head>
 <body>
+<div id="loading-overlay" style="
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+    text-align: center;
+">
+    <div>
+        <div class="spinner-border text-light mb-3" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div><br>
+        Please wait processing your request...
+    </div>
+</div>
+
+
 <div class="container my-5">
     <h5>Create Payment</h5>
 
@@ -88,11 +110,15 @@
             if (!form.checkValidity()) {
                 e.preventDefault();
                 e.stopPropagation();
+            } else {
+                // Show loading overlay
+                document.getElementById('loading-overlay').style.display = 'flex';
             }
             form.classList.add('was-validated');
         }, false);
     });
 })();
 </script>
+
 </body>
 </html>

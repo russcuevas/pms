@@ -14,6 +14,27 @@
 
 </head>
 <body>
+<div id="loading-overlay" style="
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+    text-align: center;
+">
+    <div>
+        <div class="spinner-border text-light mb-3" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div><br>
+        Please wait processing your request...
+    </div>
+</div>
+
 <div class="container mt-5">
     <h5>Billing Form</h5>
     <div class="mb-4">
@@ -290,16 +311,22 @@ function calculateConsumption(currentId, previousId, outputId, rateId = null, to
     (() => {
         'use strict';
         const form = document.querySelector('form');
+        const overlay = document.getElementById('loading-overlay');
 
         form.addEventListener('submit', event => {
             if (!form.checkValidity()) {
                 event.preventDefault();
                 event.stopPropagation();
+            } else {
+                // Show overlay only on valid form submission
+                overlay.style.display = 'flex';
             }
+
             form.classList.add('was-validated');
         }, false);
     })();
 </script>
+
 
 
 </body>

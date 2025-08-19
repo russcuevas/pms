@@ -31,7 +31,7 @@
                     <div class="col-6 text-end position-relative">
                         <span class="position-relative me-3" id="notif-toggle" style="cursor: pointer;">
                             <i class="fas fa-bell fs-5"></i>
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">3</span>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{{ $notifications->count() }}</span>
                         </span>
                         <a href="{{ route('tenants.logout.request') }}" class="text-white text-decoration-none">
                             <i class="fas fa-sign-out-alt fs-5"></i>
@@ -40,30 +40,40 @@
                         <!-- Notification Dropdown -->
                         <div id="notif-dropdown" class="notif-dropdown shadow hidden">
                             <div class="notif-header">
-                                <span>Notifications</span>
+                                <span>Notifications ({{ $notifications->count() }})</span>
                             </div>
 
                             <div class="notif-content">
-                                <div class="notif-item new">
-                                    <div class="notif-text">
-                                        <p><b>Paymaya</b> payment confirmed.</p>
-                                    </div>
-                                    <i class="fas fa-trash notif-delete" onclick="deleteNotif(this)"></i>
-                                </div>
+                                @forelse ($notifications as $notif)
+                                    @php
+                                        $extra = json_decode($notif->extra, true);
+                                    @endphp
 
-                                <div class="notif-item">
-                                    <div class="notif-text">
-                                        <p><b>Paymaya</b> payment confirmed.</p>
-                                    </div>
-                                    <i class="fas fa-trash notif-delete" onclick="deleteNotif(this)"></i>
-                                </div>
+                                    <div class="notif-item" style="text-align: left;">
+                                        <div class="notif-text" style="text-align: left;">
+                                            <p><b>{{ $notif->title }}</b> : {!! nl2br(e($notif->message)) !!}</p>
 
-                                <div class="notif-item">
-                                    <div class="notif-text">
-                                        <p><b>Paymaya</b> payment confirmed.</p>
+                                            @if(!empty($extra) && is_array($extra))
+                                                <ul class="notif-extra" style="margin-top: 5px; font-size: 0.9em; color: #555; text-align: left;">
+                                                    @foreach ($extra as $key => $value)
+                                                        ---> <strong>{{ ucfirst(str_replace('_', ' ', $key)) }}:</strong> <span style="text-transform: capitalize">{{ $value }}</span><br>
+                                                    @endforeach
+                                                </ul>
+                                            @endif
+
+                                            @if(!empty($notif->url))
+                                                <p style="margin-top: 5px;">
+                                                    <a href="{{ $notif->url }}" target="_blank" style="color: #007bff; text-decoration: underline;">
+                                                        Click here to view details
+                                                    </a>
+                                                </p>
+                                            @endif
+                                        </div>
+                                        <i class="fas fa-trash notif-delete" onclick="deleteNotif({{ $notif->id }})"></i>
                                     </div>
-                                    <i class="fas fa-trash notif-delete" onclick="deleteNotif(this)"></i>
-                                </div>                                
+                                @empty
+                                    <p class="text-center text-gray-500">No notifications yet.</p>
+                                @endforelse
                             </div>
                         </div>
                     </div>
