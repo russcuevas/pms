@@ -9,6 +9,8 @@ use App\Models\HistoryPayments;
 use App\Models\Payments;
 use App\Models\Tenants;
 use App\Models\Units;
+use PDF;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -138,89 +140,148 @@ class UnitsController extends Controller
         }
     }
 
-    public function AdminHubertMoveOutTenant($unitId, $tenantId)
+public function AdminHubertMoveOutTenant($unitId, $tenantId)
+{
+    $historyBillingIds = [];
+    $historyPaymentIds = [];
+
+    DB::transaction(function () use ($unitId, $tenantId, &$historyBillingIds, &$historyPaymentIds) {
+        $tenant = DB::table('tenants')->where('id', $tenantId)->first();
+        $unit = DB::table('units')->where('id', $unitId)->first();
+
+        if (!$tenant || !$unit) {
+            abort(404, 'Tenant or Unit not found.');
+        }
+
+        // Get current billings
+        $billings = DB::table('billings')->where('tenant_id', $tenantId)->get();
+        $originalBillingIds = $billings->pluck('id');
+
+        // Move billings to history
+        foreach ($billings as $billing) {
+            $historyBillingId = DB::table('history_billings')->insertGetId([
+                'unit_id' => $billing->unit_id,
+                'property_id' => $billing->property_id,
+                'tenant_name' => $tenant->fullname,
+                'tenant_phone_number' => $tenant->phone_number,
+                'tenant_email' => $tenant->email,
+                'account_number' => $billing->account_number,
+                'soa_no' => $billing->soa_no,
+                'for_the_month_of' => $billing->for_the_month_of,
+                'statement_date' => $billing->statement_date,
+                'due_date' => $billing->due_date,
+                'rental' => $billing->rental,
+                'water' => $billing->water,
+                'electricity' => $billing->electricity,
+                'parking' => $billing->parking,
+                'foam' => $billing->foam,
+                'previous_balance' => $billing->previous_balance,
+                'amount' => $billing->amount,
+                'total_balance_to_pay' => $billing->total_balance_to_pay,
+                'total_payment' => $billing->total_payment,
+                'current_electricity' => $billing->current_electricity,
+                'previous_electricity' => $billing->previous_electricity,
+                'consumption_electricity' => $billing->consumption_electricity,
+                'rate_per_kwh_electricity' => $billing->rate_per_kwh_electricity,
+                'total_electricity' => $billing->total_electricity,
+                'current_water' => $billing->current_water,
+                'previous_water' => $billing->previous_water,
+                'consumption_water' => $billing->consumption_water,
+                'rate_per_cu_water' => $billing->rate_per_cu_water,
+                'total_water' => $billing->total_water,
+                'status' => $billing->status,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            $historyBillingIds[] = $historyBillingId;
+        }
+
+        // Get and move related payments
+        $payments = DB::table('payments')
+            ->whereIn('billings_id', $originalBillingIds)
+            ->get();
+
+        foreach ($payments as $payment) {
+            $historyPaymentId = DB::table('history_payments')->insertGetId([
+                'unit_id' => $payment->unit_id,
+                'property_id' => $payment->property_id,
+                'billings_id' => $payment->billings_id,
+                'tenant_name' => $tenant->fullname,
+                'tenant_phone_number' => $tenant->phone_number,
+                'tenant_email' => $tenant->email,
+                'amount' => $payment->amount,
+                'for_the_month_of' => $payment->for_the_month_of,
+                'reference_number' => $payment->reference_number,
+                'mode_of_payment' => $payment->mode_of_payment,
+                'type' => $payment->type,
+                'is_approved' => $payment->is_approved,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            $historyPaymentIds[] = $historyPaymentId;
+        }
+
+        // Clean up
+        DB::table('payments')->whereIn('billings_id', $originalBillingIds)->delete();
+        DB::table('billings')->where('tenant_id', $tenantId)->delete();
+        DB::table('units')->where('id', $unitId)->update(['status' => 'vacant']);
+        DB::table('tenants')->where('id', $tenantId)->delete();
+    });
+
+    // Store history IDs in session for PDF download
+    Session::put('last_moved_billing_ids', $historyBillingIds);
+    Session::put('last_moved_payment_ids', $historyPaymentIds);
+
+    return redirect()->route('admin.hubert.print.summary')->with('success', 'Tenant moved out successfully. You can now print the summary.');
+}
+
+    public function printSummary()
     {
-        DB::transaction(function () use ($unitId, $tenantId) {
-            $tenant = DB::table('tenants')->where('id', $tenantId)->first();
-            $unit = DB::table('units')->where('id', $unitId)->first();
-
-            if (!$tenant || !$unit) {
-                abort(404, 'Tenant or Unit not found.');
-            }
-
-            $billings = DB::table('billings')->where('tenant_id', $tenantId)->get();
-
-            foreach ($billings as $billing) {
-                DB::table('history_billings')->insert([
-                    'unit_id' => $billing->unit_id,
-                    'property_id' => $billing->property_id,
-                    'tenant_name' => $tenant->fullname,
-                    'tenant_phone_number' => $tenant->phone_number,
-                    'tenant_email' => $tenant->email,
-                    'account_number' => $billing->account_number,
-                    'soa_no' => $billing->soa_no,
-                    'for_the_month_of' => $billing->for_the_month_of,
-                    'statement_date' => $billing->statement_date,
-                    'due_date' => $billing->due_date,
-                    'rental' => $billing->rental,
-                    'water' => $billing->water,
-                    'electricity' => $billing->electricity,
-                    'parking' => $billing->parking,
-                    'foam' => $billing->foam,
-                    'previous_balance' => $billing->previous_balance,
-                    'amount' => $billing->amount,
-                    'total_balance_to_pay' => $billing->total_balance_to_pay,
-                    'total_payment' => $billing->total_payment,
-                    'current_electricity' => $billing->current_electricity,
-                    'previous_electricity' => $billing->previous_electricity,
-                    'consumption_electricity' => $billing->consumption_electricity,
-                    'rate_per_kwh_electricity' => $billing->rate_per_kwh_electricity,
-                    'total_electricity' => $billing->total_electricity,
-                    'current_water' => $billing->current_water,
-                    'previous_water' => $billing->previous_water,
-                    'consumption_water' => $billing->consumption_water,
-                    'rate_per_cu_water' => $billing->rate_per_cu_water,
-                    'total_water' => $billing->total_water,
-                    'status' => $billing->status,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]);
-            }
-
-            // Get all related payments
-            $billingIds = $billings->pluck('id');
-
-            $payments = DB::table('payments')
-                ->whereIn('billings_id', $billingIds)
-                ->get();
-
-            foreach ($payments as $payment) {
-                DB::table('history_payments')->insert([
-                    'unit_id' => $payment->unit_id,
-                    'property_id' => $payment->property_id,
-                    'billings_id' => $payment->billings_id,
-                    'tenant_name' => $tenant->fullname,
-                    'tenant_phone_number' => $tenant->phone_number,
-                    'tenant_email' => $tenant->email,
-                    'amount' => $payment->amount,
-                    'for_the_month_of' => $payment->for_the_month_of,
-                    'reference_number' => $payment->reference_number,
-                    'mode_of_payment' => $payment->mode_of_payment,
-                    'type' => $payment->type,
-                    'is_approved' => $payment->is_approved,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]);
-            }
-
-            DB::table('payments')->whereIn('billings_id', $billingIds)->delete();
-            DB::table('billings')->where('tenant_id', $tenantId)->delete();
-            DB::table('units')->where('id', $unitId)->update(['status' => 'vacant']);
-            DB::table('tenants')->where('id', $tenantId)->delete();
-        });
-
-        return back()->with('success', 'Tenant moved out successfully check the history to print the summary');
+        return view('admin.hubert.print.print_summary');
     }
+
+public function printBillings()
+{
+    $billingId = session('last_moved_billing_ids')[0] ?? null;
+
+    $billing = DB::table('history_billings')
+                ->leftJoin('units', 'history_billings.unit_id', '=', 'units.id')
+                ->where('history_billings.id', $billingId)
+                ->select('history_billings.*', 'units.id as unit_id', 'units.units_name')
+                ->latest('history_billings.statement_date')
+                ->first();
+
+    if (!$billing) return back()->withErrors('No billing data found.');
+
+    // Sanitize soa_no for filename
+    $fileName = preg_replace('/[^A-Za-z0-9_\-]/', '', $billing->soa_no) . '_SOA.pdf';
+
+    $pdf = PDF::loadView('admin.hubert.print.print_billings', compact('billing'));
+    return $pdf->download($fileName);
+}
+
+
+public function printPayments()
+{
+    $paymentId = session('last_moved_payment_ids')[0] ?? null;
+
+    $payment = DB::table('history_payments')
+                ->leftJoin('units', 'history_payments.unit_id', '=', 'units.id')
+                ->where('history_payments.id', $paymentId)
+                ->select('history_payments.*', 'units.units_name')
+                ->latest('history_payments.created_at')
+                ->first();
+
+    if (!$payment) return back()->withErrors('No payment data found.');
+
+    // Use the reference number in the file name, sanitize to avoid bad chars
+    $fileName = preg_replace('/[^A-Za-z0-9_\-]/', '', $payment->reference_number) . '_payment_receipt.pdf';
+
+    $pdf = PDF::loadView('admin.hubert.print.print_payments', compact('payment'));
+    return $pdf->download($fileName);
+}
 
     public function AdminHubertFollowUpBillings()
     {

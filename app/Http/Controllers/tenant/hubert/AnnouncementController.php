@@ -49,12 +49,19 @@ class AnnouncementController extends Controller
                 )
                 ->get();
 
+            $notifications = DB::table('tenant_notifications')
+                ->where('tenant_id', $tenant->id)
+                ->where('property_id', $tenant->property_id)
+                ->orderByDesc('created_at')
+                ->get();
+
 
             return view('tenant.hubert.announcement', [
                 'tenant' => $tenant,
                 'unit' => $unit,
                 'property' => $property,
-                'announcements' => $announcements
+                'announcements' => $announcements,
+                'notifications'=> $notifications
             ]);
         }
     }

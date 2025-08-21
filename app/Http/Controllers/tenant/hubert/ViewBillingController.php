@@ -42,13 +42,18 @@ class ViewBillingController extends Controller
             ->orderByDesc('billings.statement_date')
             ->select('billings.*', 'units.units_name')
             ->get();
-
+            $notifications = DB::table('tenant_notifications')
+                ->where('tenant_id', $tenant->id)
+                ->where('property_id', $tenant->property_id)
+                ->orderByDesc('created_at')
+                ->get();
 
         return view('tenant.hubert.view_billing', compact(
             'tenant',
             'unit',
             'property',
-            'billings'
+            'billings',
+            'notifications'
         ));
     }
 }

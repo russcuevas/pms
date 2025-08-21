@@ -47,9 +47,7 @@ class DashboardController extends Controller
         $notifications = DB::table('tenant_notifications')
             ->where('tenant_id', $tenant->id)
             ->where('property_id', $tenant->property_id)
-            // ->orderBy('is_view', 'asc')  // unread (0) first
             ->orderByDesc('created_at')
-            // ->limit(10)
             ->get();
 
         return view('tenant.hubert.dashboard', [

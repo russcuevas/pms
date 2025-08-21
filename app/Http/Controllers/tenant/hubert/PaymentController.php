@@ -50,11 +50,18 @@ class PaymentController extends Controller
             ->orderByDesc('payments.created_at')
             ->get();
 
+            $notifications = DB::table('tenant_notifications')
+                ->where('tenant_id', $tenant->id)
+                ->where('property_id', $tenant->property_id)
+                ->orderByDesc('created_at')
+                ->get();
+
         return view('tenant.hubert.view_payment', compact(
             'tenant',
             'unit',
             'property',
-            'payments'
+            'payments',
+            'notifications'
         ));
     }
 }

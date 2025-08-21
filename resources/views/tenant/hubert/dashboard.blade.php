@@ -17,69 +17,7 @@
 </head>
 <body class="bg-light">
     <!-- Header -->
-    <div class="bg-success text-white py-3" style="background-color: black !important">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-6">
-                    <div class="d-flex align-items-center">
-                        <div>
-                            <small class="text-uppercase" style="color: white !important">MY UNIT: {{ $unit->units_name }}</small>
-                            <div class="fw-bold">{{ $tenant->fullname ?? 'Tenant Name' }}</div>
-                        </div>
-                    </div>
-                </div>
-                    <div class="col-6 text-end position-relative">
-                        <span class="position-relative me-3" id="notif-toggle" style="cursor: pointer;">
-                            <i class="fas fa-bell fs-5"></i>
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{{ $notifications->count() }}</span>
-                        </span>
-                        <a href="{{ route('tenants.logout.request') }}" class="text-white text-decoration-none">
-                            <i class="fas fa-sign-out-alt fs-5"></i>
-                        </a>
-
-                        <!-- Notification Dropdown -->
-                        <div id="notif-dropdown" class="notif-dropdown shadow hidden">
-                            <div class="notif-header">
-                                <span>Notifications ({{ $notifications->count() }})</span>
-                            </div>
-
-                            <div class="notif-content">
-                                @forelse ($notifications as $notif)
-                                    @php
-                                        $extra = json_decode($notif->extra, true);
-                                    @endphp
-
-                                    <div class="notif-item" style="text-align: left;">
-                                        <div class="notif-text" style="text-align: left;">
-                                            <p><b>{{ $notif->title }}</b> : {!! nl2br(e($notif->message)) !!}</p>
-
-                                            @if(!empty($extra) && is_array($extra))
-                                                <ul class="notif-extra" style="margin-top: 5px; font-size: 0.9em; color: #555; text-align: left;">
-                                                    @foreach ($extra as $key => $value)
-                                                        ---> <strong>{{ ucfirst(str_replace('_', ' ', $key)) }}:</strong> <span style="text-transform: capitalize">{{ $value }}</span><br>
-                                                    @endforeach
-                                                </ul>
-                                            @endif
-
-                                            @if(!empty($notif->url))
-                                                <p style="margin-top: 5px;">
-                                                    <a href="{{ $notif->url }}" target="_blank" style="color: #007bff; text-decoration: underline;">
-                                                        Click here to view details
-                                                    </a>
-                                                </p>
-                                            @endif
-                                        </div>
-                                        <i class="fas fa-trash notif-delete" onclick="deleteNotif({{ $notif->id }})"></i>
-                                    </div>
-                                @empty
-                                    <p class="text-center text-gray-500">No notifications yet.</p>
-                                @endforelse
-                            </div>
-                        </div>
-                    </div>
-            </div>
-        </div>
-    </div>
+    @include('tenant.hubert.header')
 
     <div class="container my-4 pb-5">
         <div class="card border-0 text-white mb-4" 

@@ -34,6 +34,7 @@ use App\Http\Controllers\host\hubert\RequestToManagerController as HubertRequest
 use App\Http\Controllers\tenant\hubert\AnnouncementController as TenantHubertAnnouncementController;
 // TENANTS
 use App\Http\Controllers\tenant\hubert\DashboardController as TenantHubertDashboardController;
+use App\Http\Controllers\tenant\hubert\NotificationController;
 use App\Http\Controllers\tenant\hubert\PaymentController;
 use App\Http\Controllers\tenant\hubert\PaymentProofController;
 use App\Http\Controllers\tenant\hubert\RequestController;
@@ -157,7 +158,12 @@ Route::post('/admin/huberts/units/transfer-and-repair', [UnitsController::class,
 Route::post('/admin/huberts/units/mark-for-repair', [UnitsController::class, 'AdminHubertMarkForRepair'])->name('admin.units.mark-for-repair');
 Route::post('/admin/huberts/units/mark-as-repaired', [UnitsController::class, 'AdminHubertMarkAsRepaired'])->name('admin.units.mark-as-repaired');
 Route::post('/admin/huberts/unit/{unit}/moveout/{tenant}', [UnitsController::class, 'AdminHubertMoveOutTenant'])->name('admin.units.moveout');
+Route::get('/admin/hubert/print/summary', [UnitsController::class, 'printSummary'])->name('admin.hubert.print.summary');
+Route::get('/admin/hubert/print/billings', [UnitsController::class, 'printBillings'])->name('admin.hubert.print.billings');
+Route::get('/admin/hubert/print/payments', [UnitsController::class, 'printPayments'])->name('admin.hubert.print.payments');
+
 Route::post('/admin/huberts/unit/follou-up-billings', [UnitsController::class, 'AdminHubertFollowUpBillings'])->name('admin.units.follow.up.billings');
+
 // HUBERTS BILLING PAGE
 Route::get('/admin/hubert/billing', [HubertBillingController::class, 'AdminHubertBillingPage'])->name('admin.hubert.billing.page');
 Route::post('/admin/hubert/billing/create', [HubertBillingController::class, 'AdminHubertBillingCreate'])->name('admin.hubert.billing.create');
@@ -187,6 +193,10 @@ Route::get('/admin/hubert/payment_proof', [HubertPaymentProofController::class, 
 Route::get('/admin/hubert/balance', [HubertBalanceController::class, 'AdminHubertBalancePage'])->name('admin.hubert.balance.page');
 Route::get('/admin/hubert/balance/paid', [HubertBalanceController::class, 'AdminHubertBalancePaidPage'])->name('admin.hubert.balance.paid.page');
 Route::get('/admin/hubert/balance/delinquent', [HubertBalanceController::class, 'AdminHubertBalanceDelinquentPage'])->name('admin.hubert.balance.delinquent.page');
+
+// HUBERTS NOTIFICATIONS
+Route::get('/admin/hubert/notification/view/{id}', [NotificationController::class, 'TenantsHubertMarkViewedNotifications'])->name('admin.hubert.notification.view');
+Route::delete('/admin/hubert/notification/delete/{id}', [NotificationController::class, 'TenantsHubertDeleteNotification'])->name('admin.hubert.notification.delete');
 
 
 // JJS1

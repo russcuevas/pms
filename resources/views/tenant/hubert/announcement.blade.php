@@ -20,59 +20,8 @@
 </head>
 <body class="bg-light">
     <!-- Header -->
-    <div class="bg-success text-white py-3" style="background-color: black !important">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-6">
-                    <div class="d-flex align-items-center">
-                        <div>
-                            <small class="text-uppercase" style="color: white !important">MY UNIT: {{ $unit->units_name }}</small>
-                            <div class="fw-bold">{{ $tenant->fullname ?? 'Tenant Name' }}</div>
-                        </div>
-                    </div>
-                </div>
-                    <div class="col-6 text-end position-relative">
-                        <span class="position-relative me-3" id="notif-toggle" style="cursor: pointer;">
-                            <i class="fas fa-bell fs-5"></i>
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">3</span>
-                        </span>
-                        <a href="{{ route('tenants.logout.request') }}" class="text-white text-decoration-none">
-                            <i class="fas fa-sign-out-alt fs-5"></i>
-                        </a>
+        @include('tenant.hubert.header')
 
-                        <!-- Notification Dropdown -->
-                        <div id="notif-dropdown" class="notif-dropdown shadow hidden">
-                            <div class="notif-header">
-                                <span>Notifications</span>
-                            </div>
-
-                            <div class="notif-content">
-                                <div class="notif-item new">
-                                    <div class="notif-text">
-                                        <p><b>Paymaya</b> payment confirmed.</p>
-                                    </div>
-                                    <i class="fas fa-trash notif-delete" onclick="deleteNotif(this)"></i>
-                                </div>
-
-                                <div class="notif-item">
-                                    <div class="notif-text">
-                                        <p><b>Paymaya</b> payment confirmed.</p>
-                                    </div>
-                                    <i class="fas fa-trash notif-delete" onclick="deleteNotif(this)"></i>
-                                </div>
-
-                                <div class="notif-item">
-                                    <div class="notif-text">
-                                        <p><b>Paymaya</b> payment confirmed.</p>
-                                    </div>
-                                    <i class="fas fa-trash notif-delete" onclick="deleteNotif(this)"></i>
-                                </div>                                
-                            </div>
-                        </div>
-                    </div>
-            </div>
-        </div>
-    </div>
 
 <div class="container py-4">
     <div class="row g-4">

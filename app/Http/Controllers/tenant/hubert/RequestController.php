@@ -43,11 +43,18 @@ class RequestController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
+        $notifications = DB::table('tenant_notifications')
+                ->where('tenant_id', $tenant->id)
+                ->where('property_id', $tenant->property_id)
+                ->orderByDesc('created_at')
+                ->get();
+
         return view('tenant.hubert.request', compact(
             'tenant',
             'unit',
             'property',
             'requests',
+            'notifications'
         ));
     }
 
