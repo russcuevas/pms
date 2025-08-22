@@ -222,6 +222,14 @@ Route::post('/tenants/register/request', [TenantAuthController::class, 'TenantsR
 Route::get('/tenants/verify-otp', [TenantAuthController::class, 'TenantsOtpPage'])->name('tenants.otp.page');
 Route::post('/tenants/verify-otp/request', [TenantAuthController::class, 'TenantsVerifyOtp'])->name('tenants.verify.otp');
 
+Route::get('/tenants/reset-password/{forgot_code}', [TenantAuthController::class, 'showResetPasswordForm'])->name('tenants.reset.form');
+
+// Handle Forgot Password Form Submission
+Route::post('/tenants/forgot-password-request', [TenantAuthController::class, 'TenantsForgotPasswordRequest'])->name('tenants.forgot.password.request');
+
+// Handle Reset Password Submission
+Route::post('/tenants/reset-password', [TenantAuthController::class, 'resetPassword'])->name('tenants.reset.password');
+
 
 // TENANTS HUBERTS
 Route::get('/tenants/huberts/dashboard', [TenantHubertDashboardController::class, 'TenantsHubertDashboardPage'])->name('tenants.huberts.dashboard.page');

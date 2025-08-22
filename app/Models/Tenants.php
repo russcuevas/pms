@@ -23,6 +23,7 @@ class Tenants extends Authenticatable
         'contact_fullname',
         'contact_phone_number',
         'property_id',
+        'forgot_code',
         'otp_code',
         'is_approved'
     ];

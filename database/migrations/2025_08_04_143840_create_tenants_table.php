@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('contact_fullname', 255)->nullable();
             $table->string('contact_phone_number', 255)->nullable();
             $table->unsignedBigInteger('property_id')->nullable();
+            $table->string('forgot_code', 255)->nullable();
             $table->string('otp_code', 255)->nullable();
             $table->boolean('is_approved')->default(false);
             $table->timestamps();

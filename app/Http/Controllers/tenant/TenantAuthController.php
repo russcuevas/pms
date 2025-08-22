@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 
 
@@ -171,6 +172,69 @@ class TenantAuthController extends Controller
             ->route('tenants.register.page')
             ->with('success', 'Registration successful! Please check your email for the OTP verification code.');
     }
+    
+public function TenantsForgotPasswordRequest(Request $request)
+{
+    $request->validate([
+        'forgot_username' => 'required'
+    ]);
+
+    $tenant = Tenants::where('username', $request->forgot_username)
+                ->orWhere('email', $request->forgot_username)
+                ->first();
+
+    if (!$tenant) {
+        return redirect()->back()->with('error', 'User not found.');
+    }
+
+    // Generate and store forgot_code
+    $code = Str::random(64) . ',' . Str::random(10);
+    $tenant->forgot_code = $code;
+    $tenant->save();
+
+    // Create reset link
+    $resetLink = route('tenants.reset.form', ['forgot_code' => $code]);
+
+    // Send email directly from controller using a blade view
+    Mail::send('tenant.auth.forgot_password', ['tenant' => $tenant, 'resetLink' => $resetLink], function ($message) use ($tenant) {
+        $message->to($tenant->email);
+        $message->subject('Password Reset Request');
+    });
+
+    return redirect()->back()->with('success', 'Reset link has been sent to your email.');
+}
+
+
+public function showResetPasswordForm($code)
+{
+    $code = urldecode($code); // decode the comma
+    $tenant = Tenants::where('forgot_code', $code)->first();
+
+    if (!$tenant) {
+        return redirect()->route('tenants.login.page')->with('error', 'Invalid or expired reset link.');
+    }
+
+    return view('tenant.auth.reset_password', compact('tenant', 'code'))->with('forgot_code', $code);
+}
+
+
+public function resetPassword(Request $request)
+{
+    $request->validate([
+        'forgot_code' => 'required|exists:tenants,forgot_code',
+        'password' => 'required|confirmed|min:6',
+    ]);
+
+    $tenant = Tenants::where('forgot_code', $request->forgot_code)->first();
+
+    $tenant->password = Hash::make($request->password);
+    $tenant->forgot_code = null;
+    $tenant->save();
+
+    return redirect()->route('tenants.login.page')->with('success', 'Password has been reset.');
+}
+
+
 
 
     public function TenantsOtpPage()
