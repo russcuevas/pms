@@ -65,4 +65,22 @@ class ExpensesController extends Controller
         ]);
         return back()->with('success', 'Expense requested successfully please wait for the approval of the host.');
     }
+
+    public function AdminHubertExpensesPrintPage()
+    {
+        $admin = Auth::guard('admins')->user();
+
+        if (!$admin || $admin->property_id != 1) {
+            return redirect()->route('admin.login.page')
+                ->with('error', 'You must log in first');
+        }
+
+        $expenses = DB::table('expenses')
+            ->where('property_id', 1)
+            ->where('is_approved', 1)
+            ->orderByDesc('date')
+            ->get();
+
+        return view('admin.hubert.print.expenses', compact('expenses'));
+    }
 }

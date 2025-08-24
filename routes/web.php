@@ -67,6 +67,8 @@ Route::get('/host/huberts/dashboard', [DashboardController::class, 'HostHubertDa
 Route::get('/host/huberts/monthly-sales', [MonthlySalesController::class, 'HostHubertMonthlySalesComputation'])->name('host.huberts.monthly.sales');
 Route::get('/host/huberts/monthly-expenses', [MonthlySalesController::class, 'HostHubertMonthlyExpensesComputation'])->name('host.huberts.monthly.expenses');
 Route::get('/host/huberts/monthly-net-income', [MonthlySalesController::class, 'HostHubertMonthlyNetIncomeComputation'])->name('host.huberts.monthly.net.income');
+Route::get('/host/hubert/payment-breakdown', [MonthlySalesController::class, 'HostHubertPaymentBreakdown']);
+
 
 // ADMIN MANAGEMENT
 Route::get('/host/huberts/admin-management', [AdminController::class, 'HostHubertAdminPage'])->name('host.huberts.admin.management.page');
@@ -100,6 +102,8 @@ Route::post('/host/hubert/payments/decline/{paymentId}', [HubertPaymentsControll
 Route::get('/host/huberts/expenses', [HubertExpensesController::class, 'HostHubertExpensesPage'])->name('host.huberts.expenses.page');
 Route::post('/host/hubert/expenses/{id}/approve', [HubertExpensesController::class, 'HostHubertApprovedRequest'])->name('host.hubert.expenses.approve');
 Route::delete('/host/hubert/expenses/{id}/decline', [HubertExpensesController::class, 'HostHubertDeclineRequest'])->name('host.hubert.expenses.decline');
+Route::get('/host/hubert/print/expenses', [HubertExpensesController::class, 'HostHubertExpensesPrintPage'])
+    ->name('host.hubert.print.expenses');
 
 // ANNOUNCEMENT MANAGEMENT
 Route::get('/host/hubert/announcement-management', [HubertAnnouncementController::class, 'HostHubertAnnouncementPage'])->name('host.huberts.announcement.page');
@@ -154,6 +158,8 @@ Route::post('/admin/huberts/turn-over', [HubertDashboardController::class, 'Admi
 // HUBERTS EXPENSES
 Route::get('/admin/huberts/expenses', [ExpensesController::class, 'AdminHubertExpensesPage'])->name('admin.huberts.expenses.page');
 Route::post('/admin/huberts/expenses/create', [ExpensesController::class, 'AdminHubertExpensesRequest'])->name('admin.huberts.expenses.request');
+Route::get('/admin/hubert/print/expenses', [ExpensesController::class, 'AdminHubertExpensesPrintPage'])
+    ->name('admin.hubert.print.expenses');
 
 
 // HUBERTS UNIT MANAGEMENT PAGE

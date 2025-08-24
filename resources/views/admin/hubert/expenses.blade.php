@@ -64,9 +64,9 @@
             <h1>Expenses</h1>
             <div>
                 <button class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#addExpenseModal">+ Add Expenses</button>                
-                <button id="printBtn" class="btn btn-success">
-                    <i class="fa-solid fa-print"></i> Print
-                </button>
+                <a href="{{ route('admin.hubert.print.expenses') }}" target="_blank" class="btn btn-secondary">
+                    <i class="fa-solid fa-print"></i> Print All
+                </a>
             </div>
         </div>
 

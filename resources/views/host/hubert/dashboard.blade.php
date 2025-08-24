@@ -231,6 +231,35 @@ canvas {
             </select>
         </div>
 
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="card text-white bg-success h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Payment</h5>
+                        <h2 id="totalPayment" class="card-text">₱0.00</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card text-white bg-success h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Cash Payment</h5>
+                        <h2 id="cashPayment" class="card-text">₱0.00</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card text-white bg-success h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Online Payment</h5>
+                        <h2 id="onlinePayment" class="card-text">₱0.00</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="row">
             <div class="col-md-4">
                 <div class="chart-container">
@@ -251,10 +280,9 @@ canvas {
                 </div>
             </div>
         </div>
-    </div>
 
 
-        <canvas id="monthlySalesChart" height="100"></canvas>
+
     </div>
 </div>
 
@@ -425,6 +453,35 @@ monthlyNetIncomeChart = createOrUpdateChart(
     });
 });
 </script>
+
+<script>
+    // Function to fetch and update payment data
+    function updatePaymentData(year) {
+        fetch(`/host/hubert/payment-breakdown?year=${year}`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('totalPayment').textContent = `₱${data.total_payment.toLocaleString()}`;
+                document.getElementById('cashPayment').textContent = `₱${data.cash_payment.toLocaleString()}`;
+                document.getElementById('onlinePayment').textContent = `₱${data.online_payment.toLocaleString()}`;
+            })
+            .catch(error => {
+                console.error('Error fetching payment data:', error);
+            });
+    }
+
+    // Event listener for year change
+    document.getElementById('yearSelect').addEventListener('change', function () {
+        updatePaymentData(this.value);
+    });
+
+    // Run on page load for the default selected year
+    document.addEventListener('DOMContentLoaded', function () {
+        const defaultYear = document.getElementById('yearSelect').value;
+        updatePaymentData(defaultYear);
+    });
+</script>
+
+
 
 
 

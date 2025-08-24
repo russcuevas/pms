@@ -91,4 +91,19 @@ class ExpensesController extends Controller
 
         return redirect()->back()->with('success', 'Expense declined and deleted.');
     }
+
+        public function HostHubertExpensesPrintPage()
+    {
+        if (!Auth::guard('hosts')->check()) {
+            return redirect()->route('host.login.page')->with('error', 'Please log in.');
+        }
+
+        $expenses = DB::table('expenses')
+            ->where('property_id', 1)
+            ->where('is_approved', 1)
+            ->orderByDesc('date')
+            ->get();
+
+        return view('host.hubert.print.expenses', compact('expenses'));
+    }
 }

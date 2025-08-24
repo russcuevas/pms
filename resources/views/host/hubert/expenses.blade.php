@@ -62,8 +62,14 @@
 
   <!-- MAIN CONTENT -->
   <div class="container my-5">
-    <h2 class="mb-4">Expenses Management</h2>
-
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h2 class="mb-4">Expenses Management</h2>
+            <div>
+                <a href="{{ route('host.hubert.print.expenses') }}" target="_blank" class="btn btn-secondary">
+                    <i class="fa-solid fa-print"></i> Print All
+                </a>
+            </div>
+        </div>
     <div class="table-responsive">
       <table id="expensesTable" class="table table-bordered table-striped nowrap" style="width:100%">
         <thead>

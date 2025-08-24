@@ -100,4 +100,29 @@ public function HostHubertMonthlyNetIncomeComputation(Request $request)
     ]);
 }
 
+public function HostHubertPaymentBreakdown(Request $request)
+{
+    $propertyId = 1;
+    $year = $request->input('year', date('Y'));
+
+    // Query payments for the given year and property
+    $payments = DB::table('history_payments')
+        ->select('mode_of_payment', DB::raw('SUM(amount) as total'))
+        ->where('property_id', $propertyId)
+        ->whereYear('created_at', $year)
+        ->groupBy('mode_of_payment')
+        ->pluck('total', 'mode_of_payment');
+
+    // Breakdown
+    $cashPayment = $payments['cash'] ?? 0;
+    $onlinePayment = $payments['online payment'] ?? 0;
+    $totalPayment = $cashPayment + $onlinePayment;
+
+    return response()->json([
+        'total_payment' => $totalPayment,
+        'cash_payment' => $cashPayment,
+        'online_payment' => $onlinePayment
+    ]);
+}
+
 }
