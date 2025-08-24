@@ -29,6 +29,7 @@ use App\Http\Controllers\admin\jjs1\DashboardController as AdminJjs1DashboardCon
 use App\Http\Controllers\admin\jjs2\DashboardController as AdminJjs2DashboardController;
 use App\Http\Controllers\host\hubert\AnnouncementController as HubertAnnouncementController;
 use App\Http\Controllers\host\hubert\BalanceController;
+use App\Http\Controllers\host\hubert\MonthlySalesController;
 use App\Http\Controllers\host\hubert\PaymentProofController as HostHubertPaymentProofController;
 use App\Http\Controllers\host\hubert\RequestToManagerController as HubertRequestToManagerController;
 use App\Http\Controllers\tenant\hubert\AnnouncementController as TenantHubertAnnouncementController;
@@ -63,6 +64,9 @@ Route::get('/host/home', [HostHomeController::class, 'HostHomePage'])->name('hos
 // HUBERTS LEFT SIDEBAR
 // HUBERTS
 Route::get('/host/huberts/dashboard', [DashboardController::class, 'HostHubertDashboardPage'])->name('host.huberts.dashboard.page');
+Route::get('/host/huberts/monthly-sales', [MonthlySalesController::class, 'HostHubertMonthlySalesComputation'])->name('host.huberts.monthly.sales');
+Route::get('/host/huberts/monthly-expenses', [MonthlySalesController::class, 'HostHubertMonthlyExpensesComputation'])->name('host.huberts.monthly.expenses');
+Route::get('/host/huberts/monthly-net-income', [MonthlySalesController::class, 'HostHubertMonthlyNetIncomeComputation'])->name('host.huberts.monthly.net.income');
 
 // ADMIN MANAGEMENT
 Route::get('/host/huberts/admin-management', [AdminController::class, 'HostHubertAdminPage'])->name('host.huberts.admin.management.page');

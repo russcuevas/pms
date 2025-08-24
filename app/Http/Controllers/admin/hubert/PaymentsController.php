@@ -100,6 +100,14 @@ class PaymentsController extends Controller
                 'updated_at' => now(),
             ]);
         }
+
+        DB::table('monthly_sales')->insert([
+            'unit_id' => $request->unit_id,
+            'property_id' => $request->property_id,
+            'amount' => $request->amount,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     }
 
     $payment = DB::table('payments')

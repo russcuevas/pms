@@ -1,0 +1,103 @@
+<?php
+
+namespace App\Http\Controllers\host\hubert;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
+class MonthlySalesController extends Controller
+{
+    public function HostHubertMonthlySalesComputation(Request $request)
+    {
+        $propertyId = 1;
+        $year = $request->input('year', date('Y'));  // Default to current year if no year provided
+
+        $sales = DB::table('monthly_sales')
+            ->select(
+                DB::raw("DATE_FORMAT(created_at, '%m') as month_number"),
+                DB::raw("SUM(amount) as total")
+            )
+            ->where('property_id', $propertyId)
+            ->whereYear('created_at', $year)
+            ->groupBy('month_number')
+            ->orderBy('month_number')
+            ->get();
+
+        return response()->json([
+            'sales' => $sales
+        ]);
+    }
+
+    public function HostHubertMonthlyExpensesComputation(Request $request)
+    {
+        $propertyId = 1;
+        $year = $request->input('year', date('Y'));  // Default to current year if no year provided
+
+        $expenses = DB::table('expenses')
+            ->select(
+                DB::raw("DATE_FORMAT(created_at, '%m') as month_number"),
+                DB::raw("SUM(total) as total")
+            )
+            ->where('property_id', $propertyId)
+            ->whereYear('created_at', $year)
+            ->groupBy('month_number')
+            ->orderBy('month_number')
+            ->get();
+
+        return response()->json([
+            'expenses' => $expenses
+        ]);
+    }
+
+public function HostHubertMonthlyNetIncomeComputation(Request $request)
+{
+    $propertyId = 1;
+    $year = $request->input('year', date('Y'));
+
+    // Fetch monthly sales
+    $sales = DB::table('monthly_sales')
+        ->select(
+            DB::raw("DATE_FORMAT(created_at, '%m') as month_number"),
+            DB::raw("SUM(amount) as total")
+        )
+        ->where('property_id', $propertyId)
+        ->whereYear('created_at', $year)
+        ->groupBy('month_number')
+        ->pluck('total', 'month_number');
+
+    // Fetch monthly expenses
+    $expenses = DB::table('expenses')
+        ->select(
+            DB::raw("DATE_FORMAT(created_at, '%m') as month_number"),
+            DB::raw("SUM(total) as total")
+        )
+        ->where('property_id', $propertyId)
+        ->whereYear('created_at', $year)
+        ->groupBy('month_number')
+        ->pluck('total', 'month_number');
+
+    // Initialize net income array for all 12 months
+    $netIncome = [];
+
+    for ($month = 1; $month <= 12; $month++) {
+        $monthKey = str_pad($month, 2, '0', STR_PAD_LEFT); // Format: "01", "02", ..., "12"
+
+        $salesAmount = isset($sales[$monthKey]) ? (float)$sales[$monthKey] : 0;
+        $expensesAmount = isset($expenses[$monthKey]) ? (float)$expenses[$monthKey] : 0;
+        $net = $salesAmount - $expensesAmount;
+
+        $netIncome[] = [
+            'month_number' => $monthKey,
+            'sales' => $salesAmount,
+            'expenses' => $expensesAmount,
+            'net_income' => $net
+        ];
+    }
+
+    return response()->json([
+        'net_income' => $netIncome
+    ]);
+}
+
+}

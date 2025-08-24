@@ -1,56 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Billing Records</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Host - Billing Records</title>
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- CSS Dependencies -->
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+
+    <style>
+        body {
+            background-color: #e9ecef;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: #000;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            z-index: 1030;
+        }
+
+        .bottom-nav a {
+            color: #fff;
+            text-align: center;
+            font-size: 14px;
+            text-decoration: none;
+        }
+
+        .bottom-nav a.active {
+            color: #28a745;
+        }
+    </style>
 </head>
-<body class="p-4">
+<body>
 
-    <h1>Billing Records</h1>
+    <!-- TOP NAV BAR -->
+    <div class="bg-dark text-white py-3">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-6">
+                    <small class="text-uppercase text-white">HUBERTS HOST PANEL</small>
+                    <div class="fw-bold">Host/Owner</div>
+                </div>
+                <div class="col-6 text-end">
+                    <a href="{{ route('host.logout.request') }}" class="text-white text-decoration-none">
+                        <i class="fas fa-sign-out-alt fs-5"></i> Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Tenant</th>
-                <th>Unit</th>
-                <th>Paid Amount</th>
-                <th>Balance</th>
-                <th>Billing</th>
-                <th>For the Month Of</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($billings as $billing)
+    <!-- MAIN CONTENT -->
+    <div class="container my-5">
+        <h2 class="mb-4">Billing Records</h2>
+
+        <table id="billingTable" class="table table-bordered table-striped nowrap" style="width:100%">
+            <thead>
                 <tr>
-                    <td>{{ $billing->tenant_name }}</td>
-                    <td>{{ $billing->unit_name }}</td>
-                    <td>{{ number_format($billing->amount, 2) }}</td>
-                    <td>{{ number_format($billing->total_balance_to_pay, 2) }}</td>
-                    <td>{{ number_format($billing->total_payment, 2) }}</td>
-                    <td>{{ $billing->for_the_month_of }}</td>
-                    <td>{{ ucfirst($billing->status) }}</td>
-                    <td>
-                        <a href="{{ route('host.huberts.previous.billings', $billing->tenant_id) }}" class="btn btn-sm btn-secondary">
-                            View Previous Billings
-                        </a>
-                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#billingModal{{ $billing->id }}">
-                            View Summary
-                        </button>
-
-                        
-                    </td>
+                    <th>Tenant</th>
+                    <th>Unit</th>
+                    <th>Paid Amount</th>
+                    <th>Balance</th>
+                    <th>Billing</th>
+                    <th>For the Month Of</th>
+                    <th>Status</th>
+                    <th>Actions</th>
                 </tr>
-            @endforeach
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach ($billings as $billing)
+                    <tr>
+                        <td>{{ $billing->tenant_name }}</td>
+                        <td>{{ $billing->unit_name }}</td>
+                        <td>PHP {{ number_format($billing->amount, 2) }}</td>
+                        <td>PHP {{ number_format($billing->total_balance_to_pay, 2) }}</td>
+                        <td>PHP {{ number_format($billing->total_payment, 2) }}</td>
+                        <td>{{ $billing->for_the_month_of }}</td>
+                        <td>
+                            @if(strtolower($billing->status) === 'paid')
+                                <span class="badge bg-success">{{ ucfirst($billing->status) }}</span>
+                            @elseif(strtolower($billing->status) === 'pending')
+                                <span class="badge bg-warning text-dark">{{ ucfirst($billing->status) }}</span>
+                            @else
+                                <span class="badge bg-secondary">{{ ucfirst($billing->status) }}</span>
+                            @endif
+                        </td>
+                        <td>
+                            <a href="{{ route('host.huberts.previous.billings', $billing->tenant_id) }}" class="btn btn-sm btn-secondary mb-1">
+                                <i class="fas fa-history"></i> Previous Billings
+                            </a>
+                            <button type="button" class="btn btn-sm btn-primary mb-1" data-bs-toggle="modal" data-bs-target="#billingModal{{ $billing->id }}">
+                                <i class="fas fa-file-invoice"></i> View Summary
+                            </button>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
 
-    <!-- Modals OUTSIDE the table -->
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <a href="{{ route('host.huberts.dashboard.page') }}">
+            <i class="fas fa-home"></i><br>Back to dashboard
+        </a>
+    </div>
+
+    <!-- Modals -->
     @foreach ($billings as $billing)
     <div class="modal fade" id="billingModal{{ $billing->id }}" tabindex="-1" aria-labelledby="billingModalLabel{{ $billing->id }}" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-scrollable">
@@ -60,7 +125,6 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <!-- Table structure to match the layout from the image -->
                     <table class="table table-bordered">
                         <tbody>
                             <tr>
@@ -83,64 +147,65 @@
                                 <th>Due Date</th>
                                 <td>{{ $billing->due_date }}</td>
                             </tr>
-                            <tr><td colspan="2"><strong>Billing Breakdown</strong></td></tr>
+
+                            <tr>
+                                <td colspan="2"><strong>Billing Breakdown</strong></td>
+                            </tr>
                             <tr>
                                 <th>Rental</th>
-                                <td>{{ number_format($billing->rental, 2) }}</td>
+                                <td>PHP {{ number_format($billing->rental, 2) }}</td>
                             </tr>
                             <tr>
                                 <th>Water</th>
-                                <td>{{ number_format($billing->water, 2) }}</td>
+                                <td>PHP {{ number_format($billing->water, 2) }}</td>
                             </tr>
                             <tr>
                                 <th>Electricity</th>
-                                <td>{{ number_format($billing->electricity, 2) }}</td>
+                                <td>PHP {{ number_format($billing->electricity, 2) }}</td>
                             </tr>
                             <tr>
                                 <th>Parking</th>
-                                <td>{{ number_format($billing->parking, 2) }}</td>
+                                <td>PHP {{ number_format($billing->parking, 2) }}</td>
                             </tr>
                             <tr>
                                 <th>Foam</th>
-                                <td>{{ number_format($billing->foam, 2) }}</td>
+                                <td>PHP {{ number_format($billing->foam, 2) }}</td>
                             </tr>
                             <tr>
                                 <th>Previous Balance</th>
-                                <td>{{ number_format($billing->previous_balance, 2) }}</td>
+                                <td>PHP {{ number_format($billing->previous_balance, 2) }}</td>
                             </tr>
                             <tr>
                                 <th>Total Balance To Pay</th>
-                                <td>{{ number_format($billing->total_balance_to_pay, 2) }}</td>
+                                <td>PHP {{ number_format($billing->total_balance_to_pay, 2) }}</td>
                             </tr>
                             <tr>
                                 <th>Total Payment</th>
-                                <td>{{ number_format($billing->total_payment, 2) }}</td>
+                                <td>PHP {{ number_format($billing->total_payment, 2) }}</td>
                             </tr>
-                            
-                            <!-- Begin the Electricity and Water Section with Bootstrap Grid -->
-                            <tr><td colspan="2"><strong>Electricity & Water Breakdown</strong></td></tr>
-                            
+
                             <tr>
-                                <td class="col-6">
-                                    <!-- Electricity Info (Left) -->
+                                <td colspan="2"><strong>Electricity & Water Breakdown</strong></td>
+                            </tr>
+                            <tr>
+                                <td>
                                     <strong>Electricity</strong>
-                                    <ul>
+                                    <ul class="list-unstyled mb-0">
                                         <li><strong>Current:</strong> {{ $billing->current_electricity }}</li>
                                         <li><strong>Previous:</strong> {{ $billing->previous_electricity }}</li>
                                         <li><strong>Consumption:</strong> {{ $billing->consumption_electricity }}</li>
-                                        <li><strong>Rate per kWh:</strong> {{ number_format($billing->rate_per_kwh_electricity, 4) }}</li>
-                                        <li><strong>Total Electricity:</strong> {{ number_format($billing->total_electricity, 2) }}</li>
+                                        <li><strong>Rate per kWh:</strong> PHP {{ number_format($billing->rate_per_kwh_electricity, 4) }}</li>
+                                        <li><strong>Total Electricity:</strong> PHP {{ number_format($billing->total_electricity, 2) }}</li>
                                     </ul>
                                 </td>
-                                <td class="col-6">
-                                    <!-- Water Info (Right) -->
+                                <td>
                                     <strong>Water</strong>
-                                    <ul>
+                                    <ul class="list-unstyled mb-0">
                                         <li><strong>Current:</strong> {{ $billing->current_water }}</li>
                                         <li><strong>Previous:</strong> {{ $billing->previous_water }}</li>
                                         <li><strong>Consumption:</strong> {{ $billing->consumption_water }}</li>
-                                        <li><strong>Rate per cu.m:</strong> {{ number_format($billing->rate_per_cu_water, 4) }}</li>
-                                        <li><strong>Total Water:</strong> {{ number_format($billing->total_water, 2) }}</li>
+                                        <li><strong>Rate per cu.m:</strong> PHP {{ number_format($billing->rate_per_cu_water, 4) }}</li>
+                                        <li><strong>Total Water:</strong> PHP {{ number_format($billing->total_water, 2) }}</li>
                                     </ul>
                                 </td>
                             </tr>
@@ -160,7 +225,43 @@
     </div>
     @endforeach
 
-    <!-- Bootstrap JS -->
+    <!-- JS Dependencies -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <script>
+$(document).ready(function () {
+    $('#billingTable').DataTable({
+        responsive: true,
+        autoWidth: false,
+        pageLength: 10,
+        language: {
+            emptyTable: "No billing records available.",
+        },
+        columnDefs: [
+            { responsivePriority: 1, targets: -1 },  // Actions (last column) highest priority
+            { responsivePriority: 2, targets: -2 }   // Status (second last column) second highest priority
+        ]
+    });
+});
+
+
+        @if (session('success'))
+            toastr.options = {
+                closeButton: true,
+                progressBar: true,
+                positionClass: 'toast-top-right',
+                timeOut: 3000
+            };
+            toastr.success("{{ session('success') }}");
+        @endif
+    </script>
+
 </body>
 </html>

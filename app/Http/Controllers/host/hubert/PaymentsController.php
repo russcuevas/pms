@@ -66,6 +66,14 @@ class PaymentsController extends Controller
                 ->update(['status' => 'paid']);
         }
 
+        DB::table('monthly_sales')->insert([
+            'unit_id' => $payment->unit_id,
+            'property_id' => $payment->property_id,
+            'amount' => $payment->amount,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
         return redirect()->route('host.huberts.payments.page')->with('success', 'Payment approved, billing updated, and balance reduced.');
     }
 
