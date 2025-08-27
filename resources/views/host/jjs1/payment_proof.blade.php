@@ -43,16 +43,20 @@
 
 <body>
     <!-- TOP NAV BAR -->
-    <div class="bg-dark text-white py-3">
-        <div class="container d-flex justify-content-between align-items-center">
-            <div>
-                <small class="text-uppercase">JJS1 BLDG HOST PANEL</small>
-                <div class="fw-bold">Host/Owner</div>
-            </div>
-            <div>
-                <a href="{{ route('host.logout.request') }}" class="text-white text-decoration-none">
-                    <i class="fas fa-sign-out-alt fs-5"></i> Logout
-                </a>
+    <div class="bg-dark text-white py-3" style="background-color: #44444E !important">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-6">
+                    <div>
+                        <small class="text-uppercase text-white">JJS1 BLDG HOST PANEL</small>
+                        <div class="fw-bold">Host/Owner</div>
+                    </div>
+                </div>
+                <div class="col-6 text-end">
+                    <a href="{{ route('host.logout.request') }}" class="text-white text-decoration-none">
+                        <i class="fas fa-sign-out-alt fs-5"></i> Logout
+                    </a>
+                </div>
             </div>
         </div>
     </div>
@@ -128,11 +132,11 @@
     </div>
 
     <!-- Bottom Navigation -->
-    <div class="bottom-nav">
-        <a href="{{ route('host.jjs1.dashboard.page') }}">
-            <i class="fas fa-home"></i><br />Back to dashboard
-        </a>
-    </div>
+                <div class="bottom-nav" style="background-color: #44444E !important">
+                    <a href="{{ route('host.jjs1.dashboard.page') }}" style="text-decoration: none">
+                        <i class="fas fa-home"></i><br>Back to dashboard
+                    </a>
+                </div>
 
     <!-- SCRIPTS -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

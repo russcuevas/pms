@@ -80,12 +80,12 @@
 <body>
 
     <!-- TOP NAV BAR -->
-    <div class="bg-dark text-white py-3">
+    <div class="bg-dark text-white py-3" style="background-color: #44444E !important">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-6">
                     <div>
-                        <small class="text-uppercase text-white">JJS1 Bldg HOST PANEL</small>
+                        <small class="text-uppercase text-white">JJS1 BLDG HOST PANEL</small>
                         <div class="fw-bold">Host/Owner</div>
                     </div>
                 </div>
@@ -149,7 +149,7 @@
     
 
                     <!-- Bottom Navigation -->
-                <div class="bottom-nav">
+                <div class="bottom-nav" style="background-color: #44444E !important">
                     <a href="{{ route('host.jjs1.dashboard.page') }}" style="text-decoration: none">
                         <i class="fas fa-home"></i><br>Back to dashboard
                     </a>

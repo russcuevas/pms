@@ -74,7 +74,7 @@ canvas {
 <body>
 
     <!-- TOP NAV BAR -->
-    <div class="bg-dark text-white py-3">
+    <div class="bg-dark text-white py-3" style="background-color: #44444E !important">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-6">
@@ -233,7 +233,7 @@ canvas {
 
         <div class="row mb-4">
             <div class="col-md-4">
-                <div class="card text-white bg-success h-100">
+                <div class="card text-white bg-success h-100" style="background-color: #44444E !important">
                     <div class="card-body">
                         <h5 class="card-title">Total Payment</h5>
                         <h2 id="totalPayment" class="card-text">₱0.00</h2>
@@ -242,7 +242,7 @@ canvas {
             </div>
 
             <div class="col-md-4">
-                <div class="card text-white bg-success h-100">
+                <div class="card text-white bg-success h-100" style="background-color: #44444E !important">
                     <div class="card-body">
                         <h5 class="card-title">Cash Payment</h5>
                         <h2 id="cashPayment" class="card-text">₱0.00</h2>
@@ -251,7 +251,7 @@ canvas {
             </div>
 
             <div class="col-md-4">
-                <div class="card text-white bg-success h-100">
+                <div class="card text-white bg-success h-100" style="background-color: #44444E !important">
                     <div class="card-body">
                         <h5 class="card-title">Online Payment</h5>
                         <h2 id="onlinePayment" class="card-text">₱0.00</h2>
