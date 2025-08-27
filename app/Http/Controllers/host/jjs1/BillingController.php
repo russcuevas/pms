@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Http\Controllers\host\hubert;
+namespace App\Http\Controllers\host\jjs1;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class BillingController extends Controller
 {
-    public function HostHubertBillingPage()
+    public function HostJjs1BillingPage()
     {
         if (!Auth::guard('hosts')->check()) {
             return redirect()->route('host.login.page')->with('error', 'Please log in.');
         }
-
-        $propertyId = 1;
+        $propertyId = 2;
 
         $latestBillingIds = DB::table('billings')
             ->select(DB::raw('MAX(id) as latest_id'))
@@ -27,7 +27,7 @@ class BillingController extends Controller
             })
             ->join('tenants', 'billings.tenant_id', '=', 'tenants.id')
             ->join('units', 'billings.unit_id', '=', 'units.id')
-            ->where('billings.property_id', $propertyId) // <- Filter here
+            ->where('billings.property_id', $propertyId)
             ->select(
                 'billings.*',
                 'tenants.fullname as tenant_name',
@@ -36,17 +36,13 @@ class BillingController extends Controller
             ->orderByDesc('billings.created_at')
             ->get();
 
-        return view('host.hubert.billing', compact('billings'));
+        return view('host.jjs1.billing', compact('billings'));
     }
 
-
-    public function HostHubertViewPreviousBillings($tenantId)
+    public function HostJjs1ViewPreviousBillings($tenantId)
     {
-        if (!Auth::guard('hosts')->check()) {
-            return redirect()->route('host.login.page')->with('error', 'Please log in.');
-        }
+        $propertyId = 2;
 
-        $propertyId = 1;
         $billings = DB::table('billings')
             ->join('tenants', 'billings.tenant_id', '=', 'tenants.id')
             ->join('units', 'billings.unit_id', '=', 'units.id')
@@ -66,6 +62,7 @@ class BillingController extends Controller
             return back()->with('error', 'No previous billings found for this tenant.');
         }
 
-            return view('host.hubert.previous_billings', compact('groupedBillings'));
+        return view('host.jjs1.previous_billings', compact('groupedBillings'));
     }
+
 }

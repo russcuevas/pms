@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Host - Expenses Management</title>
+    <title>JJS1 Host Dashboard</title>
 
   <!-- CSS Links -->
   <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
@@ -47,7 +47,7 @@
       <div class="row align-items-center">
         <div class="col-6">
           <div>
-            <small class="text-uppercase text-white">HUBERTS HOST PANEL</small>
+            <small class="text-uppercase text-white">JJS1 BLDG HOST PANEL</small>
             <div class="fw-bold">Host/Owner</div>
           </div>
         </div>
@@ -65,7 +65,7 @@
         <div class="d-flex justify-content-between align-items-center mb-3">
           <h2 class="mb-4">Expenses Management</h2>
             <div>
-                <a href="{{ route('host.hubert.print.expenses') }}" target="_blank" class="btn btn-secondary">
+                <a href="{{ route('host.jjs1.print.expenses') }}" target="_blank" class="btn btn-secondary">
                     <i class="fa-solid fa-print"></i> Print All
                 </a>
             </div>
@@ -108,12 +108,12 @@
               @if ($expense->is_approved)
                 <span class="badge bg-success">Approved</span>
               @else
-                <form action="{{ route('host.hubert.expenses.approve', $expense->id) }}" method="POST" style="display:inline;">
+                <form action="{{ route('host.jjs1.expenses.approve', $expense->id) }}" method="POST" style="display:inline;">
                   @csrf
                   <button type="submit" class="btn btn-success btn-sm" onclick="return confirm('Approve this expense?')">Approve</button>
                 </form>
 
-                <form action="{{ route('host.hubert.expenses.decline', $expense->id) }}" method="POST" style="display:inline;">
+                <form action="{{ route('host.jjs1.expenses.decline', $expense->id) }}" method="POST" style="display:inline;">
                   @csrf
                   @method('DELETE')
                   <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Decline and delete this expense?')">Decline</button>
@@ -129,7 +129,7 @@
 
   <!-- Bottom Navigation -->
   <div class="bottom-nav">
-    <a href="{{ route('host.huberts.dashboard.page') }}">
+    <a href="{{ route('host.jjs1.dashboard.page') }}">
       <i class="fas fa-home"></i><br>Back to dashboard
     </a>
   </div>

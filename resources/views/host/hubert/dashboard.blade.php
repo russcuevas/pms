@@ -455,7 +455,6 @@ monthlyNetIncomeChart = createOrUpdateChart(
 </script>
 
 <script>
-    // Function to fetch and update payment data
     function updatePaymentData(year) {
         fetch(`/host/hubert/payment-breakdown?year=${year}`)
             .then(response => response.json())
@@ -469,12 +468,10 @@ monthlyNetIncomeChart = createOrUpdateChart(
             });
     }
 
-    // Event listener for year change
     document.getElementById('yearSelect').addEventListener('change', function () {
         updatePaymentData(this.value);
     });
 
-    // Run on page load for the default selected year
     document.addEventListener('DOMContentLoaded', function () {
         const defaultYear = document.getElementById('yearSelect').value;
         updatePaymentData(defaultYear);

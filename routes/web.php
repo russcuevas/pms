@@ -32,6 +32,16 @@ use App\Http\Controllers\host\hubert\BalanceController;
 use App\Http\Controllers\host\hubert\MonthlySalesController;
 use App\Http\Controllers\host\hubert\PaymentProofController as HostHubertPaymentProofController;
 use App\Http\Controllers\host\hubert\RequestToManagerController as HubertRequestToManagerController;
+use App\Http\Controllers\host\jjs1\AdminController as Jjs1AdminController;
+use App\Http\Controllers\host\jjs1\AnnouncementController as Jjs1AnnouncementController;
+use App\Http\Controllers\host\jjs1\BillingController as Jjs1BillingController;
+use App\Http\Controllers\host\jjs1\ExpenseController;
+use App\Http\Controllers\host\jjs1\MonthlySalesController as Jjs1MonthlySalesController;
+use App\Http\Controllers\host\jjs1\PaymentProofController as Jjs1PaymentProofController;
+use App\Http\Controllers\host\jjs1\PaymentsController as Jjs1PaymentsController;
+use App\Http\Controllers\host\jjs1\RequestController as Jjs1RequestController;
+use App\Http\Controllers\host\jjs1\RequestToManagerController as Jjs1RequestToManagerController;
+use App\Http\Controllers\host\jjs1\TurnOverController as Jjs1TurnOverController;
 use App\Http\Controllers\tenant\hubert\AnnouncementController as TenantHubertAnnouncementController;
 // TENANTS
 use App\Http\Controllers\tenant\hubert\DashboardController as TenantHubertDashboardController;
@@ -130,8 +140,67 @@ Route::get('/host/hubert/balance/delinquent', [BalanceController::class, 'HostHu
 // END HUBERTS
 
 
+// START JJS1
 // JJS1
 Route::get('/host/jjs1/dashboard', [Jjs1DashboardController::class, 'HostJjs1DashboardPage'])->name('host.jjs1.dashboard.page');
+Route::get('/host/jjs1/monthly-sales', [Jjs1MonthlySalesController::class, 'HostJjs1MonthlySalesComputation'])->name('host.jjs1.monthly.sales');
+Route::get('/host/jjs1/monthly-expenses', [Jjs1MonthlySalesController::class, 'HostJjs1MonthlyExpensesComputation'])->name('host.jjs1.monthly.expenses');
+Route::get('/host/jjs1/monthly-net-income', [Jjs1MonthlySalesController::class, 'HostJjs1MonthlyNetIncomeComputation'])->name('host.jjs1.monthly.net.income');
+Route::get('/host/jjs1/payment-breakdown', [Jjs1MonthlySalesController::class, 'HostJjs1PaymentBreakdown']);
+
+
+// ADMIN MANAGEMENT
+Route::get('/host/jjs1/admin-management', [Jjs1AdminController::class, 'HostJjs1AdminPage'])->name('host.jjs1.admin.management.page');
+Route::patch('/host/jjs1/admin-management/update-approval/{id}', [Jjs1AdminController::class, 'HostJjs1UpdateApproval'])->name('host.jjs1.update.admin.approval');
+
+// TURNOVERS
+Route::get('/host/jjs1/turnovers', [Jjs1TurnOverController::class, 'Jjs1TurnOverPage'])->name('host.jjs1.turnover.page');
+Route::post('host/jjs1/turnovers/{id}/approve', [Jjs1TurnOverController::class, 'Jjs1TurnOverApproveRequest'])->name('host.jjs1.turnovers.approve');
+Route::delete('host/jjs1/turnovers/{id}/decline', [Jjs1TurnOverController::class, 'Jjs1TurnOverDeclineRequest'])->name('host.jjs1.turnovers.decline');
+
+
+// ADMIN REQUEST
+Route::get('/host/jjs1/admin-request', [Jjs1RequestToManagerController::class, 'HostJjs1RequestToManagerPage'])->name('host.jjs1.request_to_manager.page');
+Route::patch('/host/jjs1/request-to-manager/{id}/approve', [Jjs1RequestToManagerController::class, 'HostJjs1RequestToManagerApprove'])
+    ->name('host.jjs1.request_to_manager.approve');
+Route::delete('/host/jjs1/request-to-manager/{id}/decline', [Jjs1RequestToManagerController::class, 'HostJjs1RequestToManagerDecline'])
+    ->name('host.jjs1.request_to_manager.decline');
+Route::delete('/host/jjs1/request-to-manager/{id}/delete', [Jjs1RequestToManagerController::class, 'HostJjs1RequestToManagerDelete'])
+    ->name('host.jjs1.request_to_manager.delete');
+
+
+// BILLING MANAGEMENT
+Route::get('/host/jjs1/previous-billings/{tenantId}', [Jjs1BillingController::class, 'HostJjs1ViewPreviousBillings'])->name('host.jjs1.previous.billings');
+Route::get('/host/jjs1/billing', [Jjs1BillingController::class, 'HostJjs1BillingPage'])->name('host.jjs1.billing.page');
+
+
+// PAYMENTS MANAGEMENT
+Route::get('/host/jjs1/payments', [Jjs1PaymentsController::class, 'HostJjs1PaymentsPage'])->name('host.jjs1.payments.page');
+Route::post('/host/jjs1/payments/approve/{paymentId}', [Jjs1PaymentsController::class, 'HostJjs1ApprovePayment'])->name('host.jjs1.payments.approve');
+Route::post('/host/jjs1/payments/decline/{paymentId}', [Jjs1PaymentsController::class, 'HostJjs1DeclinePayment'])->name('host.jjs1.payments.decline');
+
+// EXPENSES
+Route::get('/host/jjs1/expenses', [ExpenseController::class, 'HostJjs1ExpensesPage'])->name('host.jjs1.expenses.page');
+Route::post('/host/jjs1/expenses/{id}/approve', [ExpenseController::class, 'HostJjs1ApprovedRequest'])->name('host.jjs1.expenses.approve');
+Route::delete('/host/jjs1/expenses/{id}/decline', [ExpenseController::class, 'HostJjs1DeclineRequest'])->name('host.jjs1.expenses.decline');
+Route::get('/host/jjs1/print/expenses', [ExpenseController::class, 'HostJjs1ExpensesPrintPage'])
+    ->name('host.jjs1.print.expenses');
+
+// ANNOUNCEMENT MANAGEMENT
+Route::get('/host/jjs1/announcement-management', [Jjs1AnnouncementController::class, 'HostJjs1AnnouncementPage'])->name('host.jjs1.announcement.page');
+Route::post('/host/jjs1/announcements/{id}/approve', [Jjs1AnnouncementController::class, 'HostJjs1AnnouncementApprove'])->name('host.jjs1.announcements.approve');
+Route::post('/host/jjs1/announcements/{id}/decline', [Jjs1AnnouncementController::class, 'HostJjs1AnnouncementDecline'])->name('host.jjs1.announcements.decline');
+Route::post('/host/jjs1/announcements/{id}/delete', [Jjs1AnnouncementController::class, 'HostJjs1AnnouncementDelete'])->name('host.jjs1.announcements.delete');
+
+// REQUEST MANAGENENT
+Route::get('/host/jjs1/request-management', [Jjs1RequestController::class, 'HostJjs1RequestPage'])->name('host.jjs1.request.page');
+Route::patch('/host/jjs1/request/{id}/address', [Jjs1RequestController::class, 'HostJjs1RequestAddressRequest'])
+    ->name('host.jjs1.request.address');
+Route::delete('/host/jjs1/request/{id}/delete', [Jjs1RequestController::class, 'HostJjs1RequestAddressRequest'])
+    ->name('host.jjs1.request.delete');
+
+// PAYMENT PROOF
+Route::get('/host/jjs1/payment_proof', [Jjs1PaymentProofController::class, 'HostJjs1PaymentProofPage'])->name('host.jjs1.paymemt.proof.page');
 
 // JJS2
 Route::get('/host/jjs2/dashboard', [Jjs2DashboardController::class, 'HostJjs2DashboardPage'])->name('host.jjs2.dashboard.page');
