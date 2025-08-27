@@ -208,7 +208,7 @@ canvas {
 
         <!-- Balance -->
         <div class="col-6 col-md-3">
-            <a href="" style="text-decoration: none !important">
+            <a href="{{ route('host.jjs1.balance.page') }}" style="text-decoration: none !important">
                 <div class="card text-center p-4">
                     <i class="fas fa-balance-scale fa-2x mb-2"></i>
                     <div>Balance</div>

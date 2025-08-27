@@ -34,6 +34,7 @@ use App\Http\Controllers\host\hubert\PaymentProofController as HostHubertPayment
 use App\Http\Controllers\host\hubert\RequestToManagerController as HubertRequestToManagerController;
 use App\Http\Controllers\host\jjs1\AdminController as Jjs1AdminController;
 use App\Http\Controllers\host\jjs1\AnnouncementController as Jjs1AnnouncementController;
+use App\Http\Controllers\host\jjs1\BalanceController as Jjs1BalanceController;
 use App\Http\Controllers\host\jjs1\BillingController as Jjs1BillingController;
 use App\Http\Controllers\host\jjs1\ExpenseController;
 use App\Http\Controllers\host\jjs1\MonthlySalesController as Jjs1MonthlySalesController;
@@ -201,6 +202,13 @@ Route::delete('/host/jjs1/request/{id}/delete', [Jjs1RequestController::class, '
 
 // PAYMENT PROOF
 Route::get('/host/jjs1/payment_proof', [Jjs1PaymentProofController::class, 'HostJjs1PaymentProofPage'])->name('host.jjs1.paymemt.proof.page');
+
+// BALANCES PAID DELIQUENT
+Route::get('/host/jjs1/balance', [Jjs1BalanceController::class, 'HostJjs1BalancePage'])->name('host.jjs1.balance.page');
+Route::get('/host/jjs1/balance/paid', [Jjs1BalanceController::class, 'HostJjs1BalancePaidPage'])->name('host.jjs1.balance.paid.page');
+Route::get('/host/jjs1/balance/delinquent', [Jjs1BalanceController::class, 'HostJjs1BalanceDelinquentPage'])->name('host.jjs1.balance.delinquent.page');
+
+// END JJS1
 
 // JJS2
 Route::get('/host/jjs2/dashboard', [Jjs2DashboardController::class, 'HostJjs2DashboardPage'])->name('host.jjs2.dashboard.page');
