@@ -36,6 +36,7 @@ use App\Http\Controllers\admin\jjs1\RequestController as AdminJjs1RequestControl
 use App\Http\Controllers\admin\jjs1\RequestToManagerController as AdminJjs1RequestToManagerController;
 use App\Http\Controllers\admin\jjs1\UnitsController as Jjs1UnitsController;
 use App\Http\Controllers\admin\jjs2\AnnouncementController as AdminJjs2AnnouncementController;
+use App\Http\Controllers\admin\jjs2\BalanceController as AdminJjs2BalanceController;
 use App\Http\Controllers\admin\jjs2\BillingController as AdminJjs2BillingController;
 use App\Http\Controllers\admin\jjs2\DashboardController as AdminJjs2DashboardController;
 use App\Http\Controllers\admin\jjs2\ExpensesController as Jjs2ExpensesController;
@@ -544,6 +545,14 @@ Route::post('/admin/jjs2/request_to_manager/request', [AdminJjs2RequestToManager
 // JJS2 ANNOUNCEMENT PAGE
 Route::get('/admin/jjs2/announcement_management', [AdminJjs2AnnouncementController::class, 'AdminJjs2AnnouncementPage'])->name('admin.jjs2.announcement.page');
 Route::post('/admin/jjs2/announcement/request', [AdminJjs2AnnouncementController::class, 'AdminJjs2AnnouncementRequest'])->name('admin.jjs2.announcement.request');
+
+
+
+// JJS2 BALANCE
+Route::get('/admin/jjs2/balance', [AdminJjs2BalanceController::class, 'AdminJjs2BalancePage'])->name('admin.jjs2.balance.page');
+Route::get('/admin/jjs2/balance/paid', [AdminJjs2BalanceController::class, 'AdminJjs2BalancePaidPage'])->name('admin.jjs2.balance.paid.page');
+Route::get('/admin/jjs2/balance/delinquent', [AdminJjs2BalanceController::class, 'AdminJjs2BalanceDelinquentPage'])->name('admin.jjs2.balance.delinquent.page');
+
 
 
 // TENANTS ROUTES

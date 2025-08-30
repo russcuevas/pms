@@ -12,22 +12,9 @@
 
 
 
-// JJS1 REQUEST PAGE
-Route::get('/admin/jjs1/request_management', [AdminJjs1RequestController::class, 'AdminJjs1RequestPage'])->name('admin.jjs1.request.page');
-Route::put('/admin/jjs1/request/{id}/approve', [AdminJjs1RequestController::class, 'AdminJjs1tRequestApprove'])->name('admin.jjs1.request.approve');
-Route::delete('/admin/jjs1/request/{id}/decline', [AdminJjs1RequestController::class, 'AdminJjs1RequestDecline'])->name('admin.jjs1.request.decline');
 
 
-// JJS1 ANNOUNCEMENT PAGE
-Route::get('/admin/jjs1/announcement_management', [AdminJjs1AnnouncementController::class, 'AdminJjs1AnnouncementPage'])->name('admin.jjs1.announcement.page');
-Route::post('/admin/jjs1/announcement/request', [AdminJjs1AnnouncementController::class, 'AdminJjs1AnnouncementRequest'])->name('admin.jjs1.announcement.request');
 
 
-// JJS1 REQUEST TO MANAGER PAGE
-Route::get('/admin/jjs1/request_to_manager', [AdminJjs1RequestToManagerController::class, 'AdminJjs1RequestToManagerPage'])->name('admin.jjs1.request_to_manager.page');
-Route::post('/admin/jjs1/request_to_manager/request', [AdminJjs1RequestToManagerController::class, 'AdminJjs1RequestToManagerRequest'])->name('admin.jjs1.request_to_manager.request');
 
-// JJS1 BALANCE
-Route::get('/admin/jjs1/balance', [AdminJjs1BalanceController::class, 'AdminJjs1BalancePage'])->name('admin.jjs1.balance.page');
-Route::get('/admin/jjs1/balance/paid', [AdminJjs1BalanceController::class, 'AdminJjs1BalancePaidPage'])->name('admin.jjs1.balance.paid.page');
-Route::get('/admin/jjs1/balance/delinquent', [AdminJjs1BalanceController::class, 'AdminJjs1BalanceDelinquentPage'])->name('admin.jjs1.balance.delinquent.page');
+

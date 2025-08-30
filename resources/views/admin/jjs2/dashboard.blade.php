@@ -214,7 +214,7 @@
                         </div>
                         <!-- Balance -->
                         <div class="col-6 col-md-3" >
-                            <a href="" style="text-decoration: none !important">
+                            <a href="{{ route('admin.jjs2.balance.page') }}" style="text-decoration: none !important">
                                 <div class="card text-center p-4">
                                     <i class="fas fa-money-bill fa-2x mb-2"></i>
                                     <div>Balance</div>
