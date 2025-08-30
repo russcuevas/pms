@@ -1,5 +1,0 @@
-// BALANCES PAID DELIQUENT
-Route::get('/host/hubert/balance', [BalanceController::class, 'HostHubertBalancePage'])->name('host.hubert.balance.page');
-Route::get('/host/hubert/balance/paid', [BalanceController::class, 'HostHubertBalancePaidPage'])->name('host.hubert.balance.paid.page');
-Route::get('/host/hubert/balance/delinquent', [BalanceController::class, 'HostHubertBalanceDelinquentPage'])->name('host.hubert.balance.delinquent.page');
-
