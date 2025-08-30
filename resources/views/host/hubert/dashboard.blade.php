@@ -373,14 +373,14 @@ $(document).ready(function () {
                     });
                 }
 
-monthlySalesChart = createOrUpdateChart(
-    monthlySalesChart,
-    ctxSales,
-    'Monthly Sales (₱)',
-    salesData,
-    'rgba(75, 192, 75, 0.6)',      // Green background
-    'rgba(75, 192, 75, 1)'         // Green border
-);
+                monthlySalesChart = createOrUpdateChart(
+                    monthlySalesChart,
+                    ctxSales,
+                    'Monthly Sales (₱)',
+                    salesData,
+                    'rgba(75, 192, 75, 0.6)',      // Green background
+                    'rgba(75, 192, 75, 1)'         // Green border
+                );
             },
             error: function () {
                 alert('Failed to load sales data.');

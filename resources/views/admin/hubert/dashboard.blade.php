@@ -84,7 +84,7 @@
                     <div class="d-flex align-items-center">
                         <div>
                             <small class="text-uppercase text-white">HUBERTS ADMIN PANEL</small>
-                            <div class="fw-bold">Admin: {{ Auth::user()->name ?? 'Admin User' }}</div>
+                            <div class="fw-bold">Admin: {{ Auth::guard('admins')->user()->fullname ?? 'Admin User' }}</div>
                         </div>
                     </div>
                 </div>

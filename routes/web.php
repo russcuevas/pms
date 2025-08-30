@@ -25,7 +25,16 @@ use App\Http\Controllers\admin\hubert\PaymentsController;
 use App\Http\Controllers\admin\hubert\RequestController as HubertRequestController;
 use App\Http\Controllers\admin\hubert\RequestToManagerController;
 use App\Http\Controllers\admin\hubert\UnitsController;
+use App\Http\Controllers\admin\jjs1\AnnouncementController as AdminJjs1AnnouncementController;
+use App\Http\Controllers\admin\jjs1\BalanceController as AdminJjs1BalanceController;
+use App\Http\Controllers\admin\jjs1\BillingController as AdminJjs1BillingController;
 use App\Http\Controllers\admin\jjs1\DashboardController as AdminJjs1DashboardController;
+use App\Http\Controllers\admin\jjs1\ExpensesController as Jjs1ExpensesController;
+use App\Http\Controllers\admin\jjs1\PaymentProofController as AdminJjs1PaymentProofController;
+use App\Http\Controllers\admin\jjs1\PaymentsController as AdminJjs1PaymentsController;
+use App\Http\Controllers\admin\jjs1\RequestController as AdminJjs1RequestController;
+use App\Http\Controllers\admin\jjs1\RequestToManagerController as AdminJjs1RequestToManagerController;
+use App\Http\Controllers\admin\jjs1\UnitsController as Jjs1UnitsController;
 use App\Http\Controllers\admin\jjs2\DashboardController as AdminJjs2DashboardController;
 use App\Http\Controllers\host\hubert\AnnouncementController as HubertAnnouncementController;
 use App\Http\Controllers\host\hubert\BalanceController;
@@ -51,7 +60,12 @@ use App\Http\Controllers\tenant\hubert\PaymentController;
 use App\Http\Controllers\tenant\hubert\PaymentProofController;
 use App\Http\Controllers\tenant\hubert\RequestController;
 use App\Http\Controllers\tenant\hubert\ViewBillingController;
+use App\Http\Controllers\tenant\jjs1\AnnouncementController as TenantJjs1AnnouncementController;
 use App\Http\Controllers\tenant\jjs1\DashboardController as TenantJjs1DashboardController;
+use App\Http\Controllers\tenant\jjs1\PaymentController as Jjs1PaymentController;
+use App\Http\Controllers\tenant\jjs1\PaymentProofController as TenantJjs1PaymentProofController;
+use App\Http\Controllers\tenant\jjs1\RequestController as TenantJjs1RequestController;
+use App\Http\Controllers\tenant\jjs1\ViewBillingController as Jjs1ViewBillingController;
 use App\Http\Controllers\tenant\jjs2\DashboardController as TenantJjs2DashboardController;
 use App\Http\Controllers\tenant\TenantAuthController;
 use Illuminate\Support\Facades\Route;
@@ -281,13 +295,66 @@ Route::get('/admin/hubert/balance', [HubertBalanceController::class, 'AdminHuber
 Route::get('/admin/hubert/balance/paid', [HubertBalanceController::class, 'AdminHubertBalancePaidPage'])->name('admin.hubert.balance.paid.page');
 Route::get('/admin/hubert/balance/delinquent', [HubertBalanceController::class, 'AdminHubertBalanceDelinquentPage'])->name('admin.hubert.balance.delinquent.page');
 
-// HUBERTS NOTIFICATIONS
-Route::get('/admin/hubert/notification/view/{id}', [NotificationController::class, 'TenantsHubertMarkViewedNotifications'])->name('admin.hubert.notification.view');
-Route::delete('/admin/hubert/notification/delete/{id}', [NotificationController::class, 'TenantsHubertDeleteNotification'])->name('admin.hubert.notification.delete');
 
 
+
+
+// ADMIN JJS1 START
 // JJS1
+
+// JJS1 DASHBOARD
 Route::get('/admin/jjs1/dashboard', [AdminJjs1DashboardController::class, 'AdminJjs1DashboardPage'])->name('admin.jjs1.dashboard.page');
+Route::post('/admin/jjs1/turn-over', [AdminJjs1DashboardController::class, 'AdminJjs1TurnOverMoney'])->name('admin.jjs1.turnover.request');
+// END JJS1 DASHBOARD
+
+
+// JJS1 EXPENSES
+Route::get('/admin/jjs1/expenses', [Jjs1ExpensesController::class, 'AdminJjs1ExpensesPage'])->name('admin.jjs1.expenses.page');
+Route::post('/admin/jjs1/expenses/create', [Jjs1ExpensesController::class, 'AdminJjs1ExpensesRequest'])->name('admin.jjs1.expenses.request');
+Route::get('/admin/jjs1/print/expenses', [Jjs1ExpensesController::class, 'AdminJjs1ExpensesPrintPage'])
+    ->name('admin.jjs1.print.expenses');
+
+// JJS1 UNIT
+Route::get('admin/jjs1/unit_management', [Jjs1UnitsController::class, 'AdminJjs1UnitsManagementPage'])->name('admin.jjs1.units.management.page');
+Route::post('/admin/jjs1/units/transfer-and-repair', [Jjs1UnitsController::class, 'AdminJjs1TransferAndRepair'])->name('admin.units.transfer-and-repairjjs1');
+Route::post('/admin/jjs1/units/mark-for-repair', [Jjs1UnitsController::class, 'AdminJjs1MarkForRepair'])->name('admin.units.mark-for-repairjjs1');
+Route::post('/admin/jjs1/units/mark-as-repaired', [Jjs1UnitsController::class, 'AdminJjs1MarkAsRepaired'])->name('admin.units.mark-as-repairedjjs1');
+Route::post('/admin/jjs1/unit/{unit}/moveout/{tenant}', [Jjs1UnitsController::class, 'AdminJjs1MoveOutTenant'])->name('admin.units.moveoutjjs1');
+Route::get('/admin/jjs1/print/summary', [Jjs1UnitsController::class, 'Jjs1printSummary'])->name('admin.jjs1.print.summary');
+Route::get('/admin/jjs1/print/billings', [Jjs1UnitsController::class, 'Jjs1printBillings'])->name('admin.jjs1.print.billings');
+Route::get('/admin/jjs1/print/payments', [Jjs1UnitsController::class, 'Jjs1printPayments'])->name('admin.jjs1.print.payments');
+Route::post('/admin/jjs1/unit/follou-up-billings', [Jjs1UnitsController::class, 'AdminJjs1FollowUpBillings'])->name('admin.jjs1.units.follow.up.billings');
+
+// JJS1 BILLING PAGE
+Route::get('/admin/jjs1/billing', [AdminJjs1BillingController::class, 'AdminJjs1BillingPage'])->name('admin.jjs1.billing.page');
+Route::post('/admin/jjs1/billing/create', [AdminJjs1BillingController::class, 'AdminJjs1BillingCreate'])->name('admin.jjs1.billing.create');
+
+// JJS1 PAYMENT PAGE
+Route::get('/admin/jjs1/payments/create', [AdminJjs1PaymentsController::class, 'AdminJjs1PaymentPage'])->name('admin.jjs1.payments.page');
+Route::post('/admin/jjs1/payments/store', [AdminJjs1PaymentsController::class, 'AdminJjs1PaymentRequest'])->name('admin.jjs1.payments.request');
+
+// JJS1 PROOF OF PAYMENT PAGE
+Route::get('/admin/jjs1/payment_proof', [AdminJjs1PaymentProofController::class, 'AdminJjs1PaymentProofPage'])->name('admin.jjs1.paymemt.proof.page');
+
+// JJS1 REQUEST PAGE
+Route::get('/admin/jjs1/request_management', [AdminJjs1RequestController::class, 'AdminJjs1RequestPage'])->name('admin.jjs1.request.page');
+Route::put('/admin/jjs1/request/{id}/approve', [AdminJjs1RequestController::class, 'AdminJjs1tRequestApprove'])->name('admin.jjs1.request.approve');
+Route::delete('/admin/jjs1/request/{id}/decline', [AdminJjs1RequestController::class, 'AdminJjs1RequestDecline'])->name('admin.jjs1.request.decline');
+
+
+// JJS1 ANNOUNCEMENT PAGE
+Route::get('/admin/jjs1/announcement_management', [AdminJjs1AnnouncementController::class, 'AdminJjs1AnnouncementPage'])->name('admin.jjs1.announcement.page');
+Route::post('/admin/jjs1/announcement/request', [AdminJjs1AnnouncementController::class, 'AdminJjs1AnnouncementRequest'])->name('admin.jjs1.announcement.request');
+
+
+// JJS1 REQUEST TO MANAGER PAGE
+Route::get('/admin/jjs1/request_to_manager', [AdminJjs1RequestToManagerController::class, 'AdminJjs1RequestToManagerPage'])->name('admin.jjs1.request_to_manager.page');
+Route::post('/admin/jjs1/request_to_manager/request', [AdminJjs1RequestToManagerController::class, 'AdminJjs1RequestToManagerRequest'])->name('admin.jjs1.request_to_manager.request');
+
+// HUBERTS BALANCE
+Route::get('/admin/jjs1/balance', [AdminJjs1BalanceController::class, 'AdminJjs1BalancePage'])->name('admin.jjs1.balance.page');
+Route::get('/admin/jjs1/balance/paid', [AdminJjs1BalanceController::class, 'AdminJjs1BalancePaidPage'])->name('admin.jjs1.balance.paid.page');
+Route::get('/admin/jjs1/balance/delinquent', [AdminJjs1BalanceController::class, 'AdminJjs1BalanceDelinquentPage'])->name('admin.jjs1.balance.delinquent.page');
 
 // JJS2
 Route::get('/admin/jjs2/dashboard', [AdminJjs2DashboardController::class, 'AdminJjs2DashboardPage'])->name('admin.jjs2.dashboard.page');
@@ -318,6 +385,7 @@ Route::post('/tenants/forgot-password-request', [TenantAuthController::class, 'T
 Route::post('/tenants/reset-password', [TenantAuthController::class, 'resetPassword'])->name('tenants.reset.password');
 
 
+
 // TENANTS HUBERTS
 Route::get('/tenants/huberts/dashboard', [TenantHubertDashboardController::class, 'TenantsHubertDashboardPage'])->name('tenants.huberts.dashboard.page');
 // TENANTS HUBERTS BILLING PAGE
@@ -332,9 +400,32 @@ Route::get('/tenants/huberts/announcements', [TenantHubertAnnouncementController
 // TENANTS HUBERTS PAYMENTS PROOF
 Route::post('/tenant/huberts/payment-proof', [PaymentProofController::class, 'TenantsHubertMyPaymentRequest'])->name('tenant.huberts.payment.proof.request');
 
+// HUBERTS NOTIFICATIONS
+Route::get('/admin/hubert/notification/view/{id}', [NotificationController::class, 'TenantsHubertMarkViewedNotifications'])->name('admin.hubert.notification.view');
+Route::delete('/admin/hubert/notification/delete/{id}', [NotificationController::class, 'TenantsHubertDeleteNotification'])->name('admin.hubert.notification.delete');
+
 
 
 // JJS1
 Route::get('/tenants/jjs1/dashboard', [TenantJjs1DashboardController::class, 'TenantsJjs1DashboardPage'])->name('tenants.jjs1.dashboard.page');
+// TENANTS JJS1 BILLING PAGE
+Route::get('/tenants/jjs1/my-billing', [Jjs1ViewBillingController::class, 'TenantsJjs1MyBillingPage'])->name('tenants.jjs1.my-billing.page');
+// TENANTS JJS1 PAYMENT PAGE
+Route::get('/tenants/jjs1/my-payment', [Jjs1PaymentController::class, 'TenantsJjs1MyPaymentPage'])->name('tenants.jjs1.my-payment.page');
+// TENANTS JJS1 REQUEST PAGE
+Route::get('/tenants/jjs1/my-request', [TenantJjs1RequestController::class, 'TenantsJjs1MyRequestPage'])->name('tenants.jjs1.my-request.page');
+Route::post('/tenants/jjs1/my-request/post', [TenantJjs1RequestController::class, 'TenantsJjs1RequestPost'])->name('tenants.jjs1.my-request.post');
+// TENANTS JJS1 ANNOUNCEMENT PAGE
+Route::get('/tenants/jjs1/announcements', [TenantJjs1AnnouncementController::class, 'TenantsJjs1AnnouncementPage'])->name('tenants.jjs1.announcement.page');
+// TENANTS JJS1 PAYMENTS PROOF
+Route::post('/tenant/jjs1/payment-proof', [TenantJjs1PaymentProofController::class, 'TenantsJjs1MyPaymentRequest'])->name('tenant.jjs1.payment.proof.request');
+// JJS1 NOTIFICATIONS
+Route::get('/admin/jjs1/notification/view/{id}', [NotificationController::class, 'TenantsJjs1MarkViewedNotifications'])->name('admin.jjs1.notification.view');
+Route::delete('/admin/jjs1/notification/delete/{id}', [NotificationController::class, 'TenantsJjs1DeleteNotification'])->name('admin.jjs1.notification.delete');
+
+
+
+
+
 // JJS2
 Route::get('/tenants/jjs2/dashboard', [TenantJjs2DashboardController::class, 'TenantsJjs2DashboardPage'])->name('tenants.jjs2.dashboard.page');

@@ -7,9 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class DashboardController extends Controller
+class ViewBillingController extends Controller
 {
-public function TenantsJjs1DashboardPage()
+    public function TenantsJjs1MyBillingPage()
     {
         $tenant = Auth::guard('tenants')->user();
 
@@ -21,7 +21,6 @@ public function TenantsJjs1DashboardPage()
             return redirect()->route('tenants.login.page')->with('error', 'Unauthorized property access.');
         }
 
-        // Get unit
         $unit = DB::table('units')
             ->where('id', $tenant->unit_id)
             ->where('property_id', $tenant->property_id)
@@ -36,26 +35,25 @@ public function TenantsJjs1DashboardPage()
             return redirect()->route('tenants.login.page')->with('error', 'Unauthorized access.');
         }
 
-        // Get latest billing
-        $billing = DB::table('billings')
-            ->where('tenant_id', $tenant->id)
-            ->orderByDesc('created_at')
-            ->first();
-
-        $property = DB::table('properties')->where('id', 2)->first();
-        
-        $notifications = DB::table('tenant_notifications')
-            ->where('tenant_id', $tenant->id)
-            ->where('property_id', $tenant->property_id)
-            ->orderByDesc('created_at')
+        // Get billings
+        $billings = DB::table('billings')
+            ->join('units', 'billings.unit_id', '=', 'units.id')
+            ->where('billings.tenant_id', $tenant->id)
+            ->orderByDesc('billings.statement_date')
+            ->select('billings.*', 'units.units_name')
             ->get();
+            $notifications = DB::table('tenant_notifications')
+                ->where('tenant_id', $tenant->id)
+                ->where('property_id', $tenant->property_id)
+                ->orderByDesc('created_at')
+                ->get();
 
-        return view('tenant.jjs1.dashboard', [
-            'tenant' => $tenant,
-            'unit' => $unit,
-            'property' => $property,
-            'billing' => $billing,
-            'notifications' => $notifications,  // <-- add this
-        ]);
+        return view('tenant.jjs1.view_billing', compact(
+            'tenant',
+            'unit',
+            'property',
+            'billings',
+            'notifications'
+        ));
     }
 }
