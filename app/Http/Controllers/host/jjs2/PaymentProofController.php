@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\host\jjs2;
 
 use App\Http\Controllers\Controller;
+use App\Models\PaymentsProof;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class DashboardController extends Controller
+class PaymentProofController extends Controller
 {
-    public function HostJjs2DashboardPage()
+    public function HostJjs2PaymentProofPage()
     {
         // Session
         if (!Auth::guard('hosts')->check()) {
@@ -17,6 +18,9 @@ class DashboardController extends Controller
 
         $host = Auth::guard('hosts')->user();
 
-        return view('host.jjs2.dashboard', compact('host'));
+        $paymentProofs = PaymentsProof::where('property_id', 3)->get();
+
+
+        return view('host.jjs2.payment_proof', compact('host', 'paymentProofs'));
     }
 }

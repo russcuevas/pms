@@ -52,6 +52,16 @@ use App\Http\Controllers\host\jjs1\PaymentsController as Jjs1PaymentsController;
 use App\Http\Controllers\host\jjs1\RequestController as Jjs1RequestController;
 use App\Http\Controllers\host\jjs1\RequestToManagerController as Jjs1RequestToManagerController;
 use App\Http\Controllers\host\jjs1\TurnOverController as Jjs1TurnOverController;
+use App\Http\Controllers\host\jjs2\AdminController as Jjs2AdminController;
+use App\Http\Controllers\host\jjs2\AnnouncementController as Jjs2AnnouncementController;
+use App\Http\Controllers\host\jjs2\BillingController as Jjs2BillingController;
+use App\Http\Controllers\host\jjs2\ExpenseController as Jjs2ExpenseController;
+use App\Http\Controllers\host\jjs2\MonthlySalesController as Jjs2MonthlySalesController;
+use App\Http\Controllers\host\jjs2\PaymentProofController as Jjs2PaymentProofController;
+use App\Http\Controllers\host\jjs2\PaymentsController as Jjs2PaymentsController;
+use App\Http\Controllers\host\jjs2\RequestController as Jjs2RequestController;
+use App\Http\Controllers\host\jjs2\RequestToManagerController as Jjs2RequestToManagerController;
+use App\Http\Controllers\host\jjs2\TurnOverController as Jjs2TurnOverController;
 use App\Http\Controllers\tenant\hubert\AnnouncementController as TenantHubertAnnouncementController;
 // TENANTS
 use App\Http\Controllers\tenant\hubert\DashboardController as TenantHubertDashboardController;
@@ -221,11 +231,118 @@ Route::get('/host/jjs1/payment_proof', [Jjs1PaymentProofController::class, 'Host
 Route::get('/host/jjs1/balance', [Jjs1BalanceController::class, 'HostJjs1BalancePage'])->name('host.jjs1.balance.page');
 Route::get('/host/jjs1/balance/paid', [Jjs1BalanceController::class, 'HostJjs1BalancePaidPage'])->name('host.jjs1.balance.paid.page');
 Route::get('/host/jjs1/balance/delinquent', [Jjs1BalanceController::class, 'HostJjs1BalanceDelinquentPage'])->name('host.jjs1.balance.delinquent.page');
-
 // END JJS1
+
+
+
+
+
+
+
 
 // JJS2
 Route::get('/host/jjs2/dashboard', [Jjs2DashboardController::class, 'HostJjs2DashboardPage'])->name('host.jjs2.dashboard.page');
+Route::get('/host/jjs2/monthly-sales', [Jjs2MonthlySalesController::class, 'HostJjs2MonthlySalesComputation'])->name('host.jjs2.monthly.sales');
+Route::get('/host/jjs2/monthly-expenses', [Jjs2MonthlySalesController::class, 'HostJjs2MonthlyExpensesComputation'])->name('host.jjs2.monthly.expenses');
+Route::get('/host/jjs2/monthly-net-income', [Jjs2MonthlySalesController::class, 'HostJjs2MonthlyNetIncomeComputation'])->name('host.jjs2.monthly.net.income');
+Route::get('/host/jjs2/payment-breakdown', [Jjs2MonthlySalesController::class, 'HostJjs2PaymentBreakdown']);
+
+
+
+// ADMIN MANAGEMENT
+Route::get('/host/jjs2/admin-management', [Jjs2AdminController::class, 'HostJjs2AdminPage'])->name('host.jjs2.admin.management.page');
+Route::patch('/host/jjs2/admin-management/update-approval/{id}', [Jjs2AdminController::class, 'HostJjs2UpdateApproval'])->name('host.jjs2.update.admin.approval');
+
+// TURNOVERS
+Route::get('/host/jjs2/turnovers', [Jjs2TurnOverController::class, 'Jjs2TurnOverPage'])->name('host.jjs2.turnover.page');
+Route::post('/host/jjs2/turnovers/{id}/approve', [Jjs2TurnOverController::class, 'Jjs2TurnOverApproveRequest'])->name('host.jjs2.turnovers.approve');
+Route::delete('/host/jjs2/turnovers/{id}/decline', [Jjs2TurnOverController::class, 'Jjs2TurnOverDeclineRequest'])->name('host.jjs2.turnovers.decline');
+
+// ADMIN REQUEST
+Route::get('/host/jjs2/admin-request', [Jjs2RequestToManagerController::class, 'HostJjs2RequestToManagerPage'])->name('host.jjs2.request_to_manager.page');
+Route::patch('/host/jjs2/request-to-manager/{id}/approve', [Jjs2RequestToManagerController::class, 'HostJjs2RequestToManagerApprove'])
+    ->name('host.jjs2.request_to_manager.approve');
+Route::delete('/host/jjs2/request-to-manager/{id}/decline', [Jjs2RequestToManagerController::class, 'HostJjs2RequestToManagerDecline'])
+    ->name('host.jjs2.request_to_manager.decline');
+Route::delete('/host/jjs2/request-to-manager/{id}/delete', [Jjs2RequestToManagerController::class, 'HostJjs2RequestToManagerDelete'])
+    ->name('host.jjs2.request_to_manager.delete');
+
+
+    
+// BILLING MANAGEMENT
+Route::get('/host/jjs2/previous-billings/{tenantId}', [Jjs2BillingController::class, 'HostJjs2ViewPreviousBillings'])->name('host.jjs2.previous.billings');
+Route::get('/host/jjs2/billing', [Jjs2BillingController::class, 'HostJjs2BillingPage'])->name('host.jjs2.billing.page');
+
+
+
+// PAYMENTS MANAGEMENT
+Route::get('/host/jjs2/payments', [Jjs2PaymentsController::class, 'HostJjs2PaymentsPage'])->name('host.jjs2.payments.page');
+Route::post('/host/jjs2/payments/approve/{paymentId}', [Jjs2PaymentsController::class, 'HostJjs2ApprovePayment'])->name('host.jjs2.payments.approve');
+Route::post('/host/jjs2/payments/decline/{paymentId}', [Jjs2PaymentsController::class, 'HostJjs2DeclinePayment'])->name('host.jjs2.payments.decline');
+
+// EXPENSES
+Route::get('/host/jjs2/expenses', [Jjs2ExpenseController::class, 'HostJjs2ExpensesPage'])->name('host.jjs2.expenses.page');
+Route::post('/host/jjs2/expenses/{id}/approve', [Jjs2ExpenseController::class, 'HostJjs2ApprovedRequest'])->name('host.jjs2.expenses.approve');
+Route::delete('/host/jjs2/expenses/{id}/decline', [Jjs2ExpenseController::class, 'HostJjs2DeclineRequest'])->name('host.jjs2.expenses.decline');
+Route::get('/host/jjs2/print/expenses', [Jjs2ExpenseController::class, 'HostJjs2ExpensesPrintPage'])
+    ->name('host.jjs2.print.expenses');
+
+
+// ANNOUNCEMENT MANAGEMENT
+Route::get('/host/jjs2/announcement-management', [Jjs2AnnouncementController::class, 'HostJjs2AnnouncementPage'])->name('host.jjs2.announcement.page');
+Route::post('/host/jjs2/announcements/{id}/approve', [Jjs2AnnouncementController::class, 'HostJjs2AnnouncementApprove'])->name('host.jjs2.announcements.approve');
+Route::post('/host/jjs2/announcements/{id}/decline', [Jjs2AnnouncementController::class, 'HostJjs2AnnouncementDecline'])->name('host.jjs2.announcements.decline');
+Route::post('/host/jjs2/announcements/{id}/delete', [Jjs2AnnouncementController::class, 'HostJjs2AnnouncementDelete'])->name('host.jjs2.announcements.delete');
+
+
+// REQUEST MANAGENENT
+Route::get('/host/jjs2/request-management', [Jjs2RequestController::class, 'HostJjs2RequestPage'])->name('host.jjs2.request.page');
+Route::patch('/host/jjs2/request/{id}/address', [Jjs2RequestController::class, 'HostJjs2RequestAddressRequest'])
+    ->name('host.jjs2.request.address');
+Route::delete('/host/jjs2/request/{id}/delete', [Jjs2RequestController::class, 'HostJjs2RequestAddressRequest'])
+    ->name('host.jjs2.request.delete');
+
+
+// PAYMENT PROOF
+Route::get('/host/jjs2/payment_proof', [Jjs2PaymentProofController::class, 'HostJjs2PaymentProofPage'])->name('host.jjs2.paymemt.proof.page');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -351,13 +468,18 @@ Route::post('/admin/jjs1/announcement/request', [AdminJjs1AnnouncementController
 Route::get('/admin/jjs1/request_to_manager', [AdminJjs1RequestToManagerController::class, 'AdminJjs1RequestToManagerPage'])->name('admin.jjs1.request_to_manager.page');
 Route::post('/admin/jjs1/request_to_manager/request', [AdminJjs1RequestToManagerController::class, 'AdminJjs1RequestToManagerRequest'])->name('admin.jjs1.request_to_manager.request');
 
-// HUBERTS BALANCE
+// JJS1 BALANCE
 Route::get('/admin/jjs1/balance', [AdminJjs1BalanceController::class, 'AdminJjs1BalancePage'])->name('admin.jjs1.balance.page');
 Route::get('/admin/jjs1/balance/paid', [AdminJjs1BalanceController::class, 'AdminJjs1BalancePaidPage'])->name('admin.jjs1.balance.paid.page');
 Route::get('/admin/jjs1/balance/delinquent', [AdminJjs1BalanceController::class, 'AdminJjs1BalanceDelinquentPage'])->name('admin.jjs1.balance.delinquent.page');
 
 // JJS2
 Route::get('/admin/jjs2/dashboard', [AdminJjs2DashboardController::class, 'AdminJjs2DashboardPage'])->name('admin.jjs2.dashboard.page');
+
+
+
+
+
 
 
 

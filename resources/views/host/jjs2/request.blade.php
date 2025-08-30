@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>JJS1 Host Dashboard</title>
+    <title>JJS2 Host Dashboard</title>
 
     <!-- CSS Dependencies -->
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}" />
@@ -45,12 +45,12 @@
 <body>
 
     <!-- TOP NAV BAR -->
-    <div class="bg-dark text-white py-3" style="background-color: #44444E !important">
+    <div class="bg-dark text-white py-3" style="background-color: #715A5A !important">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-6">
                     <div>
-                        <small class="text-uppercase text-white">JJS1 BLDG HOST PANEL</small>
+                        <small class="text-uppercase text-white">JJS2 BLDG HOST PANEL</small>
                         <div class="fw-bold">Host/Owner</div>
                     </div>
                 </div>
@@ -65,7 +65,7 @@
 
     <!-- MAIN CONTENT -->
     <div class="container my-5">
-        <h2 class="mb-4">Tenant Payments</h2>
+        <h2 class="mb-4">Requests</h2>
 
         @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
@@ -74,62 +74,57 @@
         <div class="alert alert-danger">{{ session('error') }}</div>
         @endif
 
-        @if($payments->isEmpty())
-        <div class="alert alert-info">No payment records found.</div>
+        @if($requests->isEmpty())
+        <div class="alert alert-info">No requests found.</div>
         @else
-        <table id="paymentsTable" class="table table-bordered table-striped nowrap" style="width:100%">
+        <table id="requestsTable" class="table table-bordered table-striped nowrap" style="width:100%">
             <thead class="table-dark">
                 <tr>
                     <th>Tenant</th>
                     <th>Unit</th>
-                    <th>Amount</th>
-                    <th>For the Month Of</th>
-                    <th>Reference #</th>
-                    <th>Mode of Payment</th>
-                    <th>Type</th>
+                    <th>Subject</th>
+                    <th>Message</th>
                     <th>Status</th>
-                    <th>Actions</th>
-                    <th>Date</th>
+                    <th>Approval</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($payments as $payment)
-                <tr id="payment-row-{{ $payment->id }}">
-                    <td>{{ $payment->tenant_name }}</td>
-                    <td>{{ $payment->unit_name }}</td>
-                    <td>PHP {{ number_format($payment->amount, 2) }}</td>
-                    <td>{{ $payment->for_the_month_of }}</td>
-                    <td>{{ $payment->reference_number }}</td>
-                    <td>{{ ucfirst($payment->mode_of_payment) }}</td>
-                    <td>{{ ucfirst($payment->type) }}</td>
+                @foreach ($requests as $request)
+                <tr>
+                    <td>{{ $request->tenant_name }}</td>
+                    <td>{{ $request->unit_name }}</td>
+                    <td>{{ $request->subject_request }}</td>
+                    <td>{{ $request->subject_message }}</td>
                     <td>
-                        @if ($payment->is_approved == 1)
-                        <span class="badge bg-success">Approved</span>
-                        @else
-                        <span class="badge bg-warning text-dark">Pending</span>
-                        @endif
-                    </td>
-                    <td>
-                        @if ($payment->is_approved != 1)
-                        <form action="{{ route('host.jjs1.payments.approve', $payment->id) }}" method="POST"
-                            style="display:inline;">
+                        @if ($request->status === 'Waiting to address by the host')
+                        <form method="POST" action="{{ route('host.jjs2.request.address', $request->id) }}" style="display:inline-block;">
                             @csrf
-                            <button type="submit" class="btn btn-sm btn-success mb-1">
-                                <i class="fas fa-check"></i> Approve
+                            @method('PATCH')
+                            <button type="submit" class="btn btn-sm btn-success mb-1" name="action" value="addressed">
+                                <i class="fas fa-check-circle"></i> Already Addressed
                             </button>
                         </form>
-                        <form action="{{ route('host.jjs1.payments.decline', $payment->id) }}" method="POST"
-                            style="display:inline;">
+
+                        <form method="POST" action="{{ route('host.jjs2.request.delete', $request->id) }}" style="display:inline-block;">
                             @csrf
-                            <button type="submit" class="btn btn-sm btn-danger mb-1">
-                                <i class="fas fa-times"></i> Decline
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-sm btn-danger mb-1" name="action" value="not_addressed" onclick="return confirm('Are you sure you want to delete this request?');">
+                                <i class="fas fa-times-circle"></i> Not Addressed
                             </button>
                         </form>
                         @else
-                        <small class="text-muted">No actions</small>
+                        <span class="badge bg-success">Already addressed</span>
                         @endif
                     </td>
-                    <td>{{ \Carbon\Carbon::parse($payment->created_at)->format('M d, Y h:i A') }}</td>
+                    <td>
+                        @if($request->is_approved == 1 && $request->status === 'Already addressed')
+                        <span class="badge bg-success">Already Addressed</span>
+                        @elseif ($request->is_approved == 1)
+                        <span class="badge bg-primary text-white">Approved by the admin</span>
+                        @else
+                        <span class="text-muted">-</span>
+                        @endif
+                    </td>
                 </tr>
                 @endforeach
             </tbody>
@@ -138,8 +133,8 @@
     </div>
 
     <!-- Bottom Navigation -->
-                <div class="bottom-nav" style="background-color: #44444E !important">
-                    <a href="{{ route('host.jjs1.dashboard.page') }}" style="text-decoration: none">
+                <div class="bottom-nav" style="background-color: #715A5A !important">
+                    <a href="{{ route('host.jjs2.dashboard.page') }}" style="text-decoration: none">
                         <i class="fas fa-home"></i><br>Back to dashboard
                     </a>
                 </div>
@@ -156,16 +151,16 @@
 
     <script>
         $(document).ready(function () {
-            $('#paymentsTable').DataTable({
+            $('#requestsTable').DataTable({
                 responsive: true,
                 autoWidth: false,
                 pageLength: 10,
                 language: {
-                    emptyTable: "No payment records available.",
+                    emptyTable: "No requests available.",
                 },
                 columnDefs: [
-                    { responsivePriority: 1, targets: -1 },  // Actions highest priority
-                    { responsivePriority: 2, targets: -2 }   // Status second highest priority
+                    { responsivePriority: 1, targets: -2 },  // Status
+                    { responsivePriority: 2, targets: -1 }   // Approval
                 ]
             });
         });
@@ -178,6 +173,16 @@
             timeOut: 3000
         };
         toastr.success("{{ session('success') }}");
+        @endif
+
+        @if (session('error'))
+        toastr.options = {
+            closeButton: true,
+            progressBar: true,
+            positionClass: 'toast-top-right',
+            timeOut: 3000
+        };
+        toastr.error("{{ session('error') }}");
         @endif
     </script>
 </body>

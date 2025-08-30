@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>JJS1 Host Dashboard</title>
+    <title>JJS2 Host Dashboard</title>
 
     <!-- CSS Dependencies -->
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}" />
@@ -45,12 +45,12 @@
 <body>
 
     <!-- TOP NAV BAR -->
-    <div class="bg-dark text-white py-3" style="background-color: #44444E !important">
+    <div class="bg-dark text-white py-3" style="background-color: #715A5A !important">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-6">
                     <div>
-                        <small class="text-uppercase text-white">JJS1 BLDG HOST PANEL</small>
+                        <small class="text-uppercase text-white">JJS2 BLDG HOST PANEL</small>
                         <div class="fw-bold">Host/Owner</div>
                     </div>
                 </div>
@@ -111,14 +111,14 @@
                     </td>
                     <td>
                         @if ($payment->is_approved != 1)
-                        <form action="{{ route('host.jjs1.payments.approve', $payment->id) }}" method="POST"
+                        <form action="{{ route('host.jjs2.payments.approve', $payment->id) }}" method="POST"
                             style="display:inline;">
                             @csrf
                             <button type="submit" class="btn btn-sm btn-success mb-1">
                                 <i class="fas fa-check"></i> Approve
                             </button>
                         </form>
-                        <form action="{{ route('host.jjs1.payments.decline', $payment->id) }}" method="POST"
+                        <form action="{{ route('host.jjs2.payments.decline', $payment->id) }}" method="POST"
                             style="display:inline;">
                             @csrf
                             <button type="submit" class="btn btn-sm btn-danger mb-1">
@@ -138,8 +138,8 @@
     </div>
 
     <!-- Bottom Navigation -->
-                <div class="bottom-nav" style="background-color: #44444E !important">
-                    <a href="{{ route('host.jjs1.dashboard.page') }}" style="text-decoration: none">
+                <div class="bottom-nav" style="background-color: #715A5A !important">
+                    <a href="{{ route('host.jjs2.dashboard.page') }}" style="text-decoration: none">
                         <i class="fas fa-home"></i><br>Back to dashboard
                     </a>
                 </div>
