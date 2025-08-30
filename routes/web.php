@@ -35,7 +35,15 @@ use App\Http\Controllers\admin\jjs1\PaymentsController as AdminJjs1PaymentsContr
 use App\Http\Controllers\admin\jjs1\RequestController as AdminJjs1RequestController;
 use App\Http\Controllers\admin\jjs1\RequestToManagerController as AdminJjs1RequestToManagerController;
 use App\Http\Controllers\admin\jjs1\UnitsController as Jjs1UnitsController;
+use App\Http\Controllers\admin\jjs2\AnnouncementController as AdminJjs2AnnouncementController;
+use App\Http\Controllers\admin\jjs2\BillingController as AdminJjs2BillingController;
 use App\Http\Controllers\admin\jjs2\DashboardController as AdminJjs2DashboardController;
+use App\Http\Controllers\admin\jjs2\ExpensesController as Jjs2ExpensesController;
+use App\Http\Controllers\admin\jjs2\PaymentProofController as AdminJjs2PaymentProofController;
+use App\Http\Controllers\admin\jjs2\PaymentsController as AdminJjs2PaymentsController;
+use App\Http\Controllers\admin\jjs2\RequestController as AdminJjs2RequestController;
+use App\Http\Controllers\admin\jjs2\RequestToManagerController as AdminJjs2RequestToManagerController;
+use App\Http\Controllers\admin\jjs2\UnitsController as Jjs2UnitsController;
 use App\Http\Controllers\host\hubert\AnnouncementController as HubertAnnouncementController;
 use App\Http\Controllers\host\hubert\BalanceController;
 use App\Http\Controllers\host\hubert\MonthlySalesController;
@@ -479,17 +487,63 @@ Route::get('/admin/jjs1/balance', [AdminJjs1BalanceController::class, 'AdminJjs1
 Route::get('/admin/jjs1/balance/paid', [AdminJjs1BalanceController::class, 'AdminJjs1BalancePaidPage'])->name('admin.jjs1.balance.paid.page');
 Route::get('/admin/jjs1/balance/delinquent', [AdminJjs1BalanceController::class, 'AdminJjs1BalanceDelinquentPage'])->name('admin.jjs1.balance.delinquent.page');
 
+
+
+
+
+
+
+
+
 // JJS2
 Route::get('/admin/jjs2/dashboard', [AdminJjs2DashboardController::class, 'AdminJjs2DashboardPage'])->name('admin.jjs2.dashboard.page');
+Route::post('/admin/jjs2/turn-over', [AdminJjs2DashboardController::class, 'AdminJjs2TurnOverMoney'])->name('admin.jjs2.turnover.request');
+
+// JJS2 EXPENSES
+Route::get('/admin/jjs2/expenses', [Jjs2ExpensesController::class, 'AdminJjs2ExpensesPage'])->name('admin.jjs2.expenses.page');
+Route::post('/admin/jjs2/expenses/create', [Jjs2ExpensesController::class, 'AdminJjs2ExpensesRequest'])->name('admin.jjs2.expenses.request');
+Route::get('/admin/jjs2/print/expenses', [Jjs2ExpensesController::class, 'AdminJjs2ExpensesPrintPage'])
+    ->name('admin.jjs2.print.expenses');
 
 
+// JJS2 UNIT
+Route::get('admin/jjs2/unit_management', [Jjs2UnitsController::class, 'AdminJjs2UnitsManagementPage'])->name('admin.jjs2.units.management.page');
+Route::post('/admin/jjs2/units/transfer-and-repair', [Jjs2UnitsController::class, 'AdminJjs2TransferAndRepair'])->name('admin.units.transfer-and-repairjjs2');
+Route::post('/admin/jjs2/units/mark-for-repair', [Jjs2UnitsController::class, 'AdminJjs2MarkForRepair'])->name('admin.units.mark-for-repairjjs2');
+Route::post('/admin/jjs2/units/mark-as-repaired', [Jjs2UnitsController::class, 'AdminJjs2MarkAsRepaired'])->name('admin.units.mark-as-repairedjjs2');
+Route::post('/admin/jjs2/unit/{unit}/moveout/{tenant}', [Jjs2UnitsController::class, 'AdminJjs2MoveOutTenant'])->name('admin.units.moveoutjjs2');
+Route::get('/admin/jjs2/print/summary', [Jjs2UnitsController::class, 'Jjs2printSummary'])->name('admin.jjs2.print.summary');
+Route::get('/admin/jjs2/print/billings', [Jjs2UnitsController::class, 'Jjs2printBillings'])->name('admin.jjs2.print.billings');
+Route::get('/admin/jjs2/print/payments', [Jjs2UnitsController::class, 'Jjs2printPayments'])->name('admin.jjs2.print.payments');
+Route::post('/admin/jjs2/unit/follou-up-billings', [Jjs2UnitsController::class, 'AdminJjs2FollowUpBillings'])->name('admin.jjs2.units.follow.up.billings');
 
 
+// JJS2 BILLING PAGE
+Route::get('/admin/jjs2/billing', [AdminJjs2BillingController::class, 'AdminJjs2BillingPage'])->name('admin.jjs2.billing.page');
+Route::post('/admin/jjs2/billing/create', [AdminJjs2BillingController::class, 'AdminJjs2BillingCreate'])->name('admin.jjs2.billing.create');
+
+// JJS2 PAYMENT PAGE
+Route::get('/admin/jjs2/payments/create', [AdminJjs2PaymentsController::class, 'AdminJjs2PaymentPage'])->name('admin.jjs2.payments.page');
+Route::post('/admin/jjs2/payments/store', [AdminJjs2PaymentsController::class, 'AdminJjs2PaymentRequest'])->name('admin.jjs2.payments.request');
+
+// JJS2 PROOF OF PAYMENT PAGE
+Route::get('/admin/jjs2/payment_proof', [AdminJjs2PaymentProofController::class, 'AdminJjs2PaymentProofPage'])->name('admin.jjs2.paymemt.proof.page');
 
 
+// JJS2 REQUEST PAGE
+Route::get('/admin/jjs2/request_management', [AdminJjs2RequestController::class, 'AdminJjs2RequestPage'])->name('admin.jjs2.request.page');
+Route::put('/admin/jjs2/request/{id}/approve', [AdminJjs2RequestController::class, 'AdminJjs2RequestApprove'])->name('admin.jjs2.request.approve');
+Route::delete('/admin/jjs2/request/{id}/decline', [AdminJjs2RequestController::class, 'AdminJjs2RequestDecline'])->name('admin.jjs2.request.decline');
 
 
+// JJS2 REQUEST TO MANAGER PAGE
+Route::get('/admin/jjs2/request_to_manager', [AdminJjs2RequestToManagerController::class, 'AdminJjs2RequestToManagerPage'])->name('admin.jjs2.request_to_manager.page');
+Route::post('/admin/jjs2/request_to_manager/request', [AdminJjs2RequestToManagerController::class, 'AdminJjs2RequestToManagerRequest'])->name('admin.jjs2.request_to_manager.request');
 
+
+// JJS2 ANNOUNCEMENT PAGE
+Route::get('/admin/jjs2/announcement_management', [AdminJjs2AnnouncementController::class, 'AdminJjs2AnnouncementPage'])->name('admin.jjs2.announcement.page');
+Route::post('/admin/jjs2/announcement/request', [AdminJjs2AnnouncementController::class, 'AdminJjs2AnnouncementRequest'])->name('admin.jjs2.announcement.request');
 
 
 // TENANTS ROUTES
