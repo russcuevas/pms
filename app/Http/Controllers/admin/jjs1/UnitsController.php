@@ -139,8 +139,9 @@ public function AdminJjs1MoveOutTenant($unitId, $tenantId)
 {
     $historyBillingIds = [];
     $historyPaymentIds = [];
+    $tenantCode = $this->generateTenantCode();
 
-    DB::transaction(function () use ($unitId, $tenantId, &$historyBillingIds, &$historyPaymentIds) {
+    DB::transaction(function () use ($unitId, $tenantId, &$historyBillingIds, &$historyPaymentIds, $tenantCode) {
         $tenant = DB::table('tenants')->where('id', $tenantId)->first();
         $unit = DB::table('units')->where('id', $unitId)->first();
 
@@ -160,6 +161,7 @@ public function AdminJjs1MoveOutTenant($unitId, $tenantId)
                 'tenant_name' => $tenant->fullname,
                 'tenant_phone_number' => $tenant->phone_number,
                 'tenant_email' => $tenant->email,
+                'tenant_code' => $tenantCode,  // Add tenant_code here
                 'account_number' => $billing->account_number,
                 'soa_no' => $billing->soa_no,
                 'for_the_month_of' => $billing->for_the_month_of,
@@ -205,6 +207,7 @@ public function AdminJjs1MoveOutTenant($unitId, $tenantId)
                 'tenant_name' => $tenant->fullname,
                 'tenant_phone_number' => $tenant->phone_number,
                 'tenant_email' => $tenant->email,
+                'tenant_code' => $tenantCode,  // Add tenant_code here
                 'amount' => $payment->amount,
                 'for_the_month_of' => $payment->for_the_month_of,
                 'reference_number' => $payment->reference_number,
@@ -230,6 +233,21 @@ public function AdminJjs1MoveOutTenant($unitId, $tenantId)
     Session::put('last_moved_payment_ids', $historyPaymentIds);
 
     return redirect()->route('admin.jjs1.print.summary')->with('success', 'Tenant moved out successfully. You can now print the summary.');
+}
+
+private function generateTenantCode()
+{
+    // Get the highest tenant code that starts with 'TENANT'
+    $lastTenantCode = DB::table('history_billings')
+        ->where('tenant_code', 'LIKE', 'TENANT%')
+        ->orderByDesc('tenant_code')
+        ->first();
+
+    // Extract the numeric part and increment it
+    $lastNumber = $lastTenantCode ? (int) substr($lastTenantCode->tenant_code, 7) : 0;
+    $newTenantCode = 'TENANT' . ($lastNumber + 1);
+
+    return $newTenantCode;
 }
 
     public function Jjs1printSummary()

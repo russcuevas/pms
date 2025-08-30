@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('unit_id')->nullable();
             $table->unsignedBigInteger('property_id')->nullable();
+            $table->string('tenant_code')->nullable();
             $table->string('tenant_name');
             $table->string('tenant_phone_number');
             $table->string('tenant_email');

@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class UnitsController extends Controller
 {
@@ -140,12 +141,15 @@ class UnitsController extends Controller
         }
     }
 
+
+
 public function AdminHubertMoveOutTenant($unitId, $tenantId)
 {
     $historyBillingIds = [];
     $historyPaymentIds = [];
+    $tenantCode = $this->generateTenantCode();
 
-    DB::transaction(function () use ($unitId, $tenantId, &$historyBillingIds, &$historyPaymentIds) {
+    DB::transaction(function () use ($unitId, $tenantId, &$historyBillingIds, &$historyPaymentIds, $tenantCode) {
         $tenant = DB::table('tenants')->where('id', $tenantId)->first();
         $unit = DB::table('units')->where('id', $unitId)->first();
 
@@ -165,6 +169,7 @@ public function AdminHubertMoveOutTenant($unitId, $tenantId)
                 'tenant_name' => $tenant->fullname,
                 'tenant_phone_number' => $tenant->phone_number,
                 'tenant_email' => $tenant->email,
+                'tenant_code' => $tenantCode,  // Add tenant_code here
                 'account_number' => $billing->account_number,
                 'soa_no' => $billing->soa_no,
                 'for_the_month_of' => $billing->for_the_month_of,
@@ -210,6 +215,7 @@ public function AdminHubertMoveOutTenant($unitId, $tenantId)
                 'tenant_name' => $tenant->fullname,
                 'tenant_phone_number' => $tenant->phone_number,
                 'tenant_email' => $tenant->email,
+                'tenant_code' => $tenantCode,  // Add tenant_code here
                 'amount' => $payment->amount,
                 'for_the_month_of' => $payment->for_the_month_of,
                 'reference_number' => $payment->reference_number,
@@ -236,6 +242,22 @@ public function AdminHubertMoveOutTenant($unitId, $tenantId)
 
     return redirect()->route('admin.hubert.print.summary')->with('success', 'Tenant moved out successfully. You can now print the summary.');
 }
+
+private function generateTenantCode()
+{
+    // Get the highest tenant code that starts with 'TENANT'
+    $lastTenantCode = DB::table('history_billings')
+        ->where('tenant_code', 'LIKE', 'TENANT%')
+        ->orderByDesc('tenant_code')
+        ->first();
+
+    // Extract the numeric part and increment it
+    $lastNumber = $lastTenantCode ? (int) substr($lastTenantCode->tenant_code, 7) : 0;
+    $newTenantCode = 'TENANT' . ($lastNumber + 1);
+
+    return $newTenantCode;
+}
+
 
     public function printSummary()
     {

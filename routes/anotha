@@ -1,20 +1,13 @@
-// ADMIN JJS1 START
-// JJS1
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// TENANTS JJS1 BILLING PAGE
+Route::get('/tenants/jjs1/my-billing', [Jjs1ViewBillingController::class, 'TenantsJjs1MyBillingPage'])->name('tenants.jjs1.my-billing.page');
+// TENANTS JJS1 PAYMENT PAGE
+Route::get('/tenants/jjs1/my-payment', [Jjs1PaymentController::class, 'TenantsJjs1MyPaymentPage'])->name('tenants.jjs1.my-payment.page');
+// TENANTS JJS1 REQUEST PAGE
+Route::get('/tenants/jjs1/my-request', [TenantJjs1RequestController::class, 'TenantsJjs1MyRequestPage'])->name('tenants.jjs1.my-request.page');
+Route::post('/tenants/jjs1/my-request/post', [TenantJjs1RequestController::class, 'TenantsJjs1RequestPost'])->name('tenants.jjs1.my-request.post');
+// TENANTS JJS1 ANNOUNCEMENT PAGE
+Route::get('/tenants/jjs1/announcements', [TenantJjs1AnnouncementController::class, 'TenantsJjs1AnnouncementPage'])->name('tenants.jjs1.announcement.page');
+// TENANTS JJS1 PAYMENTS PROOF
+Route::post('/tenant/jjs1/payment-proof', [TenantJjs1PaymentProofController::class, 'TenantsJjs1MyPaymentRequest'])->name('tenant.jjs1.payment.proof.request');

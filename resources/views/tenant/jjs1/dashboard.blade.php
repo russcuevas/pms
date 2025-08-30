@@ -21,7 +21,7 @@
 
     <div class="container my-4 pb-5">
         <div class="card border-0 text-white mb-4" 
-        style="background-image: url('{{ asset('assets/jjs1/jjs1-banner.jpg') }}'); 
+        style="background-image: url('{{ asset('assets/jjs1/jjs1.png') }}'); 
             background-repeat: no-repeat; 
             background-position: center; 
             background-size: cover; 
