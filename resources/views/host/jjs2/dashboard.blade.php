@@ -369,7 +369,7 @@ $(document).ready(function () {
     function fetchAndRenderCharts(year) {
         // --- Sales ---
         $.ajax({
-            url: "{{ route('host.jjs1.monthly.sales') }}",
+            url: "{{ route('host.jjs2.monthly.sales') }}",
             method: 'GET',
             data: { year: year },
             success: function (response) {
@@ -397,7 +397,7 @@ $(document).ready(function () {
 
         // --- Expenses ---
         $.ajax({
-            url: "{{ route('host.jjs1.monthly.expenses') }}",
+            url: "{{ route('host.jjs2.monthly.expenses') }}",
             method: 'GET',
             data: { year: year },
             success: function (response) {
@@ -425,7 +425,7 @@ $(document).ready(function () {
 
         // --- Net Income ---
         $.ajax({
-            url: "{{ route('host.jjs1.monthly.net.income') }}",
+            url: "{{ route('host.jjs2.monthly.net.income') }}",
             method: 'GET',
             data: { year: year },
             success: function (response) {
@@ -464,7 +464,7 @@ monthlyNetIncomeChart = createOrUpdateChart(
 
 <script>
     function updatePaymentData(year) {
-        fetch(`/host/hubert/payment-breakdown?year=${year}`)
+        fetch(`/host/jjs2/payment-breakdown?year=${year}`)
             .then(response => response.json())
             .then(data => {
                 document.getElementById('totalPayment').textContent = `₱${data.total_payment.toLocaleString()}`;
