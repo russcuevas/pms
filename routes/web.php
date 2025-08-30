@@ -57,6 +57,7 @@ use App\Http\Controllers\host\jjs1\BalanceController as Jjs1BalanceController;
 use App\Http\Controllers\host\jjs1\BillingController as Jjs1BillingController;
 use App\Http\Controllers\host\jjs1\ExpenseController;
 use App\Http\Controllers\host\jjs1\MonthlySalesController as Jjs1MonthlySalesController;
+use App\Http\Controllers\host\jjs1\MoveoutTenantHistoryController as Jjs1MoveoutTenantHistoryController;
 use App\Http\Controllers\host\jjs1\PaymentProofController as Jjs1PaymentProofController;
 use App\Http\Controllers\host\jjs1\PaymentsController as Jjs1PaymentsController;
 use App\Http\Controllers\host\jjs1\RequestController as Jjs1RequestController;
@@ -68,6 +69,7 @@ use App\Http\Controllers\host\jjs2\BalanceController as Jjs2BalanceController;
 use App\Http\Controllers\host\jjs2\BillingController as Jjs2BillingController;
 use App\Http\Controllers\host\jjs2\ExpenseController as Jjs2ExpenseController;
 use App\Http\Controllers\host\jjs2\MonthlySalesController as Jjs2MonthlySalesController;
+use App\Http\Controllers\host\jjs2\MoveoutTenantHistoryController as Jjs2MoveoutTenantHistoryController;
 use App\Http\Controllers\host\jjs2\PaymentProofController as Jjs2PaymentProofController;
 use App\Http\Controllers\host\jjs2\PaymentsController as Jjs2PaymentsController;
 use App\Http\Controllers\host\jjs2\RequestController as Jjs2RequestController;
@@ -183,7 +185,6 @@ Route::get('/host/hubert/balance/delinquent', [BalanceController::class, 'HostHu
 Route::get('/host/hubert/tenant-history', [MoveoutTenantHistoryController::class, 'HubertTenantHistoryPage'])->name('host.hubert.tenant-history.page');
 Route::get('/host/hubert/tenant-billing-history', [MoveoutTenantHistoryController::class, 'HubertTenantBillingHistoryPage'])->name('host.hubert.tenant-billing-history.page');
 Route::get('/host/hubert/tenant-history/{tenant_code}', [MoveoutTenantHistoryController::class, 'HubertViewTenantBillingHistory'])->name('host.hubert.view-tenant-history');
-
 Route::get('/host/hubert/tenant-payment-history', [MoveoutTenantHistoryController::class, 'HubertTenantPaymentHistoryPage'])->name('host.hubert.tenant-payment-history.page');
 Route::get('/host/hubert/tenant-payment-history/{tenant_code}', [MoveoutTenantHistoryController::class, 'HubertViewTenantPaymentHistory'])->name('host.hubert.view-tenant-payment-history');
 
@@ -257,6 +258,13 @@ Route::get('/host/jjs1/payment_proof', [Jjs1PaymentProofController::class, 'Host
 Route::get('/host/jjs1/balance', [Jjs1BalanceController::class, 'HostJjs1BalancePage'])->name('host.jjs1.balance.page');
 Route::get('/host/jjs1/balance/paid', [Jjs1BalanceController::class, 'HostJjs1BalancePaidPage'])->name('host.jjs1.balance.paid.page');
 Route::get('/host/jjs1/balance/delinquent', [Jjs1BalanceController::class, 'HostJjs1BalanceDelinquentPage'])->name('host.jjs1.balance.delinquent.page');
+
+//
+Route::get('/host/jjs1/tenant-history', [Jjs1MoveoutTenantHistoryController::class, 'Jjs1TenantHistoryPage'])->name('host.jjs1.tenant-history.page');
+Route::get('/host/jjs1/tenant-billing-history', [Jjs1MoveoutTenantHistoryController::class, 'Jjs1TenantBillingHistoryPage'])->name('host.jjs1.tenant-billing-history.page');
+Route::get('/host/jjs1/tenant-history/{tenant_code}', [Jjs1MoveoutTenantHistoryController::class, 'Jjs1ViewTenantBillingHistory'])->name('host.jjs1.view-tenant-history');
+Route::get('/host/jjs1/tenant-payment-history', [Jjs1MoveoutTenantHistoryController::class, 'Jjs1TenantPaymentHistoryPage'])->name('host.jjs1.tenant-payment-history.page');
+Route::get('/host/jjs1/tenant-payment-history/{tenant_code}', [Jjs1MoveoutTenantHistoryController::class, 'Jjs1ViewTenantPaymentHistory'])->name('host.jjs1.view-tenant-payment-history');
 // END JJS1
 
 
@@ -338,7 +346,11 @@ Route::get('/host/jjs2/balance/delinquent', [Jjs2BalanceController::class, 'Host
 
 
 
-
+Route::get('/host/jjs2/tenant-history', [Jjs2MoveoutTenantHistoryController::class, 'Jjs2TenantHistoryPage'])->name('host.jjs2.tenant-history.page');
+Route::get('/host/jjs2/tenant-billing-history', [Jjs2MoveoutTenantHistoryController::class, 'Jjs2TenantBillingHistoryPage'])->name('host.jjs2.tenant-billing-history.page');
+Route::get('/host/jjs2/tenant-history/{tenant_code}', [Jjs2MoveoutTenantHistoryController::class, 'Jjs2ViewTenantBillingHistory'])->name('host.jjs2.view-tenant-history');
+Route::get('/host/jjs2/tenant-payment-history', [Jjs2MoveoutTenantHistoryController::class, 'Jjs2TenantPaymentHistoryPage'])->name('host.jjs2.tenant-payment-history.page');
+Route::get('/host/jjs2/tenant-payment-history/{tenant_code}', [Jjs2MoveoutTenantHistoryController::class, 'Jjs2ViewTenantPaymentHistory'])->name('host.jjs2.view-tenant-payment-history');
 
 
 

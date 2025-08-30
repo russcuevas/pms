@@ -96,6 +96,14 @@ canvas {
 <div class="container my-4">
     <h5 class="mb-3">Actions</h5>
     <div class="row quick-actions g-3">
+        <div class="col-12 col-md-12">
+            <a href="{{ route('host.jjs1.tenant-history.page')}}" style="text-decoration: none !important">
+                <div class="card text-center p-4">
+                    <i class="fa-solid fa-file fa-2x mb-2"></i>                    
+                    <div>Moveout Tenants Billings & Payments History</div>
+                </div>
+            </a>
+        </div>
         <!-- Dashboard -->
         <div class="col-6 col-md-3">
             <a href="{{ route('host.jjs1.dashboard.page') }}" style="text-decoration: none !important">
