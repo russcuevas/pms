@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin\hubert;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
@@ -11,6 +12,13 @@ class PaymentsController extends Controller
 {
     public function AdminHubertPaymentPage(Request $request)
     {
+        $admin = Auth::guard('admins')->user();
+
+        if (!$admin || $admin->property_id != 1) {
+            return redirect()->route('admin.login.page')
+                ->with('error', 'You must log in first');
+        }
+
         $unit_id = $request->query('unit_id');
         $tenant_id = $request->query('tenant_id');
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\host\hubert;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class PaymentsController extends Controller
@@ -11,6 +12,10 @@ class PaymentsController extends Controller
     // Display all payments
     public function HostHubertPaymentsPage()
     {
+        if (!Auth::guard('hosts')->check()) {
+            return redirect()->route('host.login.page')->with('error', 'Please log in.');
+        }
+
         $payments = DB::table('payments')
             ->join('tenants', 'payments.tenant_id', '=', 'tenants.id')
             ->join('units', 'payments.unit_id', '=', 'units.id')

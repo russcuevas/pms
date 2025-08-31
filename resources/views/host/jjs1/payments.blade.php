@@ -55,6 +55,9 @@
                     </div>
                 </div>
                 <div class="col-6 text-end">
+                    <a href="{{ route('host.jjs1.change-password.form') }}" class="text-white text-decoration-none me-3">
+                        <i class="fas fa-user-circle fs-5"></i> Profile
+                    </a>
                     <a href="{{ route('host.logout.request') }}" class="text-white text-decoration-none">
                         <i class="fas fa-sign-out-alt fs-5"></i> Logout
                     </a>

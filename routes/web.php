@@ -50,6 +50,7 @@ use App\Http\Controllers\host\hubert\BalanceController;
 use App\Http\Controllers\host\hubert\MonthlySalesController;
 use App\Http\Controllers\host\hubert\MoveoutTenantHistoryController;
 use App\Http\Controllers\host\hubert\PaymentProofController as HostHubertPaymentProofController;
+use App\Http\Controllers\host\hubert\ProfileController;
 use App\Http\Controllers\host\hubert\RequestToManagerController as HubertRequestToManagerController;
 use App\Http\Controllers\host\jjs1\AdminController as Jjs1AdminController;
 use App\Http\Controllers\host\jjs1\AnnouncementController as Jjs1AnnouncementController;
@@ -60,6 +61,7 @@ use App\Http\Controllers\host\jjs1\MonthlySalesController as Jjs1MonthlySalesCon
 use App\Http\Controllers\host\jjs1\MoveoutTenantHistoryController as Jjs1MoveoutTenantHistoryController;
 use App\Http\Controllers\host\jjs1\PaymentProofController as Jjs1PaymentProofController;
 use App\Http\Controllers\host\jjs1\PaymentsController as Jjs1PaymentsController;
+use App\Http\Controllers\host\jjs1\ProfileController as Jjs1ProfileController;
 use App\Http\Controllers\host\jjs1\RequestController as Jjs1RequestController;
 use App\Http\Controllers\host\jjs1\RequestToManagerController as Jjs1RequestToManagerController;
 use App\Http\Controllers\host\jjs1\TurnOverController as Jjs1TurnOverController;
@@ -72,6 +74,7 @@ use App\Http\Controllers\host\jjs2\MonthlySalesController as Jjs2MonthlySalesCon
 use App\Http\Controllers\host\jjs2\MoveoutTenantHistoryController as Jjs2MoveoutTenantHistoryController;
 use App\Http\Controllers\host\jjs2\PaymentProofController as Jjs2PaymentProofController;
 use App\Http\Controllers\host\jjs2\PaymentsController as Jjs2PaymentsController;
+use App\Http\Controllers\host\jjs2\ProfileController as Jjs2ProfileController;
 use App\Http\Controllers\host\jjs2\RequestController as Jjs2RequestController;
 use App\Http\Controllers\host\jjs2\RequestToManagerController as Jjs2RequestToManagerController;
 use App\Http\Controllers\host\jjs2\TurnOverController as Jjs2TurnOverController;
@@ -123,6 +126,8 @@ Route::get('/host/huberts/monthly-expenses', [MonthlySalesController::class, 'Ho
 Route::get('/host/huberts/monthly-net-income', [MonthlySalesController::class, 'HostHubertMonthlyNetIncomeComputation'])->name('host.huberts.monthly.net.income');
 Route::get('/host/hubert/payment-breakdown', [MonthlySalesController::class, 'HostHubertPaymentBreakdown']);
 
+Route::get('/host/hubert/change-password', [ProfileController::class, 'HubertShowChangePasswordForm'])->name('host.huberts.change-password.form');
+Route::post('/host/hubert/change-password', [ProfileController::class, 'HubertChangePasswordRequest'])->name('host.huberts.change-password');
 
 // ADMIN MANAGEMENT
 Route::get('/host/huberts/admin-management', [AdminController::class, 'HostHubertAdminPage'])->name('host.huberts.admin.management.page');
@@ -199,6 +204,10 @@ Route::get('/host/jjs1/monthly-sales', [Jjs1MonthlySalesController::class, 'Host
 Route::get('/host/jjs1/monthly-expenses', [Jjs1MonthlySalesController::class, 'HostJjs1MonthlyExpensesComputation'])->name('host.jjs1.monthly.expenses');
 Route::get('/host/jjs1/monthly-net-income', [Jjs1MonthlySalesController::class, 'HostJjs1MonthlyNetIncomeComputation'])->name('host.jjs1.monthly.net.income');
 Route::get('/host/jjs1/payment-breakdown', [Jjs1MonthlySalesController::class, 'HostJjs1PaymentBreakdown']);
+
+
+Route::get('/host/jjs1/change-password', [Jjs1ProfileController::class, 'Jjs1ShowChangePasswordForm'])->name('host.jjs1.change-password.form');
+Route::post('/host/jjs1/change-password', [Jjs1ProfileController::class, 'Jjs1ChangePasswordRequest'])->name('host.jjs1.change-password');
 
 
 // ADMIN MANAGEMENT
@@ -281,7 +290,8 @@ Route::get('/host/jjs2/monthly-expenses', [Jjs2MonthlySalesController::class, 'H
 Route::get('/host/jjs2/monthly-net-income', [Jjs2MonthlySalesController::class, 'HostJjs2MonthlyNetIncomeComputation'])->name('host.jjs2.monthly.net.income');
 Route::get('/host/jjs2/payment-breakdown', [Jjs2MonthlySalesController::class, 'HostJjs2PaymentBreakdown']);
 
-
+Route::get('/host/jjs2/change-password', [Jjs2ProfileController::class, 'Jjs2ShowChangePasswordForm'])->name('host.jjs2.change-password.form');
+Route::post('/host/jjs2/change-password', [Jjs2ProfileController::class, 'Jjs2ChangePasswordRequest'])->name('host.jjs2.change-password');
 
 // ADMIN MANAGEMENT
 Route::get('/host/jjs2/admin-management', [Jjs2AdminController::class, 'HostJjs2AdminPage'])->name('host.jjs2.admin.management.page');

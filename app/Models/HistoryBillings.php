@@ -12,6 +12,7 @@ class HistoryBillings extends Model
     protected $fillable = [
         'unit_id',
         'property_id',
+        'tenant_code',
         'tenant_name',
         'tenant_phone_number',
         'tenant_email',

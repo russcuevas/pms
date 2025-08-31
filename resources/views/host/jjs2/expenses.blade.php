@@ -42,16 +42,19 @@
 <body>
 
   <!-- TOP NAV BAR -->
-    <div class="bg-dark text-white py-3" style="background-color: #715A5A !important">
+    <div class="text-white py-3" style="background-color: #715A5A">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-6">
                     <div>
-                        <small class="text-uppercase text-white">JJS2 BLDG HOST PANEL</small>
+                        <small class="text-uppercase text-white">JJS2 HOST PANEL</small>
                         <div class="fw-bold">Host/Owner</div>
                     </div>
                 </div>
                 <div class="col-6 text-end">
+                    <a href="{{ route('host.jjs2.change-password.form') }}" class="text-white text-decoration-none me-3">
+                        <i class="fas fa-user-circle fs-5"></i> Profile
+                    </a>
                     <a href="{{ route('host.logout.request') }}" class="text-white text-decoration-none">
                         <i class="fas fa-sign-out-alt fs-5"></i> Logout
                     </a>

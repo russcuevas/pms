@@ -84,6 +84,9 @@ canvas {
                     </div>
                 </div>
                 <div class="col-6 text-end">
+                    <a href="{{ route('host.jjs2.change-password.form') }}" class="text-white text-decoration-none me-3">
+                        <i class="fas fa-user-circle fs-5"></i> Profile
+                    </a>
                     <a href="{{ route('host.logout.request') }}" class="text-white text-decoration-none">
                         <i class="fas fa-sign-out-alt fs-5"></i> Logout
                     </a>
@@ -467,9 +470,16 @@ monthlyNetIncomeChart = createOrUpdateChart(
         fetch(`/host/jjs2/payment-breakdown?year=${year}`)
             .then(response => response.json())
             .then(data => {
-                document.getElementById('totalPayment').textContent = `₱${data.total_payment.toLocaleString()}`;
-                document.getElementById('cashPayment').textContent = `₱${data.cash_payment.toLocaleString()}`;
-                document.getElementById('onlinePayment').textContent = `₱${data.online_payment.toLocaleString()}`;
+                const options = { minimumFractionDigits: 2, maximumFractionDigits: 2 };
+
+                document.getElementById('totalPayment').textContent = 
+                    `₱${Number(data.total_payment).toLocaleString('en-PH', options)}`;
+
+                document.getElementById('cashPayment').textContent = 
+                    `₱${Number(data.cash_payment).toLocaleString('en-PH', options)}`;
+
+                document.getElementById('onlinePayment').textContent = 
+                    `₱${Number(data.online_payment).toLocaleString('en-PH', options)}`;
             })
             .catch(error => {
                 console.error('Error fetching payment data:', error);
@@ -485,6 +495,7 @@ monthlyNetIncomeChart = createOrUpdateChart(
         updatePaymentData(defaultYear);
     });
 </script>
+
 
 
 

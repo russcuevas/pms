@@ -13,6 +13,7 @@ class HistoryPayments extends Model
         'unit_id',
         'property_id',
         'billings_id',
+        'tenant_code',
         'tenant_name',
         'tenant_phone_number',
         'tenant_email',

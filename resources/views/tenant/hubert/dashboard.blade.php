@@ -282,34 +282,51 @@
     }
 
     function selectPayment(method) {
-        let qrImage = '';
+    let title = '';
+    let content = '';
+    let showImage = true;
 
-        if (method === 'Gcash') {
-            qrImage = "{{ asset('assets/huberts/gcash.jpg') }}";
-        } else if (method === 'Paymaya') {
-            qrImage = "{{ asset('assets/huberts/paymaya.png') }}";
-        } else if (method === 'BDO') {
-            qrImage = "{{ asset('assets/huberts/bdo.jpg') }}";
-        }
-
-        Swal.fire({
-            title: method + ' - Scan to Pay',
-            html: `
-                <p><strong>📌 Please scan the QR code to make your payment.</strong></p>
-                <img src="${qrImage}" alt="${method} QR Code" style="width:300px; height:370px; margin-bottom: 15px;">
-                <p style="margin-top:10px; font-size:14px; color: red;">
-                    Make sure to take a screenshot of your proof of payment and send it to send payment proof after the transaction.
-                </p>
-            `,
-            showCancelButton: true,
-            confirmButtonText: 'OK',
-            cancelButtonText: 'Back',
-        }).then((result) => {
-            if (result.dismiss === Swal.DismissReason.cancel) {
-                showPaymentOptions();
-            }
-        });
+    if (method === 'Gcash') {
+        title = 'Gcash - Scan to Pay';
+        content = `
+            <p><strong>📌 Please scan the QR code to make your payment.</strong></p>
+            <img src="{{ asset('assets/huberts/gcash.jpg') }}" alt="Gcash QR Code" style="width:300px; height:370px; margin-bottom: 15px;">
+            <p style="margin-top:10px; font-size:14px; color: red;">
+                Make sure to take a screenshot of your proof of payment and send it after the transaction.
+            </p>
+        `;
+    } else if (method === 'BDO') {
+        title = 'BDO Bank Transfer';
+        content = `
+            <p><strong>Bdo Savings</strong></p>
+            <p><strong>Account Number:</strong> 008490187369</p>
+            <p><strong>Account Name:</strong> Huberto V Antiquando</p>
+            <p style="margin-top:10px; font-size:14px; color: red;">
+                Please take a screenshot of your proof of payment and send it after the transaction.
+            </p>
+        `;
+    } else if (method === 'Paymaya') {
+        title = 'PayMaya';
+        content = `
+            <p><strong>Coming Soon</strong></p>
+            <p style="font-size:14px; color: gray;">
+                PayMaya payment option is not available yet. Please choose another method.
+            </p>
+        `;
     }
+
+    Swal.fire({
+        title: title,
+        html: content,
+        showCancelButton: true,
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Back',
+    }).then((result) => {
+        if (result.dismiss === Swal.DismissReason.cancel) {
+            showPaymentOptions();
+        }
+    });
+}
     </script>
 
 
