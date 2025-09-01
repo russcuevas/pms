@@ -119,7 +119,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ($admins as $admin)
+                    @foreach ($admins as $admin)
                         <tr>
                             <td>{{ $admin->username }}</td>
                             <td>{{ $admin->fullname }}</td>
@@ -139,11 +139,7 @@
                                 @endif
                             </td>
                         </tr>
-                    @empty
-                        <tr>
-                            <td colspan="4">No admins found for JJS1 Bldg.</td>
-                        </tr>
-                    @endforelse
+                    @endforeach
                 </tbody>
             </table>
     </div>
